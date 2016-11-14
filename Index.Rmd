@@ -6,11 +6,9 @@ title: "Inferring ecological interactions"
 
 To compare methods for inferring species interactions
 
-#Where
+#Where & When
 
 Sherbrooke, Quebec
-
-#When
 
 Nov 30th - Dec 2nd, 2016
 
