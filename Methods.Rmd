@@ -1,8 +1,9 @@
 ---
 title: "Methods"
+theme: "Cerulean"
 ---
 
-# Methods
+# Description of compared methods
 
 * [Harris](refs/Harris2015.pdf)
      -
@@ -17,7 +18,7 @@ title: "Methods"
      -
 
 * [Olito2014](refs/Olito2014.pdf)
-     -
+     - Multinomial model (Vazquez 2009) to estimate the importance of abundance and size class in predicting connectance, nestedness and specialization.
 
 * [Poelen2014](refs/Poelen2014.pdf)
      -
@@ -96,3 +97,12 @@ title: "Methods"
 
 * [Gravel2013](refs/Gravel2013.pdf)
      -
+     
+
+# Comparison chart
+
+```{r,results='asis',echo=F,fig.align='center'}
+library(xtable)
+tab<-read.csv("Analysis/Comparison.csv")
+print(xtable(tab,auto=T),type="html",size = "large")
+```
