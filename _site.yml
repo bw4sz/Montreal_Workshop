@@ -1,9 +1,13 @@
 name: "my-website"
 output_dir: "."
 navbar:
-  title: "My Website"
+  title: "Network Workshop"
   left:
     - text: "Home"
       href: index.html
-    - text: "About"
-      href: about.html
+    - text: "Simulations"
+      href: Simulations.html
+    - text: "Empirical Data"
+      href: Empirical.html
+    - text: "Methods"
+      href: Methods.html

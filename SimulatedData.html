@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Ben Weinstein" />
+
+
+<title>Trait-matching simulation</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/spacelab.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="site_libs/highlight/default.css"
+      type="text/css" />
+<script src="site_libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 52px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+
+.section h2 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+.section h3 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+.section h4 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+.section h5 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+.section h6 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Network Workshop</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="Simulations.html">Simulations</a>
+</li>
+<li>
+  <a href="Empirical.html">Empirical Data</a>
+</li>
+<li>
+  <a href="Methods.html">Methods</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Trait-matching simulation</h1>
+<h4 class="author"><em>Ben Weinstein</em></h4>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#simulation">Simulation</a><ul>
+<li><a href="#process-model">Process Model</a></li>
+<li><a href="#observation-model">Observation Model</a></li>
+</ul></li>
+<li><a href="#simulation-parameters">Simulation Parameters</a></li>
+<li><a href="#compute-true-interaction-matrices">Compute true interaction matrices</a><ul>
+<li><a href="#view-correlation-in-simulated-latent-state">View correlation in simulated latent state</a></li>
+<li><a href="#view-detection-rates">View Detection Rates</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="simulation" class="section level1">
+<h1>Simulation</h1>
+<div id="process-model" class="section level2">
+<h2>Process Model</h2>
+<ul>
+<li>10 hummingbird species</li>
+<li>10 resource species</li>
+<li>Range of hummingbird bill sizes (in mm) ~ Pois(10)/10</li>
+<li>Range of corolla sizes (in mm) ~ Pois(15)/10</li>
+<li>Mean frequency (<span class="math inline">\(\lambda\)</span>) for each hummingbird is drawn from U(0,10)<br />
+</li>
+<li>Trait matching (minimizing Bill-Corolla difference) is drawn from a hierarcichal distribution</li>
+</ul>
+<p><span class="math display">\[ log(\lambda)&lt;-\alpha_i + \beta_i * |Trait_i - Trait_j\]</span> <span class="math display">\[ \alpha=N(3,0.2) \]</span> <span class="math display">\[\beta1 = N(-1,0.2)\]</span></p>
+</div>
+<div id="observation-model" class="section level2">
+<h2>Observation Model</h2>
+<p>Imperfect detection</p>
+<p><span class="math display">\[ \omega_i = U(0.1,0.9) \]</span></p>
+<ul>
+<li>10 camera</li>
+<li>3 days per camera</li>
+</ul>
+<p><strong>View simulated strength and form of trait matching </strong></p>
+</div>
+</div>
+<div id="simulation-parameters" class="section level1">
+<h1>Simulation Parameters</h1>
+<pre class="r"><code>#Number of consumer species
+h_species=10
+plant_species=10
+cameras&lt;-5
+days&lt;-3
+
+#Bill sizes
+Bill&lt;-rpois(h_species,10)
+
+#Corolla sizes
+Corolla&lt;-rpois(plant_species,15)
+
+#Subtract both and take absolute value, convert cm
+traitmatch&lt;-abs(sapply(Corolla,function(x) x - Bill)/10)
+  
+#regression slopes
+#traits
+beta1_mu&lt;- -1
+
+#abundance
+
+#species variance in slopes
+beta1_sigma&lt;- 0.2
+
+#Species alpha_mu 
+alpha_mu&lt;- 3
+alpha_sigma&lt;- 0.2
+
+#Poisson overdipersion
+tauE&lt;-10
+
+#species level
+detection= inv.logit(rnorm(h_species,0,1.67))
+beta1&lt;-rnorm(h_species,beta1_mu,beta1_sigma)
+alpha&lt;-rnorm(h_species,alpha_mu,alpha_sigma)</code></pre>
+</div>
+<div id="compute-true-interaction-matrices" class="section level1">
+<h1>Compute true interaction matrices</h1>
+<pre class="r"><code>#for each species loop through and create a replicate dataframe
+obs&lt;-array(dim=c(h_species,plant_species,cameras,days))
+lambda&lt;-array(dim=c(h_species,plant_species,cameras))
+N&lt;-array(dim=c(h_species,plant_species,cameras))
+
+#create intensities
+for(x in 1:h_species){
+  for (y in 1:plant_species){
+    for (z in 1:cameras){
+      lambda[x,y,z]&lt;-exp(alpha[x] + beta1[x] * traitmatch[x,y] + rnorm(1,0,1/sqrt(tauE)))
+  }
+  }
+}
+
+
+#draw latent states
+for(x in 1:h_species){
+  for (y in 1:plant_species){
+    for (z in 1:cameras){
+      # true latent count
+      N[x,y,z]&lt;-rpois(1,lambda[x,y,z])
+    }
+  }
+}
+
+#Observed counts in each day
+for(x in 1:h_species){
+  for (y in 1:plant_species){
+    for (z in 1:cameras){
+        for (d in 1:days){
+      #true detection rate of that observed count
+      obs[x,y,z,d]&lt;-rbinom(1,N[x,y,z],p=detection[x])
+      }
+    }
+  }
+}</code></pre>
+<div id="view-correlation-in-simulated-latent-state" class="section level2">
+<h2>View correlation in simulated latent state</h2>
+<pre class="r"><code>mdat&lt;-melt(N)
+colnames(mdat)&lt;-c(&quot;Bird&quot;,&quot;Plant&quot;,&quot;Camera&quot;,&quot;Interactions&quot;)
+
+traitmelt&lt;-melt(traitmatch)
+colnames(traitmelt)&lt;-c(&quot;Bird&quot;,&quot;Plant&quot;,&quot;traitmatch&quot;)
+
+mdat&lt;-merge(mdat,traitmelt,c(&quot;Bird&quot;,&quot;Plant&quot;))
+ggplot(mdat,aes(x=traitmatch,y=Interactions,col=as.factor(Bird))) + geom_point() + geom_smooth(aes(group=1),method=&quot;glm&quot;,method.args = list(family = &quot;poisson&quot;)) + labs(col=&quot;Bird&quot;) + xlab(&quot;Absolute value of Bill Length - Corolla Length &quot;)</code></pre>
+<p><img src="figure/unnamed-chunk-4-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div id="view-detection-rates" class="section level2">
+<h2>View Detection Rates</h2>
+<pre class="r"><code>obs.state&lt;-melt(obs)
+colnames(obs.state)&lt;-c(&quot;Bird&quot;,&quot;Plant&quot;,&quot;Camera&quot;,&quot;Day&quot;,&quot;Yobs&quot;)
+obs.state&lt;-merge(mdat,obs.state,by=c(&quot;Bird&quot;,&quot;Plant&quot;,&quot;Camera&quot;))
+ggplot(obs.state,aes(x=Interactions,y=Yobs,col=Camera)) + geom_point() + theme_bw() + geom_abline() + coord_equal()</code></pre>
+<p><img src="figure/unnamed-chunk-5-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

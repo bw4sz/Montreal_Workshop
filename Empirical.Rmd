@@ -1,0 +1,15 @@
+---
+title: "Empirical Data"
+---
+
+For each dataset we should have some general description
+
+* Place
+* Time
+* Collected By
+* Data Accessibility
+
+# Ecuadorian Hummingbirds
+
+* 19 bird species
+* 41 plant species

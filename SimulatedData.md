@@ -1,30 +1,11 @@
----
-title: "Trait-matching simulation" 
-author: "Ben Weinstein"
-output:
-  html_document:
-    toc: true
-    number_sectionsf: true
-    theme: spacelab
----
+# Trait-matching simulation
+Ben Weinstein  
 
-```{r,warning=FALSE,message=FALSE,echo=FALSE,cache=FALSE}
-library(reshape2)
-library(foreach)
-library(chron)
-library(ggplot2)
-library(knitr)
-library(R2jags)
-library(dplyr)
-library(stringr)
-library(gridExtra)
-library(boot)
-opts_chunk$set(message=FALSE,warning=FALSE,fig.width=5,fig.height=4,echo=TRUE,cache=F,fig.align='center',fig.path="figure/")
-```
+
 
 #Simulation   
 
-## Process Model
+## Parameters
 
 * 10 hummingbird species
 * 10 resource species
@@ -32,17 +13,12 @@ opts_chunk$set(message=FALSE,warning=FALSE,fig.width=5,fig.height=4,echo=TRUE,ca
 * Range of corolla sizes (in mm) ~ Pois(15)/10
 * Mean frequency ($\lambda$) for each hummingbird is drawn from U(0,10)  
 * Trait matching (minimizing Bill-Corolla difference) is drawn from a hierarcichal distribution
-
-$$ log(\lambda)<-\alpha_i + \beta_i * |Trait_i - Trait_j$$
-$$ \alpha=N(3,0.2) $$
+$$log(\lambda)<-\alpha_i + \beta_i *traitmatch$$
+$$\alpha=N(3,0.2)$$
 $$\beta1 = N(-1,0.2)$$
 
-## Observation Model
-
-Imperfect detection 
-
-$$ \omega_i = U(0.1,0.9) $$ 
-
+* Imperfect detection 
+* $$ p_i = U(0.1,0.9) $$ 
 * 10 camera
 * 3 days per camera
 
@@ -50,7 +26,8 @@ $$ \omega_i = U(0.1,0.9) $$
 
 #Simulation Parameters
 
-```{r,fig.height=5,fig.width=8,eval=T}
+
+```r
 #Number of consumer species
 h_species=10
 plant_species=10
@@ -90,7 +67,8 @@ alpha<-rnorm(h_species,alpha_mu,alpha_sigma)
 
 #Compute true interaction matrices
 
-```{r,eval=T}
+
+```r
 #for each species loop through and create a replicate dataframe
 obs<-array(dim=c(h_species,plant_species,cameras,days))
 lambda<-array(dim=c(h_species,plant_species,cameras))
@@ -131,7 +109,8 @@ for(x in 1:h_species){
 
 ##View correlation in simulated latent state
 
-```{r}
+
+```r
 mdat<-melt(N)
 colnames(mdat)<-c("Bird","Plant","Camera","Interactions")
 
@@ -142,12 +121,17 @@ mdat<-merge(mdat,traitmelt,c("Bird","Plant"))
 ggplot(mdat,aes(x=traitmatch,y=Interactions,col=as.factor(Bird))) + geom_point() + geom_smooth(aes(group=1),method="glm",method.args = list(family = "poisson")) + labs(col="Bird") + xlab("Absolute value of Bill Length - Corolla Length ")
 ```
 
+<img src="figure/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
+
 ##View Detection Rates
 
-```{r}
+
+```r
 obs.state<-melt(obs)
 colnames(obs.state)<-c("Bird","Plant","Camera","Day","Yobs")
 obs.state<-merge(mdat,obs.state,by=c("Bird","Plant","Camera"))
 ggplot(obs.state,aes(x=Interactions,y=Yobs,col=Camera)) + geom_point() + theme_bw() + geom_abline() + coord_equal()
 ```
+
+<img src="figure/unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
 

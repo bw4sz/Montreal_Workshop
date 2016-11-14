@@ -1,0 +1,98 @@
+---
+title: "Methods"
+---
+
+# Methods
+
+* [Harris](refs/Harris2015.pdf)
+     -
+    
+* [Ives2003.pdf](refs/Ives2003.pdf)
+     -
+     
+* [Ives2006](refs/Ives2006.pdf)
+     -
+
+* [Maglianesis2014](refs/Maglianesis2014.pdf)
+     -
+
+* [Olito2014](refs/Olito2014.pdf)
+     -
+
+* [Poelen2014](refs/Poelen2014.pdf)
+     -
+
+* [Poisot2014_OIKOS](refs/Poisot2014_OIKOS.pdf)
+     -
+
+* [Poisot2015b](refs/Poisot2015b.pdf)
+     -
+
+* [Rohr2010](refs/Rohr2010.pdf)
+     -
+
+* [Rohr2016](refs/Rohr2016.pdf)
+     -
+
+* [Roslin2016](refs/Roslin2016.pdf)
+     -
+
+* [Spitz2014](refs/Spitz2014.pdf)
+     -
+
+* [Stein2015](refs/Stein2015.pdf)
+     -
+
+* [Stephens2011](refs/Stephens2011.PDF)
+     -
+     
+* [TamaddoniNezhad2016](refs/Tamaddoni-Nezhad2016.pdf)
+     -
+    
+* [TamaddoniNezhad2016](refs/Tamaddoni-Nezhad2015.pdf)
+     -
+     
+* [Traugott2016](refs/Traugott2016.pdf)
+     -
+
+* [Vacher2016](refs/Vacher2016.pdf)
+     -
+
+* [Williams2010](refs/Williams2010.pdf)
+     -
+
+* [Aderhold2012](refs/Aderhold2012.pdf)
+     -
+
+* [Barabas2015](refs/Barabas2015.pdf)
+     -
+
+* [Bartomeus2016](refs/Bartomeus2016.pdf)
+     -
+
+* [Beauchesne2016](refs/Beauchesne2016.pdf)
+     -
+
+* [Berry2014](refs/Berry2014.pdf)
+     -
+
+* [Bohan2011](refs/Bohan2011.pdf)
+     -
+
+* [Canard2014](refs/Canard2014.pdf)
+     -
+
+* [Cazelles2015](refs/Cazelles2015.pdf)
+     -
+
+* [Crea2015](refs/Crea2015.pdf)
+     -
+
+* [Dehling2014](refs/Dehling2014.pdf)
+     -
+
+* [Eklof2013](refs/Eklof2013.pdf)
+     -
+
+* [Gravel2013](refs/Gravel2013.pdf)
+     -
