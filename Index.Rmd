@@ -1,0 +1,153 @@
+---
+title: "Inferring ecological interactions"
+---
+
+#Aims
+
+To compare methods for inferring species interactions
+
+#Where
+
+Sherbrooke, Quebec
+
+#When
+
+Nov 30th - Dec 2nd, 2016
+
+#Who
+
+Dominique Grazel, Tim Poisot, Kevin Cazelles, Ben Weinstein, Ignacio Bartomeus 
+
+# Methods
+
+* [Harris](refs/Harris2015.pdf)
+     -
+    
+* [refs/Ives2003.pdf](Ives2003)
+     -
+     
+* [Ives2006](refs/Ives2006.pdf)
+     -
+
+* [Maglianesis2014](refs/Maglianesis2014.pdf)
+     -
+
+* [Olito2014](refs/Olito2014.pdf)
+     -
+
+* [Poelen2014](refs/Poelen2014.pdf)
+     -
+
+* [Poisot2014_OIKOS](refs/Poisot2014_OIKOS.pdf)
+     -
+
+* [Poisot2015b](refs/Poisot2015b.pdf)
+     -
+
+* [Rohr2010](refs/Rohr2010.pdf)
+     -
+
+* [Rohr2016](refs/Rohr2016.pdf)
+     -
+
+* [Roslin2016](refs/Roslin2016.pdf)
+     -
+
+* [Spitz2014](refs/Spitz2014.pdf)
+     -
+
+* [Stein2015](refs/Stein2015.pdf)
+     -
+
+* [Stephens2011](refs/Stephens2011.PDF)
+     -
+     
+* [TamaddoniNezhad2016](refs/Tamaddoni-Nezhad2016.pdf)
+    -
+    
+* [TamaddoniNezhad2016](refs/Tamaddoni-Nezhad2015.pdf)
+    -
+    
+* [Traugott2016](refs/Traugott2016.pdf)
+     -
+
+* [Vacher2016](refs/Vacher2016.pdf)
+     -
+
+* [Williams2010](refs/Williams2010.pdf)
+     -
+
+* [Aderhold2012](refs/Aderhold2012.pdf)
+     -
+
+* [Barabas2015](refs/Barabas2015.pdf)
+     -
+
+* [Bartomeus2016](refs/Bartomeus2016.pdf)
+     -
+
+* [Beauchesne2016](refs/Beauchesne2016.pdf)
+     -
+
+* [Berry2014](refs/Berry2014.pdf)
+     -
+
+* [Bohan2011](refs/Bohan2011.pdf)
+     -
+
+* [Canard2014](refs/Canard2014.pdf)
+     -
+
+* [Cazelles2015](refs/Cazelles2015.pdf)
+     -
+
+* [Crea2015](refs/Crea2015.pdf)
+     -
+
+* [Dehling2014](refs/Dehling2014.pdf)
+     -
+
+* [Eklof2013](refs/Eklof2013.pdf)
+     -
+
+* [Gravel2013](refs/Gravel2013.pdf)
+     -
+
+
+# Methods
+
+Aderhold 2012    
+Maglianesis 2014
+Barabas 2015
+Olito 2014
+Bartomeus 2016
+Poelen 2014
+Beauchesne 2016
+Poisot 2014_OIKOS
+Berry 2014
+Poisot 2015b
+Bohan 2011
+Rohr2010
+Canard 2014
+Rohr2016
+Cazelles 2015
+Roslin 2016
+Crea 2015
+Spitz 2014
+Dehling 2014
+Stein 2015
+Eklof 2013
+Stephens 2011
+Gravel 2013
+Tamaddoni-Nezhad 2016
+Gray 2016        Temmadoni-Nezhad2015.pdf
+Harris 2015      Traugott2016.pdf
+Ives 2003        Vacher2016.pdf
+Ives 2006        Williams2010.pdf
+
+#Data
+
+# Access
+
+This website and associated analysis can be cloned at X.
+
