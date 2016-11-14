@@ -102,7 +102,7 @@ theme: "Cerulean"
 # Comparison chart
 
 ```{r,results='asis',echo=F,fig.align='center'}
-library(xtable)
+library(knitr)
 tab<-read.csv("Analysis/Comparison.csv")
-print(xtable(tab,auto=T),type="html",width = 12)
+kable(tab)
 ```
