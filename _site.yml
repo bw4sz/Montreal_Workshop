@@ -3,8 +3,6 @@ output_dir: "."
 navbar:
   title: "Network Workshop"
   left:
-    - text: "Home"
-      href: index.html
     - text: "Simulations"
       href: Simulations.html
     - text: "Empirical Data"
