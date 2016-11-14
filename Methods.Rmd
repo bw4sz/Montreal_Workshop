@@ -104,5 +104,5 @@ theme: "Cerulean"
 ```{r,results='asis',echo=F,fig.align='center'}
 library(xtable)
 tab<-read.csv("Analysis/Comparison.csv")
-print(xtable(tab,auto=T),type="html",size = "large")
+print(xtable(tab,auto=T),type="html",width = 12)
 ```

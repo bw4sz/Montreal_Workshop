@@ -8,4 +8,4 @@ title: "Simulations"
 
 * [Simulated hummingbird-plant interactions in which the frequency of visits is related to the trait-matching among species.](SimulatedData.html) 
 
-* The detectability of interactions depend on hummingbird identity.
+* The detectability of interactions depend on hummingbird species identity.
