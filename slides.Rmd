@@ -1,0 +1,8 @@
+---
+title: "Slides"
+---
+
+
+### [Nacho2's slides](./slides/Bartomeus_slides.Rpres)
+
+### [Kevin'slides](./slides/Cazelles_slides.html)

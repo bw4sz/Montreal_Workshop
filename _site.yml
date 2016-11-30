@@ -9,3 +9,5 @@ navbar:
       href: Empirical.html
     - text: "Methods"
       href: Methods.html
+    - text: "Slides"
+      href: Slides.html
