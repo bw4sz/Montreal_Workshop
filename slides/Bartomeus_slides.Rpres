@@ -1,0 +1,120 @@
+Infering interactions
+========================================================
+autosize: true
+
+
+Bartomeus et al. 2016 Fun Ecol
+========================================================
+
+- Based on Gravel et al 2013 MEE
+- The models integrate both neutral and trait-matching constraints  
+- Uses only information about known interactions  
+- Can easily accommodate qualitative or quantitative data   
+- Can incorporate trait variation within species  
+
+==================================
+
+- The parameters are estimated by maximum likelihood  
+
+![](Bartomeus_slides-figure/eq4.png) 
+
+==================================
+```{r, eval = FALSE}
+	# Optimum and range
+	o = a0 + a1*Tlevel2 
+	r = b0 + b1*Tlevel2		
+	# Compute the conditional
+	pLM = exp(-(o-Tlevel1)^2/2/r^2)
+	# Compute the marginal
+	pM = dnorm(x=Tlevel1, mean = mean_Tlevel1, sd = sd_Tlevel1)
+```
+
+==================================
+
+```{r, eval = FALSE}
+	#  Integrate the denominator
+	pL = r/(r^2+sd_Tlevel1^2)^0.5*exp(-(o-mean_Tlevel1)^2/2/(r^2+sd_Tlevel1^2))	
+	# Compute the posterior probability
+	pML = pLM*pM/pL
+	pML[pML<=0] = .Machine$double.xmin # Control to avoid computing issues
+	return(-sum(log(pML)))		
+```
+
+
+Use
+=======
+
+```{r, eval=FALSE}
+require(traitmatch)
+fish <- read.table("data/Barnes2008.txt", header = TRUE)
+mt <- 60 
+```
+
+========
+```{r, eval=FALSE}
+pars_pre <- fit_it(integrated_model, 
+                   Tlevel1 = MPrey,  
+                   Tlevel2 = MPred,
+                   mean_Tlevel1 = mean(MPrey),
+                   sd_Tlevel1 = sd(MPrey),
+                   pars = c(a0 = 0, a1 = 0, b0 = 0, b1 = 0),
+                   par_lo = c(a0 = -10, a1 = 0, b0 = -10, b1 = -10),
+                   par_hi = c(a0 = 10, a1 = 10, b0 = 10, b1 = 10),
+                   max.time = mt)
+```
+
+=======
+```{r, eval=FALSE}
+plot_pred(pars = pars_pre, Tlevel1 = MPrey, 
+          Tlevel2 = MPred, xlab = "log (Predator body size)", 
+          ylab = "log (prey body size)", pch = ".")
+#calculate likelyhood
+lh_model <- -integrated_model(pars_pre, MPrey, MPred, mean(MPrey),sd(MPrey))
+```
+
+
+Dehling et al 2014 GCB
+======================
+
+- Based on permutation tests (4rth corner method)
+- Do not separate neutral proceses from trait-matching proceses  
+- Asumes perfect detection (absences weight equal as presences)  
+- Can accommodate qualitative or quantitative data   
+- Can't incorporate trait variation within species  
+
+======================
+
+4rth corner        | .
+------------------ | -----------------
+animal x  plant    | plant x traits
+animal x  traits   | **traits x traits**
+
+=====================
+
+```{r, eval = FALSE}
+library(ade4)
+fourthcorner(tabR, tabL, tabQ, modeltype = 6, nrepet = 999)
+```
+
+* Issues with multiple testing
+* Prediction not trivial.
+
+=====================
+
+- model 6: combination of the outputs of models 2 and 4. Dray and Legendre (2008) and ter Braak et al. (2012) showed that all models (except model 6) have inflated type I error.
+
+- model 2: Permute values of sites (i.e., permute entire rows of table L)
+
+- model 4: Permute values of species (i.e., permute entire columns of table L)
+
+Alternative approach
+=====================
+
+```{r, eval = FALSE}
+library(mvabund)
+ft=traitglm(antTraits$abund,antTraits$env,antTraits$traits)
+ft$fourth 
+anova(ftSmall)
+#more in http://rpubs.com/dwarton/68823
+```
+
