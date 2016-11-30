@@ -6,7 +6,7 @@ theme: "Cerulean"
 # Description of compared methods
 
 * [Harris](refs/Harris2015.pdf)
-     - 
+     -
 
 * [Ives2003.pdf](refs/Ives2003.pdf)
      -
@@ -103,6 +103,11 @@ theme: "Cerulean"
 
 ```{r,results='asis',echo=F,fig.align='center'}
 library(knitr)
-tab<-read.csv("Analysis/Comparison.csv")
+library(magrittr)
+# tab<-read.csv("Analysis/Comparison.csv")
+tab <- read.csv("Analysis/Classif.csv", stringsAsFactors=F)[,-(9:11)]
+tab[,1] %<>% strsplit(split=",| |\\.") %>%
+  lapply(function(x) paste0(x[1],x[length(x)])) %>%
+  unlist
 kable(tab)
 ```
