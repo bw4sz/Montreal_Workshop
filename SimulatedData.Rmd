@@ -10,45 +10,30 @@ output:
 
 ```{r,warning=FALSE,message=FALSE,echo=FALSE,cache=FALSE}
 library(reshape2)
-library(foreach)
-library(chron)
+library(pez)
 library(ggplot2)
 library(knitr)
-library(R2jags)
 library(dplyr)
 library(stringr)
-library(gridExtra)
-library(boot)
 opts_chunk$set(message=FALSE,warning=FALSE,fig.width=5,fig.height=4,echo=TRUE,cache=F,fig.align='center',fig.path="figure/")
 ```
 
 #Simulation   
 
+What are the data we want to simulate?
+
+size_x = Number of level 1 (eg. Plants)
+size_y = Number of level 2 (eg. Pollinators)
+traits_x = Trait frame for level 1
+traits_y = Trait frame for level 2
+phylogeny_x = phylogeny for level 1
+phylogeny_y = phylogeny for level 2
+Obs = a x by y matrix of visits
+
+```{r}
+#sim_assemblages<-function(x=,y=,traits=
 ## Process Model
-
-* 10 hummingbird species
-* 10 resource species
-* Range of hummingbird bill sizes (in mm) ~ Pois(10)/10
-* Range of corolla sizes (in mm) ~ Pois(15)/10
-* Mean frequency ($\lambda$) for each hummingbird is drawn from U(0,10)  
-* Trait matching (minimizing Bill-Corolla difference) is drawn from a hierarcichal distribution
-
-$$ log(\lambda)<-\alpha_i + \beta_i * |Trait_i - Trait_j$$
-$$ \alpha=N(3,0.2) $$
-$$\beta1 = N(-1,0.2)$$
-
-## Observation Model
-
-Imperfect detection 
-
-$$ \omega_i = U(0.1,0.9) $$ 
-
-* 10 camera
-* 3 days per camera
-
-**View simulated strength and form of trait matching **
-
-#Simulation Parameters
+```
 
 ```{r,fig.height=5,fig.width=8,eval=T}
 #Number of consumer species
@@ -112,18 +97,6 @@ for(x in 1:h_species){
     for (z in 1:cameras){
       # true latent count
       N[x,y,z]<-rpois(1,lambda[x,y,z])
-    }
-  }
-}
-
-#Observed counts in each day
-for(x in 1:h_species){
-  for (y in 1:plant_species){
-    for (z in 1:cameras){
-        for (d in 1:days){
-      #true detection rate of that observed count
-      obs[x,y,z,d]<-rbinom(1,N[x,y,z],p=detection[x])
-      }
     }
   }
 }
