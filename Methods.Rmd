@@ -6,11 +6,11 @@ theme: "Cerulean"
 # Description of compared methods
 
 * [Harris](refs/Harris2015.pdf)
-     -
-    
+     - 
+
 * [Ives2003.pdf](refs/Ives2003.pdf)
      -
-     
+
 * [Ives2006](refs/Ives2006.pdf)
      -
 
@@ -46,13 +46,13 @@ theme: "Cerulean"
 
 * [Stephens2011](refs/Stephens2011.PDF)
      -
-     
+
 * [TamaddoniNezhad2016](refs/Tamaddoni-Nezhad2016.pdf)
      -
-    
+
 * [TamaddoniNezhad2016](refs/Tamaddoni-Nezhad2015.pdf)
      -
-     
+
 * [Traugott2016](refs/Traugott2016.pdf)
      -
 
@@ -97,7 +97,7 @@ theme: "Cerulean"
 
 * [Gravel2013](refs/Gravel2013.pdf)
      -
-     
+
 
 # Comparison chart
 

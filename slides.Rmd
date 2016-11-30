@@ -2,6 +2,7 @@
 title: "Slides"
 ---
 
+<br/>
 
 ### [Nacho2's slides](./slides/Bartomeus_slides.Rpres)
 
