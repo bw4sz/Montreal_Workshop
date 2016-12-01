@@ -1,0 +1,57 @@
+---
+title: "Data description"
+author: "I. Bartomeus"
+date: "12/1/2016"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+__Note:__ This data needs more curation and can be used to play with methods, but needs taxonomic unification, better traits, etc... before looking at results.
+
+Data collected in 2015 across 16 sites. Each site was visited 7 times. Each time we recorded three data types:
+
+- All interactions in 100 m transects
+- Focal interactions to selected plants
+- Oportunistic new interactions not detected by the last two methods (`out`)
+
+there are three datasets so far:
+
+__Interactions:__ This include `transect` and `visitation` data. Data can be used pooled (1445 interactions (5643 visits) general question abouts trait matching) or splited by site (`Site_ID`) and `Round`. Pollinator traits in this table are measured per individual.
+```{r}
+int <- read.csv("interactions.csv", h = T)
+head(int)
+nrow(int)
+sum(int$Frequency, na.rm = TRUE)
+```
+Challenges:  
+- long tail of singletones  
+- not all species are taxonomically resolved. What to do with specimens we ony know Genus?  
+- Low sample size when you split per site and round  
+
+
+__pollinator traits:__
+```{r}
+pol_tr <- read.csv("traits_pollinators.csv", h = T)
+head(pol_tr)
+```
+Challenges:  
+- We are not sure which trait are driving interactions (quite generalized system)  
+- Need to inegrate traits across different orders  
+
+__plant traits:__ Not ready yet
+
+
+__independent plant flower abundance__: Ca be combined by Site_ID and Round
+```{r}
+flw <- read.csv("flowers.csv", h = T)
+head(flw)
+```
+
+__Phylogenies__ work in progress.  
+- Plants: Phylomatic  
+- Pollinators: Available at genus level only  
+
+
