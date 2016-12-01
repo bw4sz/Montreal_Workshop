@@ -2,10 +2,11 @@
 title: "Simulations"
 ---
 
-# Datasets
+# Trait-matching
 
-## Hummingbirds
+## Poisson Regression
 
-* [Simulated hummingbird-plant interactions in which the frequency of visits is related to the trait-matching among species.](SimulatedData.html) 
+$$ Y_{i,j} \sim Poisson(\lambda_ij)$$
+$$ log(\lambda_{i,j} = \alpha_i + \beta_i * |T_i -T_j| )
 
-* The detectability of interactions depend on hummingbird species identity.
+* [Hierarchical Bayesian Approach.](SimulatedData.html) 
