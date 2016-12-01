@@ -20,7 +20,9 @@ niche.bin = function(L, data, thresh) {
 # newdata: a dataframe with a data frame with Ti as traits of the layer i and Tj traits of the layer j
 # each row correspond to a pair of trait for which we want to know if there is an 
 # interaction happenning
-predict.niche.bin = function(newdata, models, net_type = "unipartite") {
+predict.niche.bin = function(models, newdata) {
+	# Check if the newdata has the right format
+
 	with(newdata, {
 		npairs = length(Ti)
 
@@ -32,12 +34,8 @@ predict.niche.bin = function(newdata, models, net_type = "unipartite") {
 
 		# Compute interactions among pairs of species
 		L = numeric(npairs)
-		k = 1
-		for(i in 1:npairs)
-			for(j in 1:npairs) {
-				if(Tj[j] > lo[i] & newTj[j] < up[i]) L[k] = 1
-				k = k+1
-			}
+		L[Tj > lo & Tj < up] = 1
+
 	})
 	return(list(L = L))
 }
