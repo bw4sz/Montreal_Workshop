@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <title>  Co-occurrence and network </title>
+  <meta charset="utf-8">
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
+  <!-- Add font awesome -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+  <style>
+  @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+  @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+  @import url('https://fonts.googleapis.com/css?family=Andada|Squada+One|Jaldi');
+
+
+  body {
+    font-family: 'Jaldi', sans-serif;
+    font-weight: lighter;
+  }
+
+  h1 {
+    font-family: 'Squada One', cursive;
+  }
+
+  h2 {
+      padding-left: .8em;
+  }
+  h3 {
+      padding-left: 1.6em;
+  }
+
+
+  h1, h2, h3 {
+    font-weight: medium;
+  }
+
+
+
+
+  .remark-slide-content {
+    font-size: 1.8em;
+    padding-top: .5em;
+    padding-bottom: .5em;
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+  .remark-slide-content h1 {
+    font-size: 2.2em;
+  }
+  .remark-slide-content h2 { font-size: 1.5em; }
+  .remark-slide-content h3 { font-size: 1.3em; }
+  .remark-slide-content blockquote {
+    font-size: 1.2em;
+    padding-left: 1em;
+  }
+
+  .footnote {
+    bottom: 1em;
+  }
+
+  .large{
+    font-size: 1.4em;
+  }
+
+  .alert{
+    color: #ee2650;
+  }
+
+  a > code {
+    color: #50b5d5;
+  }
+
+  pre {
+    padding: 1px;
+  }
+
+  .remark-code, .remark-inline-code {
+    font-family: 'Ubuntu Mono';
+  }
+
+  .remark-inline-code {
+    color: rgb(21, 131, 204);
+    background: #000000;
+  }
+
+  .vertical-align {
+    display: flex;
+    align-items: center;
+  }
+
+  .remark-slide-number{
+    opacity: 0;
+    /*opacity: 0.25;*/
+  }
+
+  .style1 {
+    background: #000000;
+    color: #f3f3f3;
+    text-shadow: 0 0 2px #333;
+  }
+  .style1 h1, .style1 h2 {
+    color: #f3f3f3;
+  }
+
+  .style1 a {
+    color: rgb(21, 131, 204);
+  }
+
+
+  .style2 {
+    background: rgb(21, 131, 204);
+    color: #000000;
+  }
+  .style2 h1, .style2 h2 {
+    color: #f3f3f3;
+    line-height: 1em;
+    font-size: 2.2em;
+  }
+
+  .style2 h3 {
+    font-size: 1.6em;
+  }
+
+  .style2 a {
+    color: #232323;
+  }
+
+  </style>
+
+</head>
+
+<!-- cd /Users/kcazelles/Github/decktape -->
+<!-- ./bin/phantomjs decktape.js -s 1600x900 file:///Users/kcazelles/Dropbox/Seminaire/seminaire.html#1 /Users/kcazelles/Dropbox/Seminaire/Seminaire.pdf -->
+
+
+
+<body>
+
+  <textarea id="source">
+
+    name: title
+    layout: true
+    class: center, middle, style1
+    ---
+    # CO-OCCURRENCE AND ECOLOGICAL NETWORKS
+    <hr />
+    <br />
+    ## Workshop
+    .left[### December 1st, Sherbrooke]
+    <!-- <br /><br />
+    ![:scale 60%](./img/bg.png)
+    <br /><br /> -->
+
+
+    ##[- Kévin Cazelles -](http://kevincazelles.fr)
+
+    ---
+    name: style1
+    layout: true
+    class: style1
+    ---
+
+    #What do I want?
+    <hr/><br/>
+
+    1. Mixing abiotic / biotic
+
+    2. Adding realistic constraints
+
+    3. Interactions must be probabilities
+
+    4. Generating realistic networks
+
+    5. Testing them
+
+    ---
+    # 2 underlying questions
+    ----
+    <br/>
+
+    --
+
+    ## 1. Can we infer interactions from co-occurrence?
+
+    <br/><br/><br/><br/>
+
+    --
+
+    ## 2. How biotic interactions affect co-occurrence?
+
+
+
+    ---
+    # 2 underlying questions
+    ----
+    <br/>
+    ## 1. Can we infer interactions from co-occurrence?
+
+      ###- under which assumptions?
+      ###- for which kind of systems?
+    <br/>
+
+    ## 2. How interactions affect co-occurrence?
+
+    --
+      ###- can we quantify the impact of interactions on co-occurence?
+      ###- are there general rules?
+
+
+
+    ---
+    name: style2
+    layout: true
+    class: center middle, style2
+    ---
+    count: false
+    # A theory for species co-occurrence in interaction networks
+    <hr />
+    ### [Cazelles K., *et al.* (2016) *Journal of Theoretical Ecology*.](http://dx.doi.org/10.1007/s12080-015-0281-9)
+
+
+    ---
+    name: style1
+    layout: true
+    class: style1
+
+    ---
+    # In a nutshell
+    <hr/><br/>
+
+
+    ## Network properties <i class="fa fa-arrow-right" aria-hidden="true"></i> co-occurrence signal
+    --
+    <br/><br/>
+
+    ## 3 principles:
+
+    --
+
+      ### 1. intercations and indirect interactions impact co-occurrence not symetrically,
+    --
+
+      ### 2. the longer the shorthest path between two species the weaker the signal,
+    --
+
+      ### 3. the higher the degree of a species the weaker the signal.
+
+
+    ---
+    # Methods
+    <hr/><br/>
+
+
+    ## 1. `\(P(X_i,X_j)\)` vs  `\(P(X_i)P(X_j)\)`
+    --
+
+    ## 2. Conditional probabiliies <i class="fa fa-arrow-right" aria-hidden="true"></i>  expression for 3 species networks
+    --
+
+    ## 3. Simulated network + TIB (TTIB)
+
+
+    ---
+    # Co-occurrence and shortest path
+    <hr/>
+    .center[![:scale 100%](./fig/fig15.png)]
+
+
+
+    ---
+    # Co-occurrence and shortest path
+    <hr/><br/>
+    .center[![:scale 100%](./fig/fig16.png)]
+
+
+    ---
+    # Co-occurrence and degree
+    <hr/><br/>
+    .center[![:scale 65%](./fig/fig2.png)]
+
+
+
+    ---
+    # Side notes
+    <hr/><br/>
+
+    ## 1. Abiotic gradients  `\(P(X_{i,E})P(X_{j,E})\)`,
+    --
+
+    ## 2. `\(P(X_i)P(X_j)\)` not perfect,
+    --
+
+    ## 3. We tested it with empirical data sets.
+
+
+
+
+
+
+
+
+
+    ---
+    name: style2
+    layout: true
+    class: center, middle, style2
+    ---
+    # Inferring species interactions from co-occurrence data with Markov networks
+    <hr />
+    ### David J, Harris (2016) *Ecology*
+
+
+    ---
+    name: style1
+    layout: true
+    class: style1
+
+    ---
+    # In a nutshell
+    <hr/><br/>
+
+    ## 1. Infering species co-occurrence using Markov networks.
+    --
+
+    <br/>
+
+    ## 2. Giving the 'true' sign of interactions.
+
+
+    ---
+    # Methods
+    ----
+    <br/>
+
+    ## `\(p\)` sites / `\(n\)`species
+
+    --
+
+    ## at one site, `\(\overrightarrow{y}\)` 0s and 1s:
+    --
+    <br/><br/>
+
+    ## `\(P(\overrightarrow{y}; \alpha, \beta) \propto \exp \left( \sum \alpha y_i + \sum \beta_{i,j}y_iy_j \right)\)`
+
+    --
+
+    ## Maximum likelihood
+
+
+    ---
+    # Methods
+    ----
+    <br/>
+
+    ## `\(P(\overrightarrow{y}; \alpha), \beta) =  \exp \left( \sum \alpha y_i + \sum \beta_{i,j}y_iy_j \right)\)`
+
+    ## `\(\alpha\)` linked two abiotic variables
+
+    ## `\(\beta\)` gives the true sign of interaction
+
+    ## `\( \frac{1}{2}n(n+1) \)` parameters
+
+
+    ---
+    # Limits
+    <hr/><br/><br/>
+
+    .center[![:scale 100%](./fig/Harris.png)]
+
+    ##3. on real data sets?
+
+
+
+    ---
+    # Implementation
+    <hr/><br/>
+
+    ## Supplementary information (4 Rmarkdown docs)
+
+    ## <i class="fa fa-code" aria-hidden="true"></i> [ Zencode](https://zenodo.org/record/17808#.WDyurimKRQI)
+
+    ## <i class="fa fa-github" aria-hidden="true"></i> [ davharris/rosalia](https://github.com/davharris/rosalia)
+
+    <br/>
+
+    ```r
+    devtools::install_github("davharris/rosalia")
+    ```
+
+
+    ---
+    # Side notes
+    <hr/><br/>
+
+    ## 1. n ordered 0s and 1s => number `\(\{0,2^n\}\)`
+
+    ## 2. multinomial Logit Models
+
+    ## 3. Limited to order 1
+
+
+
+  </textarea>
+  <!-- <script src="./remark-latest.min.js" type="text/javascript"></script> -->
+  <script src="http://gnab.github.io/remark/downloads/remark-latest.min.js" type="text/javascript"></script>
+  <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+  <script type="text/javascript">
+
+    // Macros
+    remark.macros.scale = function (percentage) {
+      var url = this;
+      return '<img src="' + url + '" style="width: ' + percentage + '" />';
+    };
+    var slideshow = remark.create({
+      ratio: "4:3",
+      highlightStyle: 'sunburst' });
+
+    // Setup MathJax
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    });
+    MathJax.Hub.Queue(function() {
+      $(MathJax.Hub.getAllJax()).map(function(index, elem) {
+        return(elem.SourceElement());
+      }).parent().addClass('has-jax');
+    });
+
+    MathJax.Hub.Configured();
+
+  </script>
+</body>
+</html>
