@@ -9,3 +9,8 @@ navbar:
       href: Empirical.html
     - text: "Methods"
       href: Methods.html
+    - text: "Slides"
+      href: Slides.html
+  right:
+    - icon: 'fa-github fa-2x'
+      href: https://github.com/bw4sz

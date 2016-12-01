@@ -6,20 +6,36 @@ title: "Inferring ecological interactions"
 
 To compare methods for inferring species interactions
 
+
 #Where & When
 
 Sherbrooke, Quebec
 
 Nov 30th - Dec 2nd, 2016
 
+
 #Workshop Participants
 
-[Dominique Gravel](), [Tim Poisot](), [Kevin Cazelles,]() [Ben Weinstein](benweinstein.weebly.com), [Ignacio Bartomeus](),Ignacio Morales Castilla, David Beauchesne, Mickaël Hedde, Mathilde Besson, Steve Vissault, Guillaume Blanchet
+[Dominique Gravel](), [Tim Poisot](), [Kevin Cazelles,](http://kevincazelles.fr/) [Ben Weinstein](benweinstein.weebly.com), [Ignacio Bartomeus](),Ignacio Morales Castilla, David Beauchesne, Mickaël Hedde, Mathilde Besson, [Steve Vissault](http://steveviss.github.io/), Guillaume Blanchet
+
 
 # Access
+
+### Website
 
 This website and associated analysis can be cloned
 
 ```{}
 git clone https://github.com/bw4sz/Montreal_Workshop.git
 ```
+
+
+
+### Google doc:
+
+[Here](https://docs.google.com/document/d/1x1YHzF-vZXbrQUIF97TNqyIJ6bXyaEiFjMsi18nJDag)
+
+
+### Spreadsheet :
+
+[Here](https://docs.google.com/spreadsheets/d/1Nps6BsDrkWMbvLa_lsgc5MT8RBtTeFX6hWlUjsRlkO0/edit?ts=583f2190#gid=1879087403)
