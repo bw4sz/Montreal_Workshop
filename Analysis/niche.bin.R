@@ -1,7 +1,5 @@
-
 # This function use a pair of traits 
 # By convention, i is the target layer and j is the opposed layer
-
 # Data: a data frame with Ti as traits of the layer i and Tj traits of the layer j
 # each row correspond to a pair of species with known interaction
 niche.bin = function(L, data, thresh) {
@@ -39,7 +37,3 @@ predict.niche.bin = function(models, newdata) {
 	})
 	return(list(L = L))
 }
-
-
-
-
