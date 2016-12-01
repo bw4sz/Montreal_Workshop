@@ -10,117 +10,225 @@ output:
 
 ```{r,warning=FALSE,message=FALSE,echo=FALSE,cache=FALSE}
 library(reshape2)
-library(pez)
+library(bipartite)
 library(ggplot2)
 library(knitr)
 library(dplyr)
 library(stringr)
-opts_chunk$set(message=FALSE,warning=FALSE,fig.width=5,fig.height=4,echo=TRUE,cache=F,fig.align='center',fig.path="figure/")
+library(R2jags)
+opts_chunk$set(message=FALSE,warning=FALSE,fig.width=5,fig.height=5,echo=TRUE,cache=F,fig.align='center',fig.path="figure/")
 ```
 
 #Simulation   
 
 What are the data we want to simulate?
 
-size_x = Number of level 1 (eg. Plants)
-size_y = Number of level 2 (eg. Pollinators)
+size_x = Number of level 1 
+size_y = Number of level 2
 traits_x = Trait frame for level 1
 traits_y = Trait frame for level 2
-phylogeny_x = phylogeny for level 1
-phylogeny_y = phylogeny for level 2
-Obs = a x by y matrix of visits
+Obs = x by y matrix of visits
 
 ```{r}
-#sim_assemblages<-function(x=,y=,traits=
-## Process Model
-```
-
-```{r,fig.height=5,fig.width=8,eval=T}
-#Number of consumer species
-h_species=10
-plant_species=10
-cameras<-5
-days<-3
-
-#Bill sizes
-Bill<-rpois(h_species,10)
-
-#Corolla sizes
-Corolla<-rpois(plant_species,15)
-
-#Subtract both and take absolute value, convert cm
-traitmatch<-abs(sapply(Corolla,function(x) x - Bill)/10)
+simA<-function(size_x,size_y,traits_x,traits_y,beta1_sigma= 0.4,alpha_sigma= 0){
   
-#regression slopes
-#traits
-beta1_mu<- -1
+  #Subtract both and take absolute value, convert cm
+  traitmatch<-abs(sapply(traits_y,function(x) x - traits_x))
 
-#abundance
-
-#species variance in slopes
-beta1_sigma<- 0.2
-
-#Species alpha_mu 
-alpha_mu<- 3
-alpha_sigma<- 0.2
-
-#Poisson overdipersion
-tauE<-10
-
-#species level
-detection= inv.logit(rnorm(h_species,0,1.67))
-beta1<-rnorm(h_species,beta1_mu,beta1_sigma)
-alpha<-rnorm(h_species,alpha_mu,alpha_sigma)
-```
-
-#Compute true interaction matrices
-
-```{r,eval=T}
-#for each species loop through and create a replicate dataframe
-obs<-array(dim=c(h_species,plant_species,cameras,days))
-lambda<-array(dim=c(h_species,plant_species,cameras))
-N<-array(dim=c(h_species,plant_species,cameras))
-
-#create intensities
-for(x in 1:h_species){
-  for (y in 1:plant_species){
-    for (z in 1:cameras){
-      lambda[x,y,z]<-exp(alpha[x] + beta1[x] * traitmatch[x,y] + rnorm(1,0,1/sqrt(tauE)))
-  }
-  }
-}
-
-
-#draw latent states
-for(x in 1:h_species){
-  for (y in 1:plant_species){
-    for (z in 1:cameras){
-      # true latent count
-      N[x,y,z]<-rpois(1,lambda[x,y,z])
+  #regression slopes
+  #traits
+  beta1_mu<- -1
+  
+  #species variance in slopes
+  beta1_sigma<- 0.1
+  
+  #Species alpha_mu 
+  alpha_mu<- 3
+  alpha_sigma<- 0
+  
+  #species level
+  beta1<-rnorm(size_x,beta1_mu,beta1_sigma)
+  alpha<-rnorm(size_x,alpha_mu,alpha_sigma)
+  
+  #for each species loop through and create a replicate dataframe
+  obs<-array(dim=c(size_x,size_y))
+  N<-array(dim=c(size_x,size_y))
+  
+  #create intensities
+  for(x in 1:size_x){
+    for (y in 1:size_y){
+      
+        #intensity
+        N[x,y]<-exp(alpha[x] + beta1[x] * traitmatch[x,y])
+        
+        #draw one state
+        obs[x,y]<-rpois(1,N[x,y])
     }
   }
+  
+  
+#draw intensity
+  
+tx<-data.frame(I=1:length(traits_x),TraitI=traits_x)
+ty<-data.frame(J=1:length(traits_y),TraitJ=traits_y)
+
+#view trait matching
+dat<-melt(obs)
+colnames(dat)<-c("I","J","Interactions")
+
+dat<-merge(dat,tx)
+dat<-merge(dat,ty)
+
+#define data types, make species
+dat$I<-letters[dat$I]
+dat$J<-letters[dat$J]
+
+return(dat)
 }
 ```
 
-##View correlation in simulated latent state
-
 ```{r}
-mdat<-melt(N)
-colnames(mdat)<-c("Bird","Plant","Camera","Interactions")
+size_x = 5
+size_y = 19
 
-traitmelt<-melt(traitmatch)
-colnames(traitmelt)<-c("Bird","Plant","traitmatch")
+#Bill sizes
+traits_x<-rpois(size_x,10)
+  
+#Corolla sizes
+traits_y<-rpois(size_y,10)
 
-mdat<-merge(mdat,traitmelt,c("Bird","Plant"))
-ggplot(mdat,aes(x=traitmatch,y=Interactions,col=as.factor(Bird))) + geom_point() + geom_smooth(aes(group=1),method="glm",method.args = list(family = "poisson")) + labs(col="Bird") + xlab("Absolute value of Bill Length - Corolla Length ")
+dat<-simA(size_x=size_x,size_y=size_y,traits_x=traits_x,traits_y=traits_y)
+
+#view heatmap
+heatmap<-function(dat){
+  ggplot(data=dat,aes(x=I,y=J,fill=Interactions)) + geom_tile() +    scale_fill_continuous(low="white",high="red")
+}
+
+heatmap(dat)
+
+traitplot<-function(dat){
+    ggplot(data=dat,aes(y=Interactions,x=abs(TraitI-TraitJ))) + geom_point() + geom_smooth(aes(group=1),method="glm",method.args=list(family="poisson"))
+}
+
+traitplot(dat)
 ```
 
-##View Detection Rates
+# Poisson Regression
 
-```{r}
-obs.state<-melt(obs)
-colnames(obs.state)<-c("Bird","Plant","Camera","Day","Yobs")
-obs.state<-merge(mdat,obs.state,by=c("Bird","Plant","Camera"))
-ggplot(obs.state,aes(x=Interactions,y=Yobs,col=Camera)) + geom_point() + theme_bw() + geom_abline() + coord_equal()
+
+```{r,eval=T}
+#format traitmatch as matrix
+dat$Traitmatch<-abs(dat$TraitI-dat$TraitJ)
+Traitmatch<-acast(data=dat,I~J,value.var="Traitmatch")
+
+runs<-100000
+
+#Source model
+source("Bayesian/Poisson.R")
+
+#print model
+print.noquote(readLines("Bayesian//Poisson.R"))
+
+  #for parallel run
+  Yobs=dat$Interactions
+  Bird=as.numeric(as.factor(dat$I))
+  Plant=as.numeric(as.factor(dat$J))
+  Birds=length(unique(dat$I))
+  Traitmatch=Traitmatch
+  Plants=length(unique(dat$J))
+  Nobs<-length(Yobs)
+  
+  #Parameters to track
+  ParsStage <- c("beta1","ynew","fit","fitnew")
+  
+  #MCMC options
+  ni <- runs  # number of draws from the posterior
+  nt <- 1  #thinning rate
+  nb <- max(0,runs-500) # number to discard for burn-in
+  nc <- 2  # number of chains
+
+  modelDat<-list("Yobs","Bird","Plant","Plants","Traitmatch","Birds","Nobs")
+
+    m1<-do.call(jags.parallel,list(data=modelDat,parameters.to.save=ParsStage,model.file="Bayesian/Poisson.jags",n.thin=nt, n.iter=ni,n.burnin=nb,n.chains=nc,DIC=F))
 ```
 
+```{r}
+parsO<-melt(m1$BUGSoutput$sims.array)
+colnames(parsO)<-c("Draw","Chain","parameter","estimate")
+
+#label species and plants
+l<-levels(parsO$parameter)
+  
+#parameters to save
+totrack<-m1$parameters.to.save
+  
+#assign species index to ragged frame.
+sp_pl<-data.frame(parameter=l,Index=as.numeric(str_match(l,pattern="\\[(\\d+)]")[,2]),par=str_extract(l,"\\w+"))
+
+#merge levels
+pars<-merge(parsO,sp_pl)
+
+pars<-pars[!pars$par %in% "deviance",]
+
+```
+
+```{r,fig.width=15}
+#view chaings
+ggplot(pars[pars$par %in% c("beta1"),],aes(x=Draw,col=as.factor(Chain),y=estimate))  + geom_line() + facet_wrap(~Index,scales="free") 
+```
+
+##Posterior predictive check
+
+```{r,fig.height=4,fig.width=8}
+fitstat<-droplevels(pars[pars$par %in% c("fit","fitnew"),])
+fitstat<-dcast(fitstat,Draw+Chain~par,value.var="estimate")
+
+#add 1:1 line
+ymin<-round(min(c(fitstat$fit,fitstat$fitnew)))
+ymax<-round(max(c(fitstat$fit,fitstat$fitnew)))
+ab<-data.frame(x=ymin:ymax,y=ymin:ymax)
+p<-ggplot(fitstat,aes(x=fit,y=fitnew)) + geom_point() + theme_bw() + coord_equal()
+psim4<-p  + labs(x="Discrepancy of observed data",y="Discrepancy of replicated data") + geom_line(data=ab,aes(x=x,y=y)) + ggtitle("Simulated Data")
+psim4
+
+```
+
+#View simulated and predicted traitmatching
+
+```{r}
+
+#merge the dataframes.
+dat$Index<-1:nrow(dat)
+
+#posterior distribution for each index
+ypred<-pars %>% filter(par=="ynew") %>% group_by(Index) %>% summarize(mean=mean(estimate),lower=quantile(estimate,0.05),higher=quantile(estimate,0.95))
+
+datpred<-merge(dat,ypred)
+
+ggplot(datpred) + geom_point(aes(x=Traitmatch,y=Interactions),col="black") + geom_ribbon(aes(x=Traitmatch,ymin=higher,ymax=lower),alpha=0.6) + theme_bw()
+
+ggplot(datpred) + geom_point(aes(x=Traitmatch,y=Interactions),col="black") + geom_ribbon(aes(x=Traitmatch,ymin=higher,ymax=lower),alpha=0.6) + theme_bw() + facet_wrap(~I)
+```
+
+# Compute emergent statistics
+
+```{r}
+
+makeN<-function(x){
+  predweb<-acast(data=x,I~J,value.var="estimate")
+  
+  #calculate network statistic
+  nstat<-networklevel(predweb,index=c("weighted connectance","weighted NODF"))
+  data.frame(Metric=names(nstat),nstat)
+}
+
+#calculate network stats for each model
+nstats<-pars %>% filter(par=="ynew") %>% group_by(Draw,Chain) %>% inner_join(dat) %>% do(makeN(.))
+
+#calculate true network stat
+tweb<-acast(dat,I~J,value.var="Interactions")
+tstat<-networklevel(tweb,index=c("weighted connectance","weighted NODF"))
+tstat<-data.frame(Metric=names(tstat),tstat)
+
+ggplot(nstats,aes(x=nstat)) + geom_density(alpha=0.6,fill="black") + facet_wrap(~Metric,scales='free',nrow=2) + theme_bw()  + geom_vline(col="red",linetype="dashed",data=tstat,aes(xintercept=tstat)) + labs(x="value")
+```

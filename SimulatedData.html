@@ -206,140 +206,270 @@ $(document).ready(function () {
 
 <div id="TOC">
 <ul>
-<li><a href="#simulation">Simulation</a><ul>
-<li><a href="#process-model">Process Model</a></li>
-<li><a href="#observation-model">Observation Model</a></li>
+<li><a href="#simulation">Simulation</a></li>
+<li><a href="#poisson-regression">Poisson Regression</a><ul>
+<li><a href="#posterior-predictive-check">Posterior predictive check</a></li>
 </ul></li>
-<li><a href="#simulation-parameters">Simulation Parameters</a></li>
-<li><a href="#compute-true-interaction-matrices">Compute true interaction matrices</a><ul>
-<li><a href="#view-correlation-in-simulated-latent-state">View correlation in simulated latent state</a></li>
-<li><a href="#view-detection-rates">View Detection Rates</a></li>
-</ul></li>
+<li><a href="#view-simulated-and-predicted-traitmatching">View simulated and predicted traitmatching</a></li>
+<li><a href="#compute-emergent-statistics">Compute emergent statistics</a></li>
 </ul>
 </div>
 
 <div id="simulation" class="section level1">
 <h1>Simulation</h1>
-<div id="process-model" class="section level2">
-<h2>Process Model</h2>
-<ul>
-<li>10 hummingbird species</li>
-<li>10 resource species</li>
-<li>Range of hummingbird bill sizes (in mm) ~ Pois(10)/10</li>
-<li>Range of corolla sizes (in mm) ~ Pois(15)/10</li>
-<li>Mean frequency (<span class="math inline">\(\lambda\)</span>) for each hummingbird is drawn from U(0,10)<br />
-</li>
-<li>Trait matching (minimizing Bill-Corolla difference) is drawn from a hierarcichal distribution</li>
-</ul>
-<p><span class="math display">\[ log(\lambda)&lt;-\alpha_i + \beta_i * |Trait_i - Trait_j\]</span> <span class="math display">\[ \alpha=N(3,0.2) \]</span> <span class="math display">\[\beta1 = N(-1,0.2)\]</span></p>
-</div>
-<div id="observation-model" class="section level2">
-<h2>Observation Model</h2>
-<p>Imperfect detection</p>
-<p><span class="math display">\[ \omega_i = U(0.1,0.9) \]</span></p>
-<ul>
-<li>10 camera</li>
-<li>3 days per camera</li>
-</ul>
-<p><strong>View simulated strength and form of trait matching </strong></p>
-</div>
-</div>
-<div id="simulation-parameters" class="section level1">
-<h1>Simulation Parameters</h1>
-<pre class="r"><code>#Number of consumer species
-h_species=10
-plant_species=10
-cameras&lt;-5
-days&lt;-3
+<p>What are the data we want to simulate?</p>
+<p>size_x = Number of level 1 size_y = Number of level 2 traits_x = Trait frame for level 1 traits_y = Trait frame for level 2 Obs = x by y matrix of visits</p>
+<pre class="r"><code>simA&lt;-function(size_x,size_y,traits_x,traits_y,beta1_sigma= 0.4,alpha_sigma= 0){
+  
+  #Subtract both and take absolute value, convert cm
+  traitmatch&lt;-abs(sapply(traits_y,function(x) x - traits_x))
+
+  #regression slopes
+  #traits
+  beta1_mu&lt;- -1
+  
+  #species variance in slopes
+  beta1_sigma&lt;- 0.1
+  
+  #Species alpha_mu 
+  alpha_mu&lt;- 3
+  alpha_sigma&lt;- 0
+  
+  #species level
+  beta1&lt;-rnorm(size_x,beta1_mu,beta1_sigma)
+  alpha&lt;-rnorm(size_x,alpha_mu,alpha_sigma)
+  
+  #for each species loop through and create a replicate dataframe
+  obs&lt;-array(dim=c(size_x,size_y))
+  N&lt;-array(dim=c(size_x,size_y))
+  
+  #create intensities
+  for(x in 1:size_x){
+    for (y in 1:size_y){
+      
+        #intensity
+        N[x,y]&lt;-exp(alpha[x] + beta1[x] * traitmatch[x,y])
+        
+        #draw one state
+        obs[x,y]&lt;-rpois(1,N[x,y])
+    }
+  }
+  
+  
+#draw intensity
+  
+tx&lt;-data.frame(I=1:length(traits_x),TraitI=traits_x)
+ty&lt;-data.frame(J=1:length(traits_y),TraitJ=traits_y)
+
+#view trait matching
+dat&lt;-melt(obs)
+colnames(dat)&lt;-c(&quot;I&quot;,&quot;J&quot;,&quot;Interactions&quot;)
+
+dat&lt;-merge(dat,tx)
+dat&lt;-merge(dat,ty)
+
+#define data types, make species
+dat$I&lt;-letters[dat$I]
+dat$J&lt;-letters[dat$J]
+
+return(dat)
+}</code></pre>
+<pre class="r"><code>size_x = 5
+size_y = 19
 
 #Bill sizes
-Bill&lt;-rpois(h_species,10)
-
-#Corolla sizes
-Corolla&lt;-rpois(plant_species,15)
-
-#Subtract both and take absolute value, convert cm
-traitmatch&lt;-abs(sapply(Corolla,function(x) x - Bill)/10)
+traits_x&lt;-rpois(size_x,10)
   
-#regression slopes
-#traits
-beta1_mu&lt;- -1
+#Corolla sizes
+traits_y&lt;-rpois(size_y,10)
 
-#abundance
+dat&lt;-simA(size_x=size_x,size_y=size_y,traits_x=traits_x,traits_y=traits_y)
 
-#species variance in slopes
-beta1_sigma&lt;- 0.2
-
-#Species alpha_mu 
-alpha_mu&lt;- 3
-alpha_sigma&lt;- 0.2
-
-#Poisson overdipersion
-tauE&lt;-10
-
-#species level
-detection= inv.logit(rnorm(h_species,0,1.67))
-beta1&lt;-rnorm(h_species,beta1_mu,beta1_sigma)
-alpha&lt;-rnorm(h_species,alpha_mu,alpha_sigma)</code></pre>
-</div>
-<div id="compute-true-interaction-matrices" class="section level1">
-<h1>Compute true interaction matrices</h1>
-<pre class="r"><code>#for each species loop through and create a replicate dataframe
-obs&lt;-array(dim=c(h_species,plant_species,cameras,days))
-lambda&lt;-array(dim=c(h_species,plant_species,cameras))
-N&lt;-array(dim=c(h_species,plant_species,cameras))
-
-#create intensities
-for(x in 1:h_species){
-  for (y in 1:plant_species){
-    for (z in 1:cameras){
-      lambda[x,y,z]&lt;-exp(alpha[x] + beta1[x] * traitmatch[x,y] + rnorm(1,0,1/sqrt(tauE)))
-  }
-  }
+#view heatmap
+heatmap&lt;-function(dat){
+  ggplot(data=dat,aes(x=I,y=J,fill=Interactions)) + geom_tile() +    scale_fill_continuous(low=&quot;white&quot;,high=&quot;red&quot;)
 }
 
-
-#draw latent states
-for(x in 1:h_species){
-  for (y in 1:plant_species){
-    for (z in 1:cameras){
-      # true latent count
-      N[x,y,z]&lt;-rpois(1,lambda[x,y,z])
-    }
-  }
+heatmap(dat)</code></pre>
+<p><img src="figure/unnamed-chunk-3-1.png" width="480" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>traitplot&lt;-function(dat){
+    ggplot(data=dat,aes(y=Interactions,x=abs(TraitI-TraitJ))) + geom_point() + geom_smooth(aes(group=1),method=&quot;glm&quot;,method.args=list(family=&quot;poisson&quot;))
 }
 
-#Observed counts in each day
-for(x in 1:h_species){
-  for (y in 1:plant_species){
-    for (z in 1:cameras){
-        for (d in 1:days){
-      #true detection rate of that observed count
-      obs[x,y,z,d]&lt;-rbinom(1,N[x,y,z],p=detection[x])
-      }
-    }
-  }
-}</code></pre>
-<div id="view-correlation-in-simulated-latent-state" class="section level2">
-<h2>View correlation in simulated latent state</h2>
-<pre class="r"><code>mdat&lt;-melt(N)
-colnames(mdat)&lt;-c(&quot;Bird&quot;,&quot;Plant&quot;,&quot;Camera&quot;,&quot;Interactions&quot;)
-
-traitmelt&lt;-melt(traitmatch)
-colnames(traitmelt)&lt;-c(&quot;Bird&quot;,&quot;Plant&quot;,&quot;traitmatch&quot;)
-
-mdat&lt;-merge(mdat,traitmelt,c(&quot;Bird&quot;,&quot;Plant&quot;))
-ggplot(mdat,aes(x=traitmatch,y=Interactions,col=as.factor(Bird))) + geom_point() + geom_smooth(aes(group=1),method=&quot;glm&quot;,method.args = list(family = &quot;poisson&quot;)) + labs(col=&quot;Bird&quot;) + xlab(&quot;Absolute value of Bill Length - Corolla Length &quot;)</code></pre>
-<p><img src="figure/unnamed-chunk-4-1.png" width="480" style="display: block; margin: auto;" /></p>
+traitplot(dat)</code></pre>
+<p><img src="figure/unnamed-chunk-3-2.png" width="480" style="display: block; margin: auto;" /></p>
 </div>
-<div id="view-detection-rates" class="section level2">
-<h2>View Detection Rates</h2>
-<pre class="r"><code>obs.state&lt;-melt(obs)
-colnames(obs.state)&lt;-c(&quot;Bird&quot;,&quot;Plant&quot;,&quot;Camera&quot;,&quot;Day&quot;,&quot;Yobs&quot;)
-obs.state&lt;-merge(mdat,obs.state,by=c(&quot;Bird&quot;,&quot;Plant&quot;,&quot;Camera&quot;))
-ggplot(obs.state,aes(x=Interactions,y=Yobs,col=Camera)) + geom_point() + theme_bw() + geom_abline() + coord_equal()</code></pre>
-<p><img src="figure/unnamed-chunk-5-1.png" width="480" style="display: block; margin: auto;" /></p>
+<div id="poisson-regression" class="section level1">
+<h1>Poisson Regression</h1>
+<pre class="r"><code>#format traitmatch as matrix
+dat$Traitmatch&lt;-abs(dat$TraitI-dat$TraitJ)
+Traitmatch&lt;-acast(data=dat,I~J,value.var=&quot;Traitmatch&quot;)
+
+runs&lt;-100000
+
+#Source model
+source(&quot;Bayesian/Poisson.R&quot;)
+
+#print model
+print.noquote(readLines(&quot;Bayesian//Poisson.R&quot;))</code></pre>
+<pre><code>##  [1]                                                             
+##  [2] sink(&quot;Bayesian/Poisson.jags&quot;)                               
+##  [3]                                                             
+##  [4] cat(&quot;                                                       
+##  [5]     model {                                                 
+##  [6]                                                             
+##  [7]     #Compute intensity for each pair of birds and plants    
+##  [8]     for (i in 1:Birds){                                     
+##  [9]     for (j in 1:Plants){                                    
+## [10]                                                             
+## [11]     #Process Model with log normal overdispersion           
+## [12]     log(lambda[i,j])&lt;-alpha[i] + beta1[i] * Traitmatch[i,j] 
+## [13]     }                                                       
+## [14]     }                                                       
+## [15]                                                             
+## [16]                                                             
+## [17]     #Prediction                                             
+## [18]     for (x in 1:Nobs){                                      
+## [19]                                                             
+## [20]     # Observed State                                        
+## [21]     Yobs[x] ~ dpois(lambda[Bird[x],Plant[x]])               
+## [22]                                                             
+## [23]     #Assess Model Fit                                       
+## [24]                                                             
+## [25]     #Fit discrepancy statistics                             
+## [26]     eval[x]&lt;-lambda[Bird[x],Plant[x]]                       
+## [27]     E[x]&lt;-pow((Yobs[x]-eval[x]),2)/(eval[x]+0.5)            
+## [28]                                                             
+## [29]     ynew[x]~dpois(lambda[Bird[x],Plant[x]])                 
+## [30]     E.new[x]&lt;-pow((ynew[x]-eval[x]),2)/(eval[x]+0.5)        
+## [31]                                                             
+## [32]     }                                                       
+## [33]                                                             
+## [34]     ###Priors                                               
+## [35]                                                             
+## [36]     #Process Model                                          
+## [37]                                                             
+## [38]     #Species level priors                                   
+## [39]     for (i in 1:Birds){                                     
+## [40]                                                             
+## [41]     #Intercept                                              
+## [42]     alpha[i] ~ dnorm(alpha_mu,alpha_tau)                    
+## [43]                                                             
+## [44]     #Traits slope                                           
+## [45]     beta1[i] ~ dnorm(beta1_mu,beta1_tau)                    
+## [46]     }                                                       
+## [47]                                                             
+## [48]     #Group process priors                                   
+## [49]                                                             
+## [50]     #Intercept                                              
+## [51]     alpha_mu ~ dnorm(0,0.001)                               
+## [52]     alpha_tau ~ dunif(0,10)                                 
+## [53]     alpha_sigma&lt;-pow(1/alpha_tau,0.5)                       
+## [54]                                                             
+## [55]     #Trait                                                  
+## [56]     beta1_mu~dnorm(0,0.001)                                 
+## [57]     beta1_tau ~ dunif(0,10)                                 
+## [58]     beta1_sigma&lt;-pow(1/beta1_tau,0.5)                       
+## [59]                                                             
+## [60]     #derived posterior check                                
+## [61]     fit&lt;-sum(E[]) #Discrepancy for the observed data        
+## [62]     fitnew&lt;-sum(E.new[])                                    
+## [63]                                                             
+## [64]                                                             
+## [65]     }                                                       
+## [66]     &quot;,fill=TRUE)                                            
+## [67]                                                             
+## [68] sink()</code></pre>
+<pre class="r"><code>  #for parallel run
+  Yobs=dat$Interactions
+  Bird=as.numeric(as.factor(dat$I))
+  Plant=as.numeric(as.factor(dat$J))
+  Birds=length(unique(dat$I))
+  Traitmatch=Traitmatch
+  Plants=length(unique(dat$J))
+  Nobs&lt;-length(Yobs)
+  
+  #Parameters to track
+  ParsStage &lt;- c(&quot;beta1&quot;,&quot;ynew&quot;,&quot;fit&quot;,&quot;fitnew&quot;)
+  
+  #MCMC options
+  ni &lt;- runs  # number of draws from the posterior
+  nt &lt;- 1  #thinning rate
+  nb &lt;- max(0,runs-500) # number to discard for burn-in
+  nc &lt;- 2  # number of chains
+
+  modelDat&lt;-list(&quot;Yobs&quot;,&quot;Bird&quot;,&quot;Plant&quot;,&quot;Plants&quot;,&quot;Traitmatch&quot;,&quot;Birds&quot;,&quot;Nobs&quot;)
+
+    m1&lt;-do.call(jags.parallel,list(data=modelDat,parameters.to.save=ParsStage,model.file=&quot;Bayesian/Poisson.jags&quot;,n.thin=nt, n.iter=ni,n.burnin=nb,n.chains=nc,DIC=F))</code></pre>
+<pre class="r"><code>parsO&lt;-melt(m1$BUGSoutput$sims.array)
+colnames(parsO)&lt;-c(&quot;Draw&quot;,&quot;Chain&quot;,&quot;parameter&quot;,&quot;estimate&quot;)
+
+#label species and plants
+l&lt;-levels(parsO$parameter)
+  
+#parameters to save
+totrack&lt;-m1$parameters.to.save
+  
+#assign species index to ragged frame.
+sp_pl&lt;-data.frame(parameter=l,Index=as.numeric(str_match(l,pattern=&quot;\\[(\\d+)]&quot;)[,2]),par=str_extract(l,&quot;\\w+&quot;))
+
+#merge levels
+pars&lt;-merge(parsO,sp_pl)
+
+pars&lt;-pars[!pars$par %in% &quot;deviance&quot;,]</code></pre>
+<pre class="r"><code>#view chaings
+ggplot(pars[pars$par %in% c(&quot;beta1&quot;),],aes(x=Draw,col=as.factor(Chain),y=estimate))  + geom_line() + facet_wrap(~Index,scales=&quot;free&quot;) </code></pre>
+<p><img src="figure/unnamed-chunk-6-1.png" width="1440" style="display: block; margin: auto;" /></p>
+<div id="posterior-predictive-check" class="section level2">
+<h2>Posterior predictive check</h2>
+<pre class="r"><code>fitstat&lt;-droplevels(pars[pars$par %in% c(&quot;fit&quot;,&quot;fitnew&quot;),])
+fitstat&lt;-dcast(fitstat,Draw+Chain~par,value.var=&quot;estimate&quot;)
+
+#add 1:1 line
+ymin&lt;-round(min(c(fitstat$fit,fitstat$fitnew)))
+ymax&lt;-round(max(c(fitstat$fit,fitstat$fitnew)))
+ab&lt;-data.frame(x=ymin:ymax,y=ymin:ymax)
+p&lt;-ggplot(fitstat,aes(x=fit,y=fitnew)) + geom_point() + theme_bw() + coord_equal()
+psim4&lt;-p  + labs(x=&quot;Discrepancy of observed data&quot;,y=&quot;Discrepancy of replicated data&quot;) + geom_line(data=ab,aes(x=x,y=y)) + ggtitle(&quot;Simulated Data&quot;)
+psim4</code></pre>
+<p><img src="figure/unnamed-chunk-7-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
+</div>
+<div id="view-simulated-and-predicted-traitmatching" class="section level1">
+<h1>View simulated and predicted traitmatching</h1>
+<pre class="r"><code>#merge the dataframes.
+dat$Index&lt;-1:nrow(dat)
+
+#posterior distribution for each index
+ypred&lt;-pars %&gt;% filter(par==&quot;ynew&quot;) %&gt;% group_by(Index) %&gt;% summarize(mean=mean(estimate),lower=quantile(estimate,0.05),higher=quantile(estimate,0.95))
+
+datpred&lt;-merge(dat,ypred)
+
+ggplot(datpred) + geom_point(aes(x=Traitmatch,y=Interactions),col=&quot;black&quot;) + geom_ribbon(aes(x=Traitmatch,ymin=higher,ymax=lower),alpha=0.6) + theme_bw()</code></pre>
+<p><img src="figure/unnamed-chunk-8-1.png" width="480" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(datpred) + geom_point(aes(x=Traitmatch,y=Interactions),col=&quot;black&quot;) + geom_ribbon(aes(x=Traitmatch,ymin=higher,ymax=lower),alpha=0.6) + theme_bw() + facet_wrap(~I)</code></pre>
+<p><img src="figure/unnamed-chunk-8-2.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div id="compute-emergent-statistics" class="section level1">
+<h1>Compute emergent statistics</h1>
+<pre class="r"><code>makeN&lt;-function(x){
+  predweb&lt;-acast(data=x,I~J,value.var=&quot;estimate&quot;)
+  
+  #calculate network statistic
+  nstat&lt;-networklevel(predweb,index=c(&quot;weighted connectance&quot;,&quot;weighted NODF&quot;))
+  data.frame(Metric=names(nstat),nstat)
+}
+
+#calculate network stats for each model
+nstats&lt;-pars %&gt;% filter(par==&quot;ynew&quot;) %&gt;% group_by(Draw,Chain) %&gt;% inner_join(dat) %&gt;% do(makeN(.))
+
+#calculate true network stat
+tweb&lt;-acast(dat,I~J,value.var=&quot;Interactions&quot;)
+tstat&lt;-networklevel(tweb,index=c(&quot;weighted connectance&quot;,&quot;weighted NODF&quot;))
+tstat&lt;-data.frame(Metric=names(tstat),tstat)
+
+ggplot(nstats,aes(x=nstat)) + geom_density(alpha=0.6,fill=&quot;black&quot;) + facet_wrap(~Metric,scales=&#39;free&#39;,nrow=2) + theme_bw()  + geom_vline(col=&quot;red&quot;,linetype=&quot;dashed&quot;,data=tstat,aes(xintercept=tstat)) + labs(x=&quot;value&quot;)</code></pre>
+<p><img src="figure/unnamed-chunk-9-1.png" width="480" style="display: block; margin: auto;" /></p>
 </div>
 
 
