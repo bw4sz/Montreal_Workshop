@@ -104,7 +104,6 @@ The use of each of these approaches will depend on:
  
  1) Type of Model: 
      a) Niche model or Centrality trait-matching - pairwise values
-     
      b) Logistic regressions, random forests - vector of distance corresponding to focal species
  
  2) Type of interaction:
@@ -113,7 +112,7 @@ The use of each of these approaches will depend on:
      c) parasitism: higher likelihood of share interactions with closely related species -> use weighted distances/vcv 
      
   3) Number of traits in the model:
-     a) Using phylogenies as a surrogate for traits is straightforward when only one trait is considered in the model or to include as similarity across species 
+     a) Using phylogenies as a surrogate for traits is straightforward when only one trait is considered in the model or to include as similarity across species (e.g. I Eat Model) 
      b) While phylogenetic eigenvectors (or vectors of phylogenetic distances) could replace traits when more than one are considered (i.e. trait-matching), their interpretation or usefulness is not clear at all (CAVEAT!!)
      
      
