@@ -1,0 +1,61 @@
+---
+title: Making predictions of All Links In Ecological Networks
+short: Inferrin biological interactions
+author:
+ - family: Bartomeus
+    given: Ignasio
+    affiliation:
+    id: ib
+ - family: Beauchesne
+    given: David
+    affiliation: 1, 2
+    id: db
+  - family: Besson
+    given: Mathilde
+    affiliation: 2, 3
+    id: mb
+  - family: Blanchet
+    given: Guillaume
+    affiliation: 
+    id: gb
+  - family: Cazelles
+    given: Kévin
+    affiliation: 1
+    id: kc
+  - family: Gavel
+    given: Dominique
+    affiliation: 
+    id: dg
+  - family: Morales Castilla
+    given: Ignacio
+    affiliation: 
+    id: imc
+  - family: Poisot
+    given: Timothée
+    affiliation: 2, 3
+    id: tp
+  - family: Vissault
+    given: Kévin
+    affiliation: 
+    id: kv
+  - family: Weinstein
+    given: Ben
+    affiliation:
+    id: bw
+affiliation:
+  - id: 1
+    text: Université du Québec à Rimouski
+  - id: 2
+    text: Québec Centre for Biodiversity Sciences
+  - id: 3
+    text: Université de Montréal, départment des Sicences Biologiques
+
+keyword:
+  - k: 
+  - k: 
+  - k: 
+date: \today
+abstract: TODO
+...
+
+
