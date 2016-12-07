@@ -13,10 +13,15 @@ library(reshape2)
 library(bipartite)
 library(ggplot2)
 library(knitr)
+library(boot)
+library(tidyr)
 library(dplyr)
 library(stringr)
 library(R2jags)
 opts_chunk$set(message=FALSE,warning=FALSE,fig.width=5,fig.height=5,echo=TRUE,cache=F,fig.align='center',fig.path="figure/")
+
+#source helper function
+source('Bayesian/Functions.R')
 ```
 
 #Simulation   
@@ -35,7 +40,7 @@ simA<-function(size_x,size_y,traits_x,traits_y,beta1_sigma= 0.4,alpha_sigma= 0){
   #Subtract both and take absolute value, convert cm
   traitmatch<-abs(sapply(traits_y,function(x) x - traits_x))
 
-  #regression slopes
+  #regression slope
   #traits
   beta1_mu<- -1
   
@@ -59,10 +64,10 @@ simA<-function(size_x,size_y,traits_x,traits_y,beta1_sigma= 0.4,alpha_sigma= 0){
     for (y in 1:size_y){
       
         #intensity
-        N[x,y]<-exp(alpha[x] + beta1[x] * traitmatch[x,y])
+        N[x,y]<-inv.logit(alpha[x] + beta1[x] * traitmatch[x,y])
         
         #draw one state
-        obs[x,y]<-rpois(1,N[x,y])
+        obs[x,y]<-rbinom(1,1,N[x,y])
     }
   }
   
@@ -107,96 +112,186 @@ heatmap<-function(dat){
 heatmap(dat)
 
 traitplot<-function(dat){
-    ggplot(data=dat,aes(y=Interactions,x=abs(TraitI-TraitJ))) + geom_point() + geom_smooth(aes(group=1),method="glm",method.args=list(family="poisson"))
+    ggplot(data=dat,aes(y=Interactions,x=abs(TraitI-TraitJ))) + geom_point() + geom_smooth(aes(group=1),method="glm",method.args=list(family="binomial")) + labs(x="Difference in traits",y="Probability of Interaction")
 }
 
-traitplot(dat)
+traitplot(dat) + theme_bw()
 ```
 
-# Poisson Regression
-
+# Intercept
 
 ```{r,eval=T}
-#format traitmatch as matrix
-dat$Traitmatch<-abs(dat$TraitI-dat$TraitJ)
-Traitmatch<-acast(data=dat,I~J,value.var="Traitmatch")
+fitb<-function(dat,algorithm="Intercept"){
 
-runs<-100000
-
-#Source model
-source("Bayesian/Poisson.R")
-
-#print model
-print.noquote(readLines("Bayesian//Poisson.R"))
-
-  #for parallel run
-  Yobs=dat$Interactions
-  Bird=as.numeric(as.factor(dat$I))
-  Plant=as.numeric(as.factor(dat$J))
-  Birds=length(unique(dat$I))
-  Traitmatch=Traitmatch
-  Plants=length(unique(dat$J))
-  Nobs<-length(Yobs)
+  #format traitmatch as matrix
+  dat$Traitmatch<-abs(dat$TraitI-dat$TraitJ)
+  Traitmatch<-acast(data=dat,I~J,value.var="Traitmatch")
   
-  #Parameters to track
-  ParsStage <- c("beta1","ynew","fit","fitnew")
+  if(algorithm == "Intercept"){
+
   
-  #MCMC options
-  ni <- runs  # number of draws from the posterior
-  nt <- 1  #thinning rate
-  nb <- max(0,runs-500) # number to discard for burn-in
-  nc <- 2  # number of chains
+  runs<-10000
+  
+  #Source model
+  source("Bayesian/Intercept.R")
+  
+  #print model
+  print.noquote(readLines("Bayesian//Intercept.R"))
+  
+    #for parallel run
+    Yobs=dat$Interactions
+    Bird=as.numeric(as.factor(dat$I))
+    Plant=as.numeric(as.factor(dat$J))
+    Birds=length(unique(dat$I))
+    Traitmatch=Traitmatch
+    Plants=length(unique(dat$J))
+    Nobs<-length(Yobs)
+    
+    #MCMC options
+    ni <- runs  # number of draws from the posterior
+    nt <- 1  #thinning rate
+    nb <- max(0,runs-500) # number to discard for burn-in
+    nc <- 2  # number of chains
+  
+    modelDat<-list("Yobs","Bird","Plant","Plants","Birds","Nobs")
+    
+    ParsStage <- c("alpha","alpha_mu","ynew","fit","fitnew")
+  
+m1<-do.call(jags.parallel,list(data=modelDat,parameters.to.save=ParsStage,model.file="Bayesian/Intercept.jags",n.thin=nt, n.iter=ni,n.burnin=nb,n.chains=nc,DIC=F))
+} else 
+    
+    if(algorithm=="Binomial") {
+    
+  runs<-10000
 
-  modelDat<-list("Yobs","Bird","Plant","Plants","Traitmatch","Birds","Nobs")
+  #Source model
+  source("Bayesian/Binomial.R")
+  
+  #print model
+  print.noquote(readLines("Bayesian//Binomial.R"))
+  
+    #for parallel run
+    Yobs=dat$Interactions
+    Bird=as.numeric(as.factor(dat$I))
+    Plant=as.numeric(as.factor(dat$J))
+    Birds=length(unique(dat$I))
+    Traitmatch=Traitmatch
+    Plants=length(unique(dat$J))
+    Nobs<-length(Yobs)
+    
+    #Parameters to track
+    ParsStage <- c("alpha","beta","alpha_mu","beta_mu","ynew","fit","fitnew")
+    
+    #MCMC options
+    ni <- runs  # number of draws from the posterior
+    nt <- 1  #thinning rate
+    nb <- max(0,runs-500) # number to discard for burn-in
+    nc <- 2  # number of chains
+  
+    modelDat<-list("Yobs","Bird","Plant","Plants","Traitmatch","Birds","Nobs")
+  
+m1<-do.call(jags.parallel,list(data=modelDat,parameters.to.save=ParsStage,model.file="Bayesian/Binomial.jags",n.thin=nt, n.iter=ni,n.burnin=nb,n.chains=nc,DIC=F))  
+            }
+  
+    m1$Algorithm<-algorithm
+    return(m1)
+}
+```
 
-    m1<-do.call(jags.parallel,list(data=modelDat,parameters.to.save=ParsStage,model.file="Bayesian/Poisson.jags",n.thin=nt, n.iter=ni,n.burnin=nb,n.chains=nc,DIC=F))
+# Interecpt Model
+```{r}
+intercept<-fitb(dat,"Intercept")
+```
+
+# Binomial Regression
+```{r}
+binomial<-fitb(dat,"Binomial")
+```
+
+#Extract parameters from the model
+
+```{r}
+getpars<-function(m1,n.iter=100,nt=1,nb=0,pars=c("beta1","alpha1")){  
+  parsm1<-extract_par(m1)
+  parsm1$Model<-m1$algorithm
+  return(parsm1)
+}
 ```
 
 ```{r}
-parsO<-melt(m1$BUGSoutput$sims.array)
-colnames(parsO)<-c("Draw","Chain","parameter","estimate")
+#bind them together
+datpars<-list(intercept,binomial)
 
-#label species and plants
-l<-levels(parsO$parameter)
-  
-#parameters to save
-totrack<-m1$parameters.to.save
-  
-#assign species index to ragged frame.
-sp_pl<-data.frame(parameter=l,Index=as.numeric(str_match(l,pattern="\\[(\\d+)]")[,2]),par=str_extract(l,"\\w+"))
-
-#merge levels
-pars<-merge(parsO,sp_pl)
-
-pars<-pars[!pars$par %in% "deviance",]
-
+datpars<-lapply(datpars,getpars)
 ```
 
-```{r,fig.width=15}
-#view chaings
-ggplot(pars[pars$par %in% c("beta1"),],aes(x=Draw,col=as.factor(Chain),y=estimate))  + geom_line() + facet_wrap(~Index,scales="free") 
+#Predict new species
+
+```{r}
+size_x = 2
+size_y = 5
+
+#Bill sizes
+traits_x<-rpois(size_x,10)
+  
+#Corolla sizes
+traits_y<-rpois(size_y,10)
+
+newtraits<-simA(size_x=size_x,size_y=size_y,traits_x=traits_x,traits_y=traits_y)
+
+#calculate traitmatch
+newtraits$Traitmatch<-abs(newtraits$TraitJ-newtraits$TraitI)
+
+predictM<-function(m1,newtraits){
+  parsm1<-extract_par(m1)
+  
+  #matching function
+a<-parsm1 %>% filter(par %in% c("alpha_mu","beta_mu")) %>% select(Draw,Chain,par,estimate) %>% dcast(.,Draw + Chain ~ par,value.var="estimate") %>% group_by(Draw,Chain)%>%  do((pred.binomial(alpha=.$alpha_mu,beta=.$beta_mu,newdata=newtraits))) %>% group_by(I,J) %>% summarize(mean=mean(value),lower=quantile(value,0.95),higher=quantile(value,0.05))
+
+return(a)
+}
+
+predt<-predictM(binomial,newtraits)
 ```
 
-##Posterior predictive check
+# Model evaluation
+
+```{r}
+parsall<-rbind_all(list(parsm1,parsm2))
+```
+
+## Posterior predictive check
 
 ```{r,fig.height=4,fig.width=8}
-fitstat<-droplevels(pars[pars$par %in% c("fit","fitnew"),])
-fitstat<-dcast(fitstat,Draw+Chain~par,value.var="estimate")
+fitstat<-droplevels(parsall[parsall$par %in% c("fit","fitnew"),])
+fitstat<-dcast(fitstat,Draw+Model+Chain~par,value.var="estimate")
 
 #add 1:1 line
 ymin<-round(min(c(fitstat$fit,fitstat$fitnew)))
 ymax<-round(max(c(fitstat$fit,fitstat$fitnew)))
 ab<-data.frame(x=ymin:ymax,y=ymin:ymax)
-p<-ggplot(fitstat,aes(x=fit,y=fitnew)) + geom_point() + theme_bw() + coord_equal()
-psim4<-p  + labs(x="Discrepancy of observed data",y="Discrepancy of replicated data") + geom_line(data=ab,aes(x=x,y=y)) + ggtitle("Simulated Data")
-psim4
+
+ggplot(data=fitstat,aes(x=fit,y=fitnew)) + geom_point(aes(col=Model)) + theme_bw() + coord_equal() + labs(x="Discrepancy of observed data",y="Discrepancy of replicated data") + geom_line(data=ab,aes(x=x,y=y)) + ggtitle("Simulated Data")
+```
+
+## Proportion of predicted links
+
+```{r}
+propc<-function(x,orig=dat){
+  predweb<-acast(data=x,I~J,value.var="Index")
+    
+  #calculate network statistic
+  nstat<-networklevel(predweb,index=c("connectance","nestedness"))
+  data.frame(Metric=names(nstat),nstat)
+}
+
+prop_links<-parsall %>% filter(par=="ynew") %>% group_by(Model,Draw,Chain) %>% inner_join(dat) %>% do(propc(.))
 
 ```
 
-#View simulated and predicted traitmatching
+###View trait-matching
 
 ```{r}
-
 #merge the dataframes.
 dat$Index<-1:nrow(dat)
 
@@ -210,15 +305,13 @@ ggplot(datpred) + geom_point(aes(x=Traitmatch,y=Interactions),col="black") + geo
 ggplot(datpred) + geom_point(aes(x=Traitmatch,y=Interactions),col="black") + geom_ribbon(aes(x=Traitmatch,ymin=higher,ymax=lower),alpha=0.6) + theme_bw() + facet_wrap(~I)
 ```
 
-# Compute emergent statistics
+### Compute emergent statistics
 
 ```{r}
-
 makeN<-function(x){
   predweb<-acast(data=x,I~J,value.var="estimate")
-  
   #calculate network statistic
-  nstat<-networklevel(predweb,index=c("weighted connectance","weighted NODF"))
+  nstat<-networklevel(predweb,index=c("connectance","nestedness"))
   data.frame(Metric=names(nstat),nstat)
 }
 
@@ -227,8 +320,9 @@ nstats<-pars %>% filter(par=="ynew") %>% group_by(Draw,Chain) %>% inner_join(dat
 
 #calculate true network stat
 tweb<-acast(dat,I~J,value.var="Interactions")
-tstat<-networklevel(tweb,index=c("weighted connectance","weighted NODF"))
+tstat<-networklevel(tweb,index=c("connectance","nestedness"))
 tstat<-data.frame(Metric=names(tstat),tstat)
 
-ggplot(nstats,aes(x=nstat)) + geom_density(alpha=0.6,fill="black") + facet_wrap(~Metric,scales='free',nrow=2) + theme_bw()  + geom_vline(col="red",linetype="dashed",data=tstat,aes(xintercept=tstat)) + labs(x="value")
+ggplot(nstats[nstat$Metric %in% "connectance",],aes(x=nstat)) + geom_density(alpha=0.6,fill="black") + facet_wrap(~Metric,scales='free',nrow=1) + theme_bw()  + labs(x="value")
++ geom_vline(col="red",linetype="dashed",data=tstat,aes(xintercept=tstat)) 
 ```

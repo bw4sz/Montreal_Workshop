@@ -31,11 +31,15 @@ git clone https://github.com/bw4sz/Montreal_Workshop.git
 
 
 
-### Google doc:
+### Meeting Notes
 
 [Here](https://docs.google.com/document/d/1x1YHzF-vZXbrQUIF97TNqyIJ6bXyaEiFjMsi18nJDag)
 
+### Current draft of the manuscript
 
-### Spreadsheet :
+[Here](https://docs.google.com/document/d/1oHbAiUNeIQ74izcdhvRmwngmoxn4pVAbUjaK_HzLBYk/edit?usp=sharing)
+
+### Methods Spreadsheet :
 
 [Here](https://docs.google.com/spreadsheets/d/1Nps6BsDrkWMbvLa_lsgc5MT8RBtTeFX6hWlUjsRlkO0/edit?ts=583f2190#gid=1879087403)
+
