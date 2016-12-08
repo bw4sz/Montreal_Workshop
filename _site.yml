@@ -3,6 +3,8 @@ output_dir: "."
 navbar:
   title: "Network Workshop"
   left:
+    - text: "Manuscript"
+      href: "ms/ms_interactions.html"
     - text: "Simulations"
       href: Simulations.html
     - text: "Empirical Data"
