@@ -34,7 +34,7 @@ git clone https://github.com/bw4sz/Montreal_Workshop.git
 
 ### Current draft of the manuscript
 
-[Here](https://docs.google.com/document/d/1oHbAiUNeIQ74izcdhvRmwngmoxn4pVAbUjaK_HzLBYk/edit?usp=sharing)
+[Here](https://bw4sz.github.io/Montreal_Workshop/ms/ms_interactions.html)
 
 ### Methods Spreadsheet :
 
