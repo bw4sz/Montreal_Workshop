@@ -70,7 +70,7 @@ eq iv.
 
 $$ Y_{i,j,k} \sim Bernoulli(\phi_{i,j})$$
 $$ \phi_{i,j} = \omega_{i,j} * z_{i,j}$$
-$$z_{i,j}~Bernoulii(\rho_{i,j})$$
+$$z_{i,j} \sim Bernoulii(\rho_{i,j})$$
 $$ logit(\rho_{i,j}) = \alpha_{i,j} + \beta_{i,j} * x $$  
 
 Where the observation of a link between species i and species j at time k is a bernoulli trial with a probability $\phi_{i,j}$, which is the outcome of the detectability of an interaction ($\omega_{i,j}$) and the latent state ($z_{i,j}$). This latent state is the true, but unobserved, existance of a link, as predicted by our ecological mechanism of interestion (see eq IV). The benefit of this approach is that differentiates the probability of detection from the probability of occurrence. In addition, because we have explicitly defined some temporal window (k), interactions with different levels of sampling effort can be directly compared.
@@ -80,7 +80,7 @@ Where the observation of a link between species i and species j at time k is a b
 ### Non-parametric methods
 
 * Machine Learning
-* Forth Corner
+* Fourth Corner
 * Randomization
 
 While these simple examples simplify the broad array of potential methods we evaluate, they highlight our three major criteria for qualitative comparison 1) Can the method account for the uncertainty in species observations?, 2) Does it provide an ecological mechanism to infer the probability of species interactions, and 3) Can it be used to predict an novel interaction? 
