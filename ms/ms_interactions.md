@@ -44,7 +44,7 @@ The simplest model of species interactions is
 eq i. 
 
 $$Y_{i,j} = \rho_{i,j}$$
-Where the probability of interaction among species i and species j is a fixed value (i,j). Using empirical data, we might try to estimate this value by dividing the number of observations by the total number of observations for any pair of species. While this is straightforward, why might it be insufficient? Foremost, it contains no estimate of uncertainty. The estimate is given without any consideration for the variance due to observation, spatial or temporal stochasticity. 
+Where the probability of interaction among species i and species j is a fixed value ($\rho_{i,j}$). Using empirical data, we might try to estimate this value by dividing the number of observations by the total number of observations for any pair of species. While this is straightforward, why might it be insufficient? Foremost, it contains no estimate of uncertainty. The estimate is given without any consideration for the variance due to observation, spatial or temporal stochasticity. 
 
 To add uncertainty, we draw our observations from a statistical distribution.
 
@@ -52,24 +52,24 @@ eq ii.
 
 $$ Y_{i,j} \sim Bernoulli(\rho_{i,j}) $$
 
-We can now estimate the probability of interaction, as well as the uncertainty based on sampling stochasticity. Yet this model is still unsatisfying. It is non-mechanistic, it depends wholly on species identity, and uses no ecological theory or inference. Therefore, it is difficult to ascribe meaning to a set of interactions, or understand how they might change in the future. We cannot use the inferences from data to make a predict about a new species not in dataset.
+We can now estimate the probability of interaction, as well as the uncertainty based on sampling stochasticity. Yet this model is still unsatisfying. It is non-mechanistic, it depends wholly on species identity, and uses no ecological theory or inference. Therefore, it is difficult to ascribe meaning to a set of interactions, or understand how they might change in the future. We cannot use the inferences from data to make a prediction about a new species not in dataset.
 
 To make our model more useful, we might add a covariate, such that 
 
 eq. iii
 
 $$ Y_{i,j} \sim Bernoulli(\rho_{i,j})$$
-$$ logit(\rho_{i,j}) = \alpha_{i,j} + \beta_{i,j} * x $$
+$$ logit(\rho_{i,j}) = \alpha_{i,j} + \beta_{i,j} * x_{i,j} $$
 
-In which a link between species i and j is a Bernoulli trial with a probability of success i,j. The probability of success will vary based some ecological principle (x), for example, the similarity in function traits among species i and j:
+In which a link between species i and j is a Bernoulli trial with a probability of success $\rho_{i,j}$. The probability of success will vary based on some ecological principle ($x_{i,j}$), for example, the similarity in functional traits among species i and j:
 
 eq. V
 
 $$x_{i,j}= f(Trait_i,Trait_j)$$
 
-  A variety of trait-matching functions may be biologically plausible, for example, the absolute value of the difference between traits (e.g. $|trait_i - trait_j|$) or a binary difference (e.g. $trait_i > trait_j$). Alternatively, the covariate may represent the phylogenetic relatedness of species, or their relative response to a given environmental variable. Regardless of the exact form of regression, this framework satisfies two important goals: it allows for estimates of uncertainty in species interactions, and it provides a mechanism shaping the probability of an interaction.
+  A variety of trait-matching functions may be biologically plausible. For example, the absolute value of the difference between traits (e.g. $|trait_i - trait_j|$) or a binary difference (e.g. $trait_i > trait_j$), could be used to predict which species may interact. Alternatively, the covariate may represent the phylogenetic relatedness of species, or their relative response to a given environmental variable. Regardless of the exact form of regression, this framework satisfies two important goals: it allows for estimates of uncertainty in species interactions, and it provides a mechanism shaping the probability of an interaction.
 
-What if we have many potential sets of interacting traits, or non-linear functions among multiple traits? In some cases, we cannot provide a simple trait-matching function (eg V), but must use a statistical tool to infer the best possible combination of traits among co-occuring species that predicts interactions. 
+What if we have many potential sets of interacting traits, or if there are non-linear functions among multiple traits? In some cases, we cannot provide a simple trait-matching function (eg V), but must use a statistical tool to infer the best possible combination of traits among co-occuring species that predicts interactions. 
 _[Ben Weinstein: here is a spot for a paragraph on machine learning, random forest approaches, where we do not know the traits of interest, might have non-linear relationships.]_
 
    Our potential model so far does not fully capture the varied sources of uncertainty that stem from analysis of species interactions. We have only captured the uncertainty in the process model, the inherent temporal or spatial stochasticity in our ecological process of interest (Hooten and Hobbs). We may need to also account for the uncertainty in the observation model, the ability to detect interactions given that they occur. The separation of the observation and process model translates our ecological mechanism into specific predictions about empirical data. For binary networks, one straightforward way to account for the observation of interactions is to model the detectability of network interactions.
