@@ -35,6 +35,10 @@ and then talk about methods for species interactions based on co-occurrence mode
 
   In spite of increasing efforts, it is unlikely that ecologists will empirically document the enormous number of interactions existing in nature (Morales-Castilla et al. 2015). Because of this, complementing field work with models of species interactions is a promising avenue for documenting the complexity of the natural world(ref). While direct inference will often be preferable, many interactions are rare, infrequent, or impossible to detect by human observations. Model-based inference for ecological networks provides three important aspects, i) establishes mechanistic relationships among species, ii) allows for the estimates of uncertainty to be propagated through an analysis, and iii) provides an avenue to predict future interactions based on new species or environmental change. We follow Poisot (2015) and Cazelles (2016) in formulating our general conceptual model of species interactions (Figure 1). We believe there is some true state of potential interactions, term a metaweb, in which species could interact based on co-occurrence. Any given observation we make is an attempt to recover these relationships using empirical data. We then use those empirical data to fit a model, either relating to species phenotypes, or based on phylogenetic proxies for trait relationships. This model can used to predict the observed state of the network, given our uncertainty due to spatial and temporal stochasticity. Or the model can be used to predict the links within a new network, based on the presence of a novel species in the assemblage. From these networks, we can estimate structural properties, such as connectance and nestedness, again accounting for our uncertainty in our proposed model. In this paper, we review the methods proposed to build models of species interactions, emphasizing each method’s utility for predicting the position of a novel species in the network. 
 
+#An ideal model of species interactions
+
+  Before comparing the many proposed models of species interactions, we must decide on a set of optimal criteria. While there is unlikely to be any single method that meets all our expectations, by defining a set of standards, we can more transparently judge the relative merits of each method for our particular goal. Our foremost goal is to generate a prediction of the links among co-occurring species based on an estimated probability of interaction. This prediction should come with a statement of uncertainty, regarding our confidence based on empirical data. This method should make reasonable assumptions about the interdependence of observations, and be relatively insensitive to low sampling effort. The mechanism determining the links should be clear and grounded within ecological theory. Given this ecological mechanism, we can then use our method to make a prediction about the placement of a new species in the network based on our fitted model. 
+
 ##Models of species interactions
 ### Regression-based Models
 The simplest model of species interactions is
@@ -60,11 +64,18 @@ $$ Y_{i,j} \sim Bernoulli(\rho_{i,j})$$
 $$ logit(\rho_{i,j}) = \alpha_{i,j} + \beta_{i,j} * x $$
 
 In which a link between species i and j is a Bernoulli trial with a probability of success i,j. The probability of success will vary based some ecological principle (x), for example, the similarity in function traits among species i and j:
+
+eq. V
+
 $$x_{i,j}= f(Trait_i,Trait_j)$$
 
-  A variety of trait-matching functions may be biologically plausible; the absolute value of the difference between traits, a binary difference (e.g. $trait_i > trait_j$), or potentially non-linear models based on tradeoffs in foraging efficiency. Alternatively, the covariate may represent the phylogenetic relatedness of species, or their relative response to a given environmental variable. Regardless of the exact form of regression, this framework satisfies two important goals: it allows for estimates of uncertainty in species interactions, and it provides a mechanism shaping the probability of an interaction.
+  A variety of trait-matching functions may be biologically plausible, for example, the absolute value of the difference between traits (e.g. $|trait_i - trait_j|$) or a binary difference (e.g. $trait_i > trait_j$). Alternatively, the covariate may represent the phylogenetic relatedness of species, or their relative response to a given environmental variable. Regardless of the exact form of regression, this framework satisfies two important goals: it allows for estimates of uncertainty in species interactions, and it provides a mechanism shaping the probability of an interaction.
 
-  Yet our model so far does not fully capture the varied sources of uncertainty that stem from analysis of species interactions. We have only captured the uncertainty in the process model, the inherent temporal or spatial stochasticity in our ecological process of interest (Hooten and Hobbs). We may need to also account for the uncertainty in the observation model, the ability to detect interactions given that they occur. The seperation of the observation and process model translates our ecological mechanism into specific predictions about empirical data. For binary networks, one straightforward way to account for the observation of interactions is to model the detectability of network interactions.
+
+What if we have many potential sets of interacting traits, or the interactions among traits may be non-linear? In some cases, we cannot provide a simple trait-matching function (eg V), but must use a tool to infer the best possible combination of traits among co-occuring species that predicts interactions. 
+_[Ben Weinstein: here is a spot for a paragraph on machine learning, random forest approaches, where we do not know the traits of interest, might have non-linear relationships.]_
+
+   Our model so far does not fully capture the varied sources of uncertainty that stem from analysis of species interactions. We have only captured the uncertainty in the process model, the inherent temporal or spatial stochasticity in our ecological process of interest (Hooten and Hobbs). We may need to also account for the uncertainty in the observation model, the ability to detect interactions given that they occur. The separation of the observation and process model translates our ecological mechanism into specific predictions about empirical data. For binary networks, one straightforward way to account for the observation of interactions is to model the detectability of network interactions.
 
 eq iv. 
 
@@ -73,13 +84,12 @@ $$ \phi_{i,j} = \omega_{i,j} * z_{i,j}$$
 $$z_{i,j} \sim Bernoulii(\rho_{i,j})$$
 $$ logit(\rho_{i,j}) = \alpha_{i,j} + \beta_{i,j} * x $$  
 
-Where the observation of a link between species i and species j at time k is a bernoulli trial with a probability $\phi_{i,j}$, which is the outcome of the detectability of an interaction ($\omega_{i,j}$) and the latent state ($z_{i,j}$). This latent state is the true, but unobserved, existance of a link, as predicted by our ecological mechanism of interestion (see eq IV). The benefit of this approach is that differentiates the probability of detection from the probability of occurrence. In addition, because we have explicitly defined some temporal window (k), interactions with different levels of sampling effort can be directly compared.
+Where the observation of a link between species i and species j at time k is a Bernoulli trial with a probability $\phi_{i,j}$, which is the outcome of the detectability of an interaction ($\omega_{i,j}$) and the latent state ($z_{i,j}$). This latent state is the true, but unobserved, existence of a link, as predicted by our ecological mechanism of interest (see eq IV). The benefit of this approach is that differentiates the probability of detection from the probability of occurrence. In addition, because we have explicitly defined some temporal window (k), interactions with different levels of sampling effort can be directly compared.
 
 ### Logic-based methods
 ### Occurrence-based methods 
 ### Non-parametric methods
 
-* Machine Learning
 * Fourth Corner
 * Randomization
 
