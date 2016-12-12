@@ -72,7 +72,7 @@ $$x_{i,j}= f(Trait_i,Trait_j)$$
 What if we have many potential sets of interacting traits, or if there are non-linear functions among multiple traits? In some cases, we cannot provide a simple trait-matching function (eg V), but must use a statistical tool to infer the best possible combination of traits among co-occuring species that predicts interactions. 
 _[Ben Weinstein: here is a spot for a paragraph on machine learning, random forest approaches, where we do not know the traits of interest, might have non-linear relationships.]_
 
-   Our potential model so far does not fully capture the varied sources of uncertainty that stem from analysis of species interactions. We have only captured the uncertainty in the process model, the inherent temporal or spatial stochasticity in our ecological process of interest (Hooten and Hobbs). We may need to also account for the uncertainty in the observation model, the ability to detect interactions given that they occur. The separation of the observation and process model translates our ecological mechanism into specific predictions about empirical data. For binary networks, one straightforward way to account for the observation of interactions is to model the detectability of network interactions.
+   So far, we have only captured the uncertainty in the process model, the inherent temporal or spatial stochasticity in our ecological process of interest (Hooten and Hobbs). We may need to also account for the uncertainty in the observation model, the ability to detect interactions given that they occur. The separation of the observation and process model translates our ecological mechanism into specific predictions about empirical data. For binary networks, one straightforward way to account for the observation of interactions is to model the detectability of network interactions.
 
 eq iv. 
 
@@ -81,7 +81,7 @@ $$ \phi_{i,j} = \omega_{i,j} * z_{i,j}$$
 $$z_{i,j} \sim Bernoulii(\rho_{i,j})$$
 $$ logit(\rho_{i,j}) = \alpha_{i,j} + \beta_{i,j} * x $$  
 
-Where the observation of a link between species i and species j at time k is a Bernoulli trial with a probability $\phi_{i,j}$, which is the outcome of the detectability of an interaction ($\omega_{i,j}$) and the latent state ($z_{i,j}$). This latent state is the true, but unobserved, existence of a link, as predicted by our ecological mechanism of interest (see eq IV). The benefit of this approach is that differentiates the probability of detection from the probability of occurrence. In addition, because we have explicitly defined some temporal window (k), interactions with different levels of sampling effort can be directly compared.
+Where the observation of a link between species i and species j at time k is a Bernoulli trial with a probability $\phi_{i,j}$, which is the outcome of the detectability of an interaction ($\omega_{i,j}$) and the latent state ($z_{i,j}$). This latent state is the true, but unobserved, existence of a link, as predicted by our ecological mechanism of interest (see eq IV). Our ability to detect this latent state depends on the detectability of interaction ($\omega_{i,j}$). The benefit of this approach is that differentiates the probability of detection from the probability of occurrence. In addition, because we have explicitly defined some temporal window (k), interactions with different levels of sampling effort can be directly compared.
 
 ### Logic-based methods
 ### Occurrence-based methods 
