@@ -9,17 +9,15 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-__Note:__ This data needs more curation and can be used to play with methods, but needs taxonomic unification, better traits, etc... before looking at results.
-
 Data collected in 2015 across 16 sites. Each site was visited 7 times. Each time we recorded three data types:
 
-- All interactions in 100 m transects
-- Focal interactions to selected plants
+- All interactions in 100 m transects (`transects`)
+- Focal interactions to selected plants (`focal`)
 - Oportunistic new interactions not detected by the last two methods (`out`)
 
 there are three datasets so far:
 
-__Interactions:__ This include `transect` and `visitation` data. Data can be used pooled (1445 interactions (5643 visits) general question abouts trait matching) or splited by site (`Site_ID`) and `Round`. Pollinator traits in this table are measured per individual.
+__Interactions:__ This include `transect`, `visitation` and `out` data. Data can be used pooled (2067 interactions (5732 visits) general question abouts trait matching) or splited by site (`Site_ID`) and `Round`. 
 ```{r}
 int <- read.csv("interactions.csv", h = T)
 head(int)
@@ -37,12 +35,18 @@ __pollinator traits:__
 pol_tr <- read.csv("traits_pollinators.csv", h = T)
 head(pol_tr)
 ```
+__NOTE:__ Quite a lot of NA's still.
+ 
 Challenges:  
 - We are not sure which trait are driving interactions (quite generalized system)  
-- Need to inegrate traits across different orders  
+- Need to inegrate traits across different orders (e.g. tongue lengths can be set to zero for coleoptera)
 
-__plant traits:__ Not ready yet
-
+__plant traits:__ 
+```{r}
+plant_tr <- read.csv("traits_plants.csv", h = T)
+head(plant_tr)
+```
+Those are complete.
 
 __independent plant flower abundance__: Ca be combined by Site_ID and Round
 ```{r}
@@ -50,8 +54,19 @@ flw <- read.csv("flowers.csv", h = T)
 head(flw)
 ```
 
-__Phylogenies__ work in progress.  
-- Plants: Phylomatic  
-- Pollinators: Available at genus level only  
+__Phylogenies__ Need to do.
+- Plants: Phylomatic? 
+- Pollinators: Bees available at genus level only. For other orders I have no idea.
+
+# combining data
+
+Question: should we use the pooled data for the package?
+```{r}
+head(dat)
+temp <- merge(int, pol_tr, by.x = "Pollinator_gen_sp", by.y = "Pollinator_gen_sp", all.x = TRUE)
+temp2 <- merge(temp, plant_tr, by.x = "Plant_gen_sp", by.y = "Plant_gen_sp", all.x = TRUE)
+pooled_data <- temp2
+head(pooled_data)
+```
 
 

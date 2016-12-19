@@ -1,312 +1,298 @@
-"pol","IT","tongue","tongue_estimated"
-"Agapanthia_asphodeli",NA,NA,NA
-"Amegilla_albigena",3.63471240290829,6.55249104973398,NA
-"Amegilla_fasciata",3.76554227562375,6.69682972450306,NA
-"Amegilla_quadrifasciata",4.54112361902704,8.39298978957889,NA
-"Ammophila_heydini",1.77537307692308,NA,NA
-"Andrena_abrupta",NA,NA,NA
-"Andrena_angustior",NA,NA,NA
-"Andrena_carbonaria",2.33284097228163,NA,NA
-"Andrena_cinerea",NA,NA,NA
-"Andrena_ferrugineicrus",NA,NA,NA
-"Andrena_fertoni",NA,NA,NA
-"Andrena_flavipes",3.15107972552538,NA,NA
-"Andrena_florea",2.84477498538492,NA,NA
-"Andrena_hispana",NA,NA,NA
-"Andrena_hispania",3.39401649617808,NA,NA
-"Andrena_hispanica",NA,NA,NA
-"Andrena_humilis",2.91857543963352,NA,NA
-"Andrena_labialis",3.08200921316367,NA,NA
-"Andrena_morio",NA,NA,NA
-"Andrena_nigroaenaea",3.42488583890612,NA,NA
-"Andrena_nigroaenea",NA,NA,NA
-"Andrena_nitidiuscula",NA,NA,NA
-"Andrena_ovatula",2.05042319860555,NA,NA
-"Andrena_rhyssonota",3.33550907879242,NA,NA
-"Andrena_sp",2.55988467342539,NA,NA
-"Andrena_sp.",NA,NA,NA
-"Andrena_tenuistriata",NA,NA,NA
-"Andrena_thoracica",3.67094839322225,NA,NA
-"Andrena_vulpecula",NA,NA,NA
-"Anthaxia_sp",NA,NA,NA
-"Anthaxia_sp.",NA,NA,NA
-"Anthidiellum_strigatum",NA,NA,NA
-"Anthidium_septemspinosum",NA,NA,NA
-"Anthidium_septendentatum",NA,NA,NA
-"Anthidium_sticticum",NA,NA,NA
-"Anthophora_aestivalis",4.48279881235737,NA,NA
-"Anthophora_atroalba",4.60454815623484,8.1731077147016,NA
-"Anthophora_bimaculata",2.90164998183918,NA,NA
-"Anthophora_dispar",6.37196814669251,4.78866332734018,NA
-"Anthophora_hispanica",7.96127464941062,7.18146583746455,NA
-"Anthophora_NA",NA,NA,NA
-"Anthophora_plumipes",4.58988206570625,NA,NA
-"Anthophora_retusa",4.98891867442387,NA,NA
-"Anthophora_sp",4.35223254143619,NA,NA
-"Anthophora_sp.",4.58168062209562,NA,NA
-"Apis_mellifera",3.60830892583766,2.76879794670193,NA
-"Arachnospila_sp",NA,NA,NA
-"Asilido_sp",NA,NA,NA
-"Attagenus_trifasciatus",NA,NA,NA
-"Bembecinus_carpetanus",2.76876501927305,NA,NA
-"Bembix_oculata",3.93893007185002,NA,NA
-"Bembix_sp",NA,NA,NA
-"Bibio_sp.",NA,NA,NA
-"Bibionido_NA",NA,NA,NA
-"Bombilido_NA",NA,NA,NA
-"Bombilido_sp",NA,NA,NA
-"Bombilius_sp.",2.11792299107143,3.88343191964286,NA
-"Bombus_terrestris",5.83614787107334,4.90473116260862,NA
-"Bombylella_atra",2.13782700706921,1.97455536043946,NA
-"Bombylidae_NA",2.50060030726628,NA,NA
-"Bombylius_fimbriatus",4.71137887454764,NA,NA
-"Bombylius_sp",4.1431225705992,5.82125299886652,NA
-"Bombylius_sp.",NA,NA,NA
-"Bombylius_torquatus",4.12310171854907,4.45764436867774,NA
-"Bombyluis_torquatus",3.68827106457976,4.1828067431555,NA
-"Brachycoleus_triangularis",NA,NA,NA
-"Cacyreus_marshalli",NA,NA,NA
-"Calamobius_filum",NA,NA,NA
-"Callophrys_rubi",NA,NA,NA
-"Cantharis_funesta",NA,NA,NA
-"Cantharis_fusca",NA,NA,NA
-"Celastrina_argiolus",NA,NA,NA
-"Ceratina_callosa",1.3321423260155,NA,NA
-"Ceratina_cuburbitina",1.77560342136324,2.21921827411167,NA
-"Ceratina_cucurbitina",1.39412403681925,2.07265277777778,NA
-"Ceratina_mocsary",NA,NA,NA
-"Ceratina_sp",NA,NA,NA
-"Ceratina_sp.",NA,NA,NA
-"Cerceris_arenaria",2.48497176591376,NA,NA
-"Cerceris_rybyensis",2.66030473052434,NA,NA
-"Cerceris_sabulosa",1.87473105124159,NA,NA
-"Cerceris_sp",1.88986172910387,NA,NA
-"Cerceris_sp.",NA,NA,NA
-"Cerocoma_schaefferi",NA,NA,NA
-"Chalicodoma_sicula",NA,NA,NA
-"Chasmaptoterus_illiger",NA,NA,NA
-"Chasmaptoterus_villasulus",NA,NA,NA
-"Chasmaptoterus_villosulus",NA,NA,NA
-"Chasmaptoterus_zonatus",NA,NA,NA
-"Chasmatopterus_illigeri",NA,NA,NA
-"Chasmatopterus_villasulus",NA,NA,NA
-"Chryptocephalus_sp",NA,NA,NA
-"Chrysomela_americana",NA,NA,NA
-"Chrysura_refulgens",2.45540540540541,NA,NA
-"Coelioxys_sp",NA,NA,NA
-"Colletes_abeillei",NA,NA,NA
-"Colletes_nigricans",NA,NA,NA
-"Colletes_sp",NA,NA,NA
-"Colletes_sp.",NA,NA,NA
-"Colpa_quinquecinta",1.99979218736836,NA,NA
-"Colpa_quinquecintasppoccidentalis",2.44039428234435,NA,NA
-"Conopidae_NA",NA,NA,NA
-"Corynis_sp.",NA,NA,NA
-"Dasypoda_albimana",2.92170670981035,NA,NA
-"Dasypoda_argentata",4.76791722950732,NA,NA
-"Dasypoda_cingulata",3.54957364426355,NA,NA
-"Dasypoda_crasiccornis",3.36300775734587,NA,NA
-"Dasypoda_crassicornis",3.0263673948119,2.3648675500597,NA
-"Dasypoda_crassipes",NA,NA,NA
-"Dasypoda_hirtipes",3.59025631703327,NA,NA
-"Dasypoda_iberica",2.62775114466604,NA,NA
-"Dasypoda_sp",NA,NA,NA
-"Dasypoda_sp.",NA,NA,NA
-"Dasypoda_visnaga?",NA,NA,NA
-"Dasypogon_sp",4.42821059255639,1.68003612055538,NA
-"Derelomus_chamaerops",NA,NA,NA
-"Dilophus_sp",NA,NA,NA
-"Dischistus_senex",5.15823661128112,10.3174310325578,NA
-"Dischistus_sp",4.45017703405518,13.8055012781712,NA
-"Dolichovespula_sp",NA,NA,NA
-"Empidido_sp",NA,NA,NA
-"Empis_lusitanicum",NA,NA,NA
-"Empis_NA",NA,NA,NA
-"Empis_sp",0.768898020979777,NA,NA
-"Empis_sp.",NA,NA,NA
-"Empis_tessellata",2.27153240410695,NA,NA
-"Empis_testacea",NA,NA,NA
-"Episyrphus_balteatus",2.55702069630288,NA,NA
-"Eristalinus_megacephalus",4.71353838394716,NA,NA
-"Eristalinus_taeniops",4.11878167762062,1.86978354060318,NA
-"Eristalis_arbustorum",2.32349213648979,NA,NA
-"Eristalis_similis",4.11891787832281,NA,NA
-"Eristalis_sp",NA,NA,NA
-"Eristalis_tenax",NA,NA,NA
-"Eucera_bolivari",3.5859516328668,NA,NA
-"Eucera_caspica",4.12274292871308,NA,NA
-"Eucera_chrysopyga",3.46274018745354,NA,NA
-"Eucera_codinai",3.79452522805312,5.54862701339026,NA
-"Eucera_collaris",3.85776524657317,NA,NA
-"Eucera_elongatula",3.36627535267776,NA,NA
-"Eucera_elongulata",3.36434311150094,NA,NA
-"Eucera_hispalensis",NA,NA,NA
-"Eucera_hispaliensis",4.77806043552458,NA,NA
-"Eucera_notata",4.14729100852168,4.4880438695613,NA
-"Eucera_sp",3.78863704002495,NA,NA
-"Eucera_sp.",NA,NA,NA
-"Eucera(Synhalonia)_alternans",5.01576507978547,4.00008442031385,NA
-"Eucera(Synhalonia)_rufa",4.59487344207756,10.9767987486966,NA
-"Euchloe_crameri",NA,NA,NA
-"Eumenes_sp",2.12988107959726,NA,NA
-"Exosoma_lusitanicum",NA,NA,NA
-"Exoxoma_lusitanicum",NA,NA,NA
-"Flavipanurgus_venustus",2.0170279974216,NA,NA
-"Glaucopsyche_alexis",NA,NA,NA
-"Graphosoma_lineatum",NA,NA,NA
-"Halictus_cremicornis",2.1405326985892,NA,NA
-"Halictus_quadricinctus",NA,NA,NA
-"Halictus_scabiosae",2.67959961279837,NA,NA
-"Halictus_sp",2.82142857142857,NA,NA
-"Halictus_tridivisus",NA,NA,NA
-"Heliophila_bimaculata",NA,NA,NA
-"Heliophylus_NA",NA,NA,NA
-"Heliophylus_sp",NA,NA,NA
-"Heliophylus_trivittatus",NA,NA,NA
-"Heliotaurus_ruficollis",NA,NA,NA
-"Heliotaurus_ruficullis",NA,NA,NA
-"Helophilus_trivittatus",NA,NA,NA
-"Heriades_crenulatus",NA,NA,NA
-"Heriades_truncorum",NA,NA,NA
-"Hoplitis_adunca",NA,NA,NA
-"Hoplitis_antigae",NA,NA,NA
-"Hoplitis_papaveris",NA,NA,NA
-"Hoplitis_sp",NA,NA,NA
-"Lachnaia_tristigmia",NA,NA,NA
-"Lasioglossum_albocintum",2.77451201825104,NA,NA
-"Lasioglossum_bimaculatum",NA,NA,NA
-"Lasioglossum_gemmeus",1.6661750774116,NA,NA
-"Lasioglossum_imminutum",2.21859278772874,NA,NA
-"Lasioglossum_imminutus",2.30117939089858,NA,NA
-"Lasioglossum_immunitum",NA,NA,NA
-"Lasioglossum_interruptum",1.78038558346047,NA,NA
-"Lasioglossum_leucozonium",NA,NA,NA
-"Lasioglossum_malachurum",1.97338440345089,NA,NA
-"Lasioglossum_mediterraneum",1.78345163819369,NA,NA
-"Lasioglossum_NA",NA,NA,NA
-"Lasioglossum_pauxillum",1.37398419325026,NA,NA
-"Lasioglossum_sexnotatum",1.93459367857858,NA,NA
-"Lasioglossum_sp",NA,NA,NA
-"Lasioglossum_sp.",NA,NA,NA
-"Lasioglossum_tridivisus",NA,NA,NA
-"Leptotes_pirithous",NA,NA,NA
-"Lestica_clypeata",1.70776857232606,NA,NA
-"Lomatia_sp",3.05566666666667,NA,NA
-"Lucilia_sp",NA,NA,NA
-"Lycaena_phlaeas",NA,NA,NA
-"Machimus_sp",4.22540451795041,NA,NA
-"Macroglosa_stellatarum",NA,NA,NA
-"Macroglossum_stellatarum",NA,NA,NA
-"Macrophya_montana",2.6522948933843,NA,NA
-"Malachius_abdominalis",NA,NA,NA
-"Malachius_sp",NA,NA,NA
-"Malachius_sp.",NA,NA,NA
-"Megachile_sp",NA,NA,NA
-"Megalodontes_capitalatus",NA,NA,NA
-"Megalodontes_sp.",NA,NA,NA
-"Megascolia_maculata",NA,NA,NA
-"Megascolia_maculataflavifrons",NA,NA,NA
-"Megascolia_maculatasspflavifrons",5.15245277757992,3.62234211190938,NA
-"Merodon_curculioides",NA,NA,NA
-"Merodon_sp",4.14762242918304,NA,NA
-"Merodon_sp.",NA,NA,NA
-"Mosca_NA",NA,NA,NA
-"Mosca_sp",NA,NA,NA
-"Muscidae_NA",NA,NA,NA
-"Myathropa_florea",4.19558239321053,NA,NA
-"Mycterus_curculioides",NA,NA,NA
-"Myopa_buccata",NA,NA,NA
-"Nemoptera_bipennis",NA,NA,NA
-"Nemotelus_sp",0.983978761716998,NA,NA
-"Nomada_agrestis",3.11614954362215,NA,NA
-"Nomada_banksianus",2.91208895799807,NA,NA
-"Nomada_calcaratus",1.75374827617996,NA,NA
-"Nomada_cephalotes",2.25117869540438,NA,NA
-"Nomada_dargius",2.14088767776018,NA,NA
-"Nomada_discrepans",0.99241244158585,NA,NA
-"Nomada_fucata",NA,NA,NA
-"Nomada_melathoracica",2.70777834190649,NA,NA
-"Nomada_merceti",1.681982800285,NA,NA
-"Nomada_sp",NA,NA,NA
-"Nómada_sp",NA,NA,NA
-"Nomada_succincta",NA,NA,NA
-"Nomia_discrepans",1.09611954173157,NA,NA
-"Opsilia_coerulescens",NA,NA,NA
-"Osmia_adunca",2.29954558888725,5.58469410373873,NA
-"Osmia_argyropyga",3.17676157682515,NA,NA
-"Osmia_aurulenta",NA,NA,NA
-"Osmia_bicornis",2.92229504432838,NA,NA
-"Osmia_caerulescens",NA,NA,NA
-"Osmia_fulviventris",NA,NA,NA
-"Osmia_latreillei",3.95580645890814,NA,NA
-"Osmia_leaiana",2.71783333333333,NA,NA
-"Osmia_rufa",NA,NA,NA
-"Osmia_sp",NA,NA,NA
-"Osmia_sp.",NA,NA,NA
-"Osmia_submicans",1.6043262409491,NA,NA
-"Osmia_tridentata",NA,NA,NA
-"Oxybelus_mucronatus",1.38459255942159,NA,NA
-"Oxythyrea_funesta",NA,NA,NA
-"Pangonius(Melapangonius)_micans",5.8327088886487,6.3860416309968,NA
-"Panurgus_banksianus",NA,NA,NA
-"Panurgus_calcaratus",561.503261743304,NA,NA
-"Panurgus_cephalotes",2.76487714456002,NA,NA
-"Panurgus_dargius",2.28244601734203,NA,NA
-"Panurgus_perezi",NA,NA,NA
-"Panurgus_sp",NA,NA,NA
-"Panurgus_venustus",NA,NA,NA
-"Papilio_machaon",NA,NA,NA
-"Parageron_sp.",1.9553307209758,1.65598565141306,NA
-"Pelecocera_tricinata",0.790322209284732,NA,NA
-"Philantus_triangulum",3.2605824473354,NA,NA
-"Pieris_brassicae",NA,NA,NA
-"Pieris_rapae",NA,NA,NA
-"Platynochaetus_setosus",4.22674818162444,NA,NA
-"Podalonia_tydei",1.77748222517775,NA,NA
-"Polistes_dominula",2.78803849140061,NA,NA
-"Polistes_sp.",NA,NA,NA
-"Potosia_cupraea",NA,NA,NA
-"Prionyx_kirbii",1.95686714612312,NA,NA
-"Protaetia_oblonga",NA,NA,NA
-"Pseudapis(Nomiapis)_diversipes",2.24528276116051,NA,NA
-"Pseudoanthidium_lituratum",NA,NA,NA
-"Pseudoanthidium_melanorum",NA,NA,NA
-"Psilothrix_viridicoerulea",NA,NA,NA
-"Psilotrix_viridicoerulea",NA,NA,NA
-"Psilotrix_viridicoeruleus",NA,NA,NA
-"Pyronia_bathseba",NA,NA,NA
-"Rhodanthidium_sticticum",NA,NA,NA
-"Rhyncomyia_cupraea",NA,NA,NA
-"Rhyncomyia_cuprea",3.62562101854359,NA,NA
-"Sarcophaga_sp",3.7562304737883,NA,NA
-"Scolia_hortorum",2.54207920792079,NA,NA
-"Sirphidae_sp.",NA,NA,NA
-"Sphaerophoria_scripta",1.51473146421763,NA,NA
-"Sphecodes_sp",2.95043552036199,NA,NA
-"Sphecodes_sp.",NA,NA,NA
-"Stenorrhina_lunata",NA,NA,NA
-"Stomorhina_lunata",NA,NA,NA
-"Strymon_sculi",NA,NA,NA
-"Syritta_pipiens",1.37297514286877,NA,NA
-"Syrphido_NA",NA,NA,NA
-"Syrphido_sp",0.990386676619435,NA,NA
-"Systoechus_sp",3.76585791645834,4.71326408250777,NA
-"Systropha_planidens",2.68311237336942,2.4145952568371,NA
-"Tabanus_sp",4.63856883238698,NA,NA
-"Tachysphex_denisi",NA,NA,NA
-"Tachysphex_panzeri",NA,NA,NA
-"Tenthredo(Elinora)_corynetes",2.21915433673469,NA,NA
-"Tenthredo(Elinora)_sp",NA,NA,NA
-"Thomysido_sp",NA,NA,NA
-"Tropinota_squalida",NA,NA,NA
-"Usia_sp",2.52354564163845,4.43385719146252,NA
-"Usia(micrusia)_sp",1.5187154374763,1.17087641384416,NA
-"Vanessa_atalanta",NA,NA,NA
-"Vanessa_cardui",NA,NA,NA
-"Vespidae_sp",NA,NA,NA
-"Vespula_germanica",3.66479637384281,NA,NA
-"Volucella_elegans",6.47845892567099,NA,NA
-"Xylocopa_cantabrita",5.46604261720652,NA,NA
-"Xylocopa_valga",8.13260868667247,NA,NA
-"Xylocopa_violacea",7.27958311794031,NA,NA
-"Zerynthia_rumina",NA,NA,NA
+"Pollinator_gen_sp","IT","tongue","family"
+"Ammophila heydini",1.77537307692308,NA,NA
+"Ancistrocerus biphalateratus",2.88195468819287,NA,NA
+"Ancistrocerus gazella",1.88986172910387,NA,NA
+"Andrena angustior",NA,NA,"Andrenidae"
+"Andrena cinerea",NA,NA,"Andrenidae"
+"Andrena ferrugineicrus",NA,NA,"Andrenidae"
+"Andrena fertoni",NA,NA,"Andrenidae"
+"Andrena flavipes",3.15107972552538,3.19026589399548,"Andrenidae"
+"Andrena hispania",3.39401649617808,3.42603074618822,"Andrenidae"
+"Andrena labialis",3.08200921316367,3.12310395707084,"Andrenidae"
+"Andrena nigroaenaea",3.42488583890612,NA,NA
+"Andrena nitidiuscula",NA,NA,"Andrenidae"
+"Andrena ovatula",2.05042319860555,2.111911095249,"Andrenidae"
+"Andrena rhyssonota",3.33550907879242,3.3693141608606,"Andrenidae"
+"Andrena sp",2.55988467342539,2.61334922804593,"Andrenidae"
+"Andrena tenuistriata",NA,NA,"Andrenidae"
+"Andrena vulpecula",NA,NA,"Andrenidae"
+"Anthaxia sp",NA,NA,NA
+"Anthidium septemspinosum",NA,NA,"Megachilidae"
+"Anthidium sticticum",NA,NA,"Megachilidae"
+"Anthophora aestivalis",4.74194366519535,9.49068890790627,"Apidae"
+"Anthophora atroalba",4.60454815623484,8.1731077147016,"Apidae"
+"Anthophora bimaculata",2.90164998183918,5.92268760256413,"Apidae"
+"Anthophora dispar",6.19293939423282,4.78866332734018,"Apidae"
+"Anthophora hispanica",7.96127464941062,7.18146583746455,"Apidae"
+"Anthophora retusa",4.98891867442387,9.96473539603702,"Apidae"
+"Anthophora sp",NA,NA,"Rhodomelaceae"
+"Apidae morpho1",NA,NA,NA
+"Apis mellifera",3.60830892583766,2.76879794670193,"Apidae"
+"Arachnospila sp",NA,NA,NA
+"Bembix oculata",3.93893007185002,NA,NA
+"Bibio sp",NA,NA,NA
+"Bombus terrestris",5.83614787107334,4.90473116260862,"Apidae"
+"Bombylella atra",2.13782700706921,1.97455536043946,NA
+"Bombylidae morpho1",2.50060030726628,NA,NA
+"Bombylius fimbriatus",4.71137887454764,NA,NA
+"Bombylius sp",4.1431225705992,5.82125299886652,NA
+"Bombylius torquatus",4.01439405505674,4.38893496229718,NA
+"Calliphora sp",NA,NA,NA
+"Ceratina callosa",1.3321423260155,2.80509907942333,"Apidae"
+"Ceratina cucurbitina",1.39412403681925,2.07265277777778,"Apidae"
+"Ceratina sp",NA,NA,"Apidae"
+"Cerceris arenaria",2.48497176591376,NA,NA
+"Cerceris morpho1",2.4242944141186,NA,NA
+"Cerceris sabulosa",1.87473105124159,NA,NA
+"Cerceris sp",NA,NA,NA
+"Cerocoma schaefferi",NA,NA,NA
+"Chasmatopterus illigeri",NA,NA,NA
+"Chasmatopterus villasulus",NA,NA,NA
+"Chrysura refulgens",2.45540540540541,NA,NA
+"Colletes abeillei",NA,NA,"Colletidae"
+"Colletes acutus",NA,NA,"Colletidae"
+"Colletes ligatus",NA,NA,"Colletidae"
+"Colletes nigricans",NA,NA,"Colletidae"
+"Colletes sp",NA,NA,"Colletidae"
+"Conopidae NA",NA,NA,NA
+"Dasypoda albimana",2.92170670981035,NA,"Melittidae"
+"Dasypoda argentata",4.76791722950732,NA,"Melittidae"
+"Dasypoda cingulata",3.54957364426355,NA,"Melittidae"
+"Dasypoda crassicornis",2.97228549293352,2.73464718974784,"Melittidae"
+"Dasypoda hirtipes",3.59025631703327,NA,NA
+"Dasypoda iberica",2.62775114466604,NA,"Melittidae"
+"Dasypoda sp",NA,NA,"Melittidae"
+"Dasypogon sp",4.42821059255639,1.50708323824775,NA
+"Dischistus senex",5.15823661128112,10.3174310325578,NA
+"Dischistus sp",4.45017703405518,13.8055012781712,NA
+"Empis morpho1",NA,NA,NA
+"Empis sp",NA,NA,"Empididae"
+"Empis tessellata",2.27153240410695,NA,NA
+"Empis testacea",NA,NA,NA
+"Episyrphus balteatus",2.55702069630288,NA,NA
+"Eristalinus taeniops",4.11878167762062,1.86978354060318,"Syrphidae"
+"Eristalis arbustorum",2.32349213648979,NA,"Syrphidae"
+"Eristalis similis",4.11891787832281,NA,NA
+"Eristalis sp",NA,NA,NA
+"Eristalis tenax",NA,NA,"Syrphidae"
+"Eucera alternans",4.9531234298771,4.00008442031385,"Apidae"
+"Eucera bolivari",3.5859516328668,NA,NA
+"Eucera chrysopyga",3.49845388581672,7.08762466805928,"Apidae"
+"Eucera codinai",3.79452522805312,5.54862701339026,"Apidae"
+"Eucera collaris",3.85776524657317,7.7850600694764,"Apidae"
+"Eucera elongulata",3.36434311150094,NA,NA
+"Eucera hispalensis",NA,NA,NA
+"Eucera notata",4.14729100852168,4.4880438695613,"Apidae"
+"Eucera sp",3.71138846140486,7.50126589639751,"Apidae"
+"Eumenes coarctatus",2.12988107959726,NA,NA
+"Exoxoma lusitanicum",NA,NA,NA
+"Flavipanurgus venustus",2.0170279974216,2.07887949064962,"Andrenidae"
+"Graphosoma lineatum",NA,NA,NA
+"Halictus scabiosae",2.67959961279837,3.55489024341564,"Halictidae"
+"Halictus sp",2.82142857142857,NA,NA
+"Halictus tridivisus",NA,NA,"Halictidae"
+"Heliotaurus ruficullis",NA,NA,NA
+"Helophilus bimaculata",NA,NA,NA
+"Helophilus sp",NA,NA,NA
+"Helophilus trivittatus",NA,NA,NA
+"Heriades crenulatus",NA,NA,"Megachilidae"
+"Heriades truncorum",NA,NA,"Megachilidae"
+"Hoplitis adunca",NA,NA,"Megachilidae"
+"Hoplitis papaveris",NA,NA,"Megachilidae"
+"Icneumonidae NA",NA,NA,NA
+"Lasioglossum albocintum",2.77451201825104,NA,NA
+"Lasioglossum bimaculatum",NA,NA,"Halictidae"
+"Lasioglossum imminutum",2.21859278772874,NA,NA
+"Lasioglossum imminutus",2.30117939089858,NA,NA
+"Lasioglossum immunitum",NA,NA,"Halictidae"
+"Lasioglossum leucozonium",NA,NA,"Halictidae"
+"Lasioglossum malachurum",1.97338440345089,2.65022233794082,"Halictidae"
+"Lasioglossum morpho1",NA,NA,NA
+"Lasioglossum sexnotatum",1.93459367857858,2.60019105651357,"Halictidae"
+"Lasioglossum sp",NA,NA,"Halictidae"
+"Lasioglossum tridivisus",NA,NA,NA
+"Lestica clypeata",1.70776857232606,NA,NA
+"Lomatia sp",3.05566666666667,NA,NA
+"Machimus sp",4.22540451795041,NA,NA
+"Macroglosa stellatarum",NA,NA,NA
+"Macroglossum stellatarum",NA,NA,NA
+"Macrophya montana",2.6522948933843,NA,NA
+"Malachius sp",NA,NA,NA
+"Megachile sp",NA,NA,"Megachilidae"
+"Megascolia maculatasspflavifrons",5.21760684000674,NA,NA
+"Merodon sp",3.40922619047619,NA,NA
+"Musca sp",1.8165539281722,NA,NA
+"Myathropa florea",4.19558239321053,NA,NA
+"Mycterus curculioides",NA,NA,NA
+"Nemotelus sp",0.983978761716998,NA,NA
+"Nomada agrestis",3.11614954362215,6.34239320272664,"Apidae"
+"Nomada fucata",2.3089558258755,4.75618350831274,"Apidae"
+"Nomada melathoracica",2.70777834190649,5.54227650820843,"Apidae"
+"Nomada merceti",1.681982800285,3.50887818871202,"Apidae"
+"Nomada sp",NA,NA,"Apidae"
+"Osmia adunca",2.29954558888725,5.58469410373873,NA
+"Osmia argyropyga",3.17676157682515,5.67213871178782,"Megachilidae"
+"Osmia bicornis",2.92229504432838,NA,NA
+"Osmia fulviventris",NA,NA,NA
+"Osmia leaiana",2.71783333333333,4.88309883422892,"Megachilidae"
+"Osmia sp",NA,NA,"Megachilidae"
+"Osmia submicans",1.6043262409491,2.94389683121393,"Megachilidae"
+"Osmia tridentata",NA,NA,NA
+"Oxythyrea funesta",NA,NA,NA
+"Pangonius micans",5.8327088886487,6.3860416309968,NA
+"Panurgus banksianus",2.91208895799807,2.95761961182001,"Andrenidae"
+"Panurgus calcaratus",1.88392736112506,1.94700673018493,"Andrenidae"
+"Panurgus cephalotes",2.63645253227111,2.68834513498551,"Andrenidae"
+"Panurgus dargius",2.19236343760812,2.25207014803335,"Andrenidae"
+"Panurgus sp",NA,NA,NA
+"Pelecocera tricinata",0.790322209284732,NA,NA
+"Pieris brassicae",NA,NA,"Pieridae"
+"Pieris rapae",NA,NA,"Pieridae"
+"Platynochaetus setosus",4.32092967966236,NA,NA
+"Potosia cupraea",NA,NA,NA
+"Prionyx kirbii",1.95686714612312,NA,"Sphecidae"
+"Pseudoanthidium lituratum",NA,NA,NA
+"Pseudoanthidium melanorum",NA,NA,NA
+"Psilothrix viridicoerulea",NA,NA,NA
+"Rhyncomyia cupraea",NA,NA,NA
+"Rhyncomyia cuprea",3.62562101854359,NA,NA
+"Scolia hortorum",2.54207920792079,NA,NA
+"Sphaerophoria scripta",1.51473146421763,NA,"Syrphidae"
+"Sphecodes sp",2.95043552036199,3.89914844128629,"Halictidae"
+"Syrphidae NA",NA,NA,NA
+"Systoechus sp",3.76585791645834,4.71326408250777,NA
+"Systropha planidens",2.68311237336942,2.4145952568371,"Halictidae"
+"Tabanus sp",4.63856883238698,NA,"Tabanidae"
+"Tenthredo corynetes",2.21915433673469,NA,NA
+"Tenthredo sp",NA,NA,NA
+"Tropinota squalida",NA,NA,NA
+"Trypoxylon morpho1",0.872371951219512,NA,NA
+"Trypoxylon sp",1.10840140201936,NA,"Crabronidae"
+"Usia sp",1.80580978152263,2.47606872489151,NA
+"Vespidae sp",NA,NA,NA
+"Vespula germanica",3.8605067952553,NA,"Vespidae"
+"Volucella elegans",6.47845892567099,NA,NA
+"Xylocopa cantabrita",5.46604261720652,10.8779158873548,"Apidae"
+"Xylocopa valga",8.13260868667247,15.9294317840042,"Apidae"
+"Xylocopa violacea",7.27958311794031,14.3219400743618,"Apidae"
+"Agapanthia asphodeli",NA,NA,NA
+"Amegilla albigena",3.63471240290829,6.55249104973398,"Apidae"
+"Amegilla fasciata",3.76554227562375,6.69682972450306,"Apidae"
+"Amegilla quadrifasciata",4.54112361902704,8.39298978957889,"Apidae"
+"Andrena abrupta",NA,NA,"Andrenidae"
+"Andrena carbonaria",2.33284097228163,NA,NA
+"Andrena florea",2.84477498538492,2.89195725105213,"Andrenidae"
+"Andrena humilis",2.91857543963352,2.96394371246512,"Andrenidae"
+"Andrena morio",NA,NA,"Andrenidae"
+"Andrena nigroaenea",NA,NA,"Andrenidae"
+"Andrena thoracica",3.67094839322225,3.69396701621015,"Andrenidae"
+"Andrenahispania NA",NA,NA,NA
+"Anthidiellum strigatum",NA,NA,"Megachilidae"
+"Anthidium septendentatum",NA,NA,NA
+"Anthophora plumipes",4.51066555761623,9.04587549522323,"Apidae"
+"Asilido NA",NA,NA,NA
+"Attagenus trifasciatus",NA,NA,NA
+"Bembecinus carpetanus",2.76876501927305,NA,NA
+"Bembix sp",NA,NA,NA
+"Bibionido NA",NA,NA,NA
+"Bombilius sp",2.11792299107143,3.88343191964286,NA
+"Bombyliidae NA",NA,NA,NA
+"Brachycoleus triangularis",NA,NA,NA
+"Buprestidae NA",NA,NA,NA
+"Cacyreus marshalli",NA,NA,NA
+"Calamobius filum",NA,NA,NA
+"Callophrys rubi",NA,NA,NA
+"Cantharis funesta",NA,NA,NA
+"Cantharis fusca",NA,NA,NA
+"Celastrina argiolus",NA,NA,"Lycaenidae"
+"Ceratina cuburbitina",1.77560342136324,2.21921827411167,NA
+"Ceratina mocsary",NA,NA,"Apidae"
+"Cerceris rybyensis",2.66030473052434,NA,NA
+"Chalicodoma sicula",NA,NA,NA
+"Chasmaptoterus illiger",NA,NA,NA
+"Chasmaptoterus villasulus",NA,NA,NA
+"Chasmaptoterus villosulus",NA,NA,NA
+"Chasmaptoterus zonatus",NA,NA,NA
+"Chinche NA",NA,NA,NA
+"Chryptocephalus sp",NA,NA,NA
+"Chrysomela americana",NA,NA,NA
+"Coelioxys sp",NA,NA,"Megachilidae"
+"Colpa quinquecinta",2.22009323485636,NA,NA
+"Corynis sp",NA,NA,NA
+"Dasypoda crasiccornis",3.36300775734587,NA,NA
+"Dasypoda crassipes",NA,NA,NA
+"Dasypoda visnaga",NA,NA,"Melittidae"
+"Derelomus chamaerops",NA,NA,NA
+"Dilophus sp",NA,NA,"Bibionidae"
+"Dolichovespula sp",NA,NA,NA
+"Empis lusitanicum",NA,NA,NA
+"Empis morpho2",0.768898020979777,NA,NA
+"Eodymerus posticus",2.30580244970889,NA,NA
+"Eristalinus megacephalus",4.71353838394716,NA,NA
+"Eucera caspica",3.58328213223563,7.25252721685565,"Apidae"
+"Eucera elongatula",3.36627535267776,6.83035466940649,"Apidae"
+"Eucera hispaliensis",4.77806043552458,9.56007229574598,"Apidae"
+"Eucera rufa",4.59487344207756,10.9767987486966,NA
+"Euchloe crameri",NA,NA,NA
+"Exosoma lusitanicum",NA,NA,NA
+"Glaucopsyche alexis",NA,NA,NA
+"Halictus cremicornis",2.1405326985892,NA,NA
+"Halictus quadricinctus",NA,NA,"Halictidae"
+"Heliophila bimaculata",NA,NA,NA
+"Heliotaurus ruficollis",NA,NA,NA
+"Hoplitis antigae",NA,NA,"Megachilidae"
+"Hoplitis sp",NA,NA,NA
+"Hylaeus variegatus",NA,NA,"Colletidae"
+"Lachnaia tristigmia",NA,NA,NA
+"Lasioglossum fulvipes",NA,NA,NA
+"Lasioglossum gemmeus",1.6661750774116,NA,NA
+"Lasioglossum interruptum",1.78038558346047,2.40089182362019,"Halictidae"
+"Lasioglossum mediterraneum",1.78345163819369,2.4048609480175,"Halictidae"
+"Lasioglossum pauxillum",1.37398419325026,1.87215392793586,"Halictidae"
+"Leptotes pirithous",NA,NA,NA
+"Lucilia sp",NA,NA,NA
+"Lycaena phlaeas",NA,NA,"Lycaenidae"
+"Malachius abdominalis",NA,NA,NA
+"Megalodontes capitalatus",NA,NA,NA
+"Megalodontes sp",NA,NA,NA
+"Megascolia maculata",5.13942196509456,3.62234211190938,NA
+"Meloidae NA",1.4815392781784,NA,NA
+"Mosca NA",1.62153902376107,NA,NA
+"Myopa buccata",NA,NA,NA
+"NA NA",NA,NA,NA
+"Nemoptera bipennis",NA,NA,NA
+"Nomada discrepans",0.99241244158585,2.11448259991234,"Apidae"
+"Nomada succincta",NA,NA,"Apidae"
+"Nomia discrepans",1.09611954173157,NA,NA
+"Opsilia coerulescens",NA,NA,NA
+"Osmia aurulenta",3.28,3.54,"Megachilidae"
+"Osmia caerulescens",NA,NA,"Megachilidae"
+"Osmia latreillei",3.95580645890814,7.00143788731162,"Megachilidae"
+"Osmia rufa",NA,NA,"Megachilidae"
+"Oxybelus mucronatus",1.38459255942159,NA,"Crabronidae"
+"Panurgus perezi",NA,NA,"Andrenidae"
+"Panurgus venustus",NA,NA,"Andrenidae"
+"Papilio machaon",NA,NA,"Papilionidae"
+"Parageron sp",1.9553307209758,1.65598565141306,NA
+"Philantus triangulum",3.2605824473354,NA,NA
+"Podalonia tydei",1.77748222517775,NA,"Sphecidae"
+"Polistes dominula",2.78803849140061,NA,NA
+"Polistes sp",NA,NA,NA
+"Protaetia oblonga",NA,NA,NA
+"Pseudapis diversipes",2.24528276116051,2.99984825391354,"Halictidae"
+"Psilotrix viridicoerulea",NA,NA,NA
+"Psilotrix viridicoeruleus",NA,NA,NA
+"Pyronia bathseba",NA,NA,NA
+"Reduviidae NA",NA,NA,NA
+"Rhodanthidium sticticum",NA,NA,"Megachilidae"
+"Sarcophaga sp",3.7562304737883,NA,NA
+"Stenorrhina lunata",NA,NA,NA
+"Stomorhina lunata",NA,NA,"Calliphoridae"
+"Strymon sculi",NA,NA,NA
+"Syritta pipiens",1.37297514286877,NA,"Syrphidae"
+"Tachysphex denisi",NA,NA,"Crabronidae"
+"Tachysphex panzeri",NA,NA,"Crabronidae"
+"Thomysido sp",NA,NA,NA
+"Vanessa atalanta",NA,NA,"Nymphalidae"
+"Vanessa cardui",NA,NA,"Nymphalidae"
+"Zerynthia rumina",NA,NA,NA
