@@ -3,49 +3,47 @@ Data description
 I. Bartomeus
 12/1/2016
 
-**Note:** This data needs more curation and can be used to play with methods, but needs taxonomic unification, better traits, etc... before looking at results.
-
 Data collected in 2015 across 16 sites. Each site was visited 7 times. Each time we recorded three data types:
 
--   All interactions in 100 m transects
--   Focal interactions to selected plants
+-   All interactions in 100 m transects (`transects`)
+-   Focal interactions to selected plants (`focal`)
 -   Oportunistic new interactions not detected by the last two methods (`out`)
 
 there are three datasets so far:
 
-**Interactions:** This include `transect` and `visitation` data. Data can be used pooled (1445 interactions (5643 visits) general question abouts trait matching) or splited by site (`Site_ID`) and `Round`. Pollinator traits in this table are measured per individual.
+**Interactions:** This include `transect`, `visitation` and `out` data. Data can be used pooled (2067 interactions (5732 visits) general question abouts trait matching) or splited by site (`Site_ID`) and `Round`.
 
 ``` r
 int <- read.csv("interactions.csv", h = T)
 head(int)
 ```
 
-    ##      Site_ID Round Frequency     data tongue_length       IT
-    ## 1 Aznalcazar     1         2 transect      4.788663 4.987944
-    ## 2    Bonares     1         2 transect            NA       NA
-    ## 3   El pinar     6         1      out      2.373156 2.597441
-    ## 4     Niebla     7         3 transect            NA 2.821429
-    ## 5    Bonares     7         2 transect            NA 2.679600
-    ## 6  La Rocina     4         7 transect            NA 2.950436
-    ##                    plant                 pol
-    ## 1     Teucrium_fruticans   Anthophora_dispar
-    ## 2       Cistus_ladanifer            Empis_sp
-    ## 3   Convolvulus_arvensis Systropha_planidens
-    ## 4      Taraxacum_vulgare         Halictus_sp
-    ## 5      Thymus_mastichina  Halictus_scabiosae
-    ## 6 Rosmarinus_officinalis        Sphecodes_sp
+    ##      Site_ID Round           Plant_gen_sp   Pollinator_gen_sp      Out
+    ## 1 Aznalcazar     1     Teucrium fruticans   Anthophora dispar transect
+    ## 2    Bonares     1       Cistus ladanifer       Empis morpho1 transect
+    ## 3    Elpinar     6   Convolvulus arvensis Systropha planidens      out
+    ## 4     Niebla     7      Taraxacum vulgare         Halictus sp transect
+    ## 5    Bonares     7      Thymus mastichina  Halictus scabiosae transect
+    ## 6   LaRocina     4 Rosmarinus officinalis        Sphecodes sp transect
+    ##   Pollinator_sex Frequency
+    ## 1           male         2
+    ## 2           male         2
+    ## 3           male         1
+    ## 4         female         3
+    ## 5         female         2
+    ## 6         female         7
 
 ``` r
 nrow(int)
 ```
 
-    ## [1] 1445
+    ## [1] 2067
 
 ``` r
 sum(int$Frequency, na.rm = TRUE)
 ```
 
-    ## [1] 5643
+    ## [1] 5732
 
 Challenges:
 - long tail of singletones
@@ -59,19 +57,43 @@ pol_tr <- read.csv("traits_pollinators.csv", h = T)
 head(pol_tr)
 ```
 
-    ##                       pol       IT   tongue tongue_estimated
-    ## 1    Agapanthia_asphodeli       NA       NA               NA
-    ## 2       Amegilla_albigena 3.634712 6.552491               NA
-    ## 3       Amegilla_fasciata 3.765542 6.696830               NA
-    ## 4 Amegilla_quadrifasciata 4.541124 8.392990               NA
-    ## 5       Ammophila_heydini 1.775373       NA               NA
-    ## 6         Andrena_abrupta       NA       NA               NA
+    ##              Pollinator_gen_sp       IT tongue     family
+    ## 1            Ammophila heydini 1.775373     NA       <NA>
+    ## 2 Ancistrocerus biphalateratus 2.881955     NA       <NA>
+    ## 3        Ancistrocerus gazella 1.889862     NA       <NA>
+    ## 4            Andrena angustior       NA     NA Andrenidae
+    ## 5              Andrena cinerea       NA     NA Andrenidae
+    ## 6       Andrena ferrugineicrus       NA     NA Andrenidae
+
+**NOTE:** Quite a lot of NA's still.
 
 Challenges:
 - We are not sure which trait are driving interactions (quite generalized system)
-- Need to inegrate traits across different orders
+- Need to inegrate traits across different orders (e.g. tongue lengths can be set to zero for coleoptera)
 
-**plant traits:** Not ready yet
+**plant traits:**
+
+``` r
+plant_tr <- read.csv("traits_plants.csv", h = T)
+head(plant_tr)
+```
+
+    ##             Plant_gen_sp         family flower_morphology      flower_form
+    ## 1         Anchusa azurea   Boraginaceae     Actinomorphic        disc bowl
+    ## 2  Andryala integrifolia     Asteraceae     Actinomorphic        disc bowl
+    ## 3   Arctotheca calendula     Asteraceae     Actinomorphic        disc bowl
+    ## 4       Armeria velutina Plumbaginaceae     Actinomorphic      restrictive
+    ## 5  Asphodelus fistulosus  Asphodelaceae     Actinomorphic        disc bowl
+    ## 6 Astragalus lusitanicus       Fabaceae       Zigomorphic very restrictive
+    ##   nectar_tube_diameter_mm nectar_tube_depth_mm flower_width_mm
+    ## 1                   3.686                7.974          18.265
+    ## 2                   0.490                5.800           0.490
+    ## 3                   0.480                3.800           0.480
+    ## 4                   6.540                8.040           9.000
+    ## 5                   0.000                0.000          25.000
+    ## 6                   5.950               11.900          16.800
+
+Those are complete.
 
 **independent plant flower abundance**: Ca be combined by Site\_ID and Round
 
@@ -80,14 +102,53 @@ flw <- read.csv("flowers.csv", h = T)
 head(flw)
 ```
 
-    ##      Site_ID Round Plot Plant_genus Plant_species Flower_abundance
-    ## 1 Aznalcazar     1    1  Asphodelus    fistulosus               50
-    ## 2 Aznalcazar     1    5    Teucrium     fruticans               12
-    ## 3 Aznalcazar     1    6    Teucrium     fruticans                1
-    ## 4 Aznalcazar     1    8  Rosmarinus   officinalis                6
-    ## 5 Aznalcazar     1    9      Cistus     ladanifer                1
-    ## 6 Aznalcazar     1    9  Rosmarinus   officinalis                8
+    ##      Site_ID Round           Plant_gen_sp Flower_abundance
+    ## 1 Aznalcazar     1  Asphodelus fistulosus               50
+    ## 2 Aznalcazar     1       Cistus ladanifer                1
+    ## 3 Aznalcazar     1 Rosmarinus officinalis               14
+    ## 4 Aznalcazar     1     Teucrium fruticans               13
+    ## 5 Aznalcazar     2 Rosmarinus officinalis               11
+    ## 6 Aznalcazar     2     Teucrium fruticans               24
 
-**Phylogenies** work in progress.
-- Plants: Phylomatic
-- Pollinators: Available at genus level only
+**Phylogenies** Need to do. - Plants: Phylomatic? - Pollinators: Bees available at genus level only. For other orders I have no idea.
+
+combining data
+==============
+
+Question: should we use the pooled data for the package?
+
+``` r
+temp <- merge(int, pol_tr, by.x = "Pollinator_gen_sp", by.y = "Pollinator_gen_sp", all.x = TRUE)
+temp2 <- merge(temp, plant_tr, by.x = "Plant_gen_sp", by.y = "Plant_gen_sp", all.x = TRUE)
+pooled_data <- temp2
+head(pooled_data)
+```
+
+    ##       Plant_gen_sp        Pollinator_gen_sp         Site_ID Round Out
+    ## 1 Acacia adealbata Lasioglossum leucozonium ConventodelaLuz     7 out
+    ## 2 Acacia adealbata Lasioglossum leucozonium ConventodelaLuz     7 out
+    ## 3 Acacia adealbata Lasioglossum leucozonium ConventodelaLuz     7 out
+    ## 4 Acacia adealbata     Eristalinus taeniops ConventodelaLuz     7 out
+    ## 5 Acacia adealbata     Eristalinus taeniops ConventodelaLuz     7 out
+    ## 6 Acacia adealbata             Eristalis sp ConventodelaLuz     7 out
+    ##   Pollinator_sex Frequency       IT   tongue   family.x family.y
+    ## 1           male         1       NA       NA Halictidae     <NA>
+    ## 2           male         5       NA       NA Halictidae     <NA>
+    ## 3           male         2       NA       NA Halictidae     <NA>
+    ## 4           male         2 4.118782 1.869784  Syrphidae     <NA>
+    ## 5         female         2 4.118782 1.869784  Syrphidae     <NA>
+    ## 6           <NA>         6       NA       NA       <NA>     <NA>
+    ##   flower_morphology flower_form nectar_tube_diameter_mm
+    ## 1              <NA>        <NA>                      NA
+    ## 2              <NA>        <NA>                      NA
+    ## 3              <NA>        <NA>                      NA
+    ## 4              <NA>        <NA>                      NA
+    ## 5              <NA>        <NA>                      NA
+    ## 6              <NA>        <NA>                      NA
+    ##   nectar_tube_depth_mm flower_width_mm
+    ## 1                   NA              NA
+    ## 2                   NA              NA
+    ## 3                   NA              NA
+    ## 4                   NA              NA
+    ## 5                   NA              NA
+    ## 6                   NA              NA

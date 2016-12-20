@@ -62,7 +62,6 @@ __Phylogenies__ Need to do.
 
 Question: should we use the pooled data for the package?
 ```{r}
-head(dat)
 temp <- merge(int, pol_tr, by.x = "Pollinator_gen_sp", by.y = "Pollinator_gen_sp", all.x = TRUE)
 temp2 <- merge(temp, plant_tr, by.x = "Plant_gen_sp", by.y = "Plant_gen_sp", all.x = TRUE)
 pooled_data <- temp2
