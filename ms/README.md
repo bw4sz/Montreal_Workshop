@@ -1,53 +1,29 @@
-# Manuscript Template
+# README
 
-This template is a way to make writing academic papers using `pandoc` and `markdown` simple.
+## Files of the manuscript
 
-To compile in draft mode, use `make`; to compile in preprint mode, use `make TYPE=preprint`. That's it.
+The manuscript is now organized in LaTeX format. There are currently seven files and two folders that includes all the files that are needed to construct the manuscript.
 
-## Is it standard markdown?
+1. **ms_interactions.tex** This file contains the main text of the manuscript. It is the central part of the manuscript.
 
-Almost. There are two differences:
+2. **ms_tables** This file calls the tables of the manuscript. If you need to add table, it first needs to be constructed as a independent .tex file, which will be included in the *tables* folder, following the a line needs to be added to the file, the line should look like this:
 
-1. You *need to* use `!{figure.id}`, on a single line, to determine where the figure will appear, `?{table.id}` for tables
-2. You *can* use `@id` in *CriticMarkup* to identify who wrote the comment
+\input{tables/new_table.tex}
 
-## What do you get?
+  * **tables** This folder contains the tables of the manuscript. There should be one file for each table.
 
-- `critic.sh` -- a shell script that will transform *CriticMarkup* into the commands used by LaTeX `trackchanges.sty`
-- `figures.py` -- a python script to deal with figures
-- `Makefile` -- just type `make`, boom, PDF
-- `plmt.tex` -- the LaTeX template
-- `trackchanges.sty` -- the LaTeX style file for track changes (released under the *GPL v2.0*!)
-- `refs.bib` and `vancouver-author-year.csl`, files for the example references
-- `ms.md` -- a template manuscript
-- `ms.pdf` -- an example manuscript
+3. **ms_fig** This file calls the figures of the manuscript.
 
-## What do you need?
+  * **Figures** This folder includes images that are used as figures (e.g. .png, .jpeg).
 
-- `pandoc` (> 1.13, if not the arrays in `YAML` won't render)
-- a (relatively well furnished) LaTeX distribution
-- `perl`
-- `python` and the `yaml` package
-- `make`
-- an idea for a manuscript
+4. **ms_basis.tex** This file includes all the command needed to format the manuscript. If  you do not need to go there don't !
 
+5. **ecology.bst** This file formats the bibliographic references using the ESA guidelines. This file is called in the *ms_basis.tex* file. I used this format simply because I do not like the basic LaTeX citation format.
 
+6. **references.bib** This file includes all the literature cited in the manuscript. All references need to be included in a BibTeX format. *This file is not used in the manuscript.* Actually, although some of the references in there are useful, many papers/books that were cited in the manuscript were not in the file. For this reasons, I constructed a new reference files that will hopefully later include all the reference in **references.bib**.
 
-## Plans
+7. **referencesNew.bib** This is the new reference file. This one is used in the manuscript.
 
-- do something with tables
+## How to build the manuscript
 
-## Known bugs
-
-- There may be issues when several annotated sentences are on the same line
-
-### Older computing environments
-
-The LaTeX templates and Makefile underlying this template were developed and tested with Ubuntu 14.04, Ubuntu 14.10, Fedora 21, and Fedora 22. Using older computing environments may cause issues, but a workaround may be possible. For example:
-
-* workaround for OS X 10.6.8, TeXLive 2013 [in this fork](https://github.com/ashander/PLMT) (for issues due to `grep` in Makefile and `twocolumn` in LaTeX template)
-
-## Unknown bugs
-
-Oh boy.
-
+Run the pdflatex build three times. This will ensure that the new references and citations are included properly in the pdf version of the manuscript.
