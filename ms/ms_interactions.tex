@@ -55,70 +55,79 @@ shape the evolution of phenotypes, and influence the stability of natural
 systems \cite{schleuning_predicting_2015}. A common tool for understanding
 interaction are ecological networks, in which each species (nodes) are connected
 based on the strength and direction of interactions (links)(Jordano 1987).
-Documenting and analyzing these networks is essential to understand the rules
-underlying pairwise species interactions (Bascompte et al. 2006), quantifying
-ecosystem functioning (Thomson et al 2012), and predicting the biodiversity
-consequences due to anthropogenic change (ref).
+Documenting and analyzing these networks is essential to better understand the
+rules underlying pairwise species interactions (Bascompte et al. 2006),
+quantifying ecosystem functioning (Thomson et al 2012), and predicting the
+biodiversity consequences due to anthropogenic change (ref).
 
-Species traits are at the core of biological interactions (Bartomeus et al.
-2016). In this paper, we defined traits as phenotypic adaptations to exploit abiotic or
-biotic resources. We used traits as our principal mechanism to explain when
-species can interact. The foremost requirement for species interactions is
-species co-occurrence, which is itself driven by traits through environmental
-filtering and local adaptation (Hillerislambers, Mayfield, but see Kraft). If
-species co-occur, they may interact if their respective traits promote the
-efficiency of resource extraction. In addition, traits can be represented by
-phylogenetic information, in which evolution history constrains trait evolution
-either directly through phylogenetic conservatism or indirectly through exposure
-to similiar environmental conditions (Graham and Wiens 2005).
+The foremost requirement for species interactions is species co-occurrence,
+which is itself driven by species traits through environmental filtering and
+local adaptation (Hillerislambers, Mayfield, but see Kraft). Knowing where
+species are located gives us insights into the interactions they may have, but
+to more deeply understand the mechanisms that influence the relationships among
+species, traits are necessary. As such, species traits are at the core of
+biological interactions (Bartomeus et al. 2016). Here, we defined traits as
+phenotypic or genotypic adaptations, that may vary through time, to exploit
+abiotic or biotic resources. Note that this definition indirectly include
+phylogeny as a form of trait. From this definition, conceptually, if species
+co-occur, we assume that they may interact only if their respective traits
+promote the efficiency of resource extraction. When traits are represented by
+phylogenetic information, it is the evolution history that constrains trait
+evolution either directly through phylogenetic conservatism or indirectly
+through exposure to similiar environmental conditions (Graham and Wiens 2005).
 
-The traits promoting species co-occurrence and interaction may be hidden from
-us, either through lack of sampling, or due to their complexity. In these cases,
-the co-occurrence of species is used as a proxy for interaction. Given the
-correlation in distribution or abundance of species across space or time,
-co-occurrence based methods attempt to circumvent trait-based models by assuming
-that species which consistently co-occur, and whose populations co-vary, may
-have important biotic interactions. We therefore see co-occurrence based methods
-as an extension of specific trait-based models when the mechanisms promoting
-interactions are unknown or unobserved.
+In practice, the traits promoting species co-occurrence and interaction may be
+hidden from us, either because they were not sampled or due to their complexity.
+In such cases, co-occurrence of species is used as a proxy for interaction.
+Given the correlations in occurrence or abundance of species across space or
+through time, co-occurrence based methods attempt to circumvent trait-based
+models by assuming species that consistently co-occur, and whose populations
+co-vary, may have important biotic interactions. In this context, co-occurrence
+based methods are used to describe the potential relationships species may have
+while trait-based models consider the mechanisms promoting interactions.
 
 In spite of increasing efforts, it is unlikely that ecologists will empirically
 document the enormous number of interactions existing in nature
 (Morales-Castilla et al. 2015). Therefore, complementing field work with models
 of species interactions is a promising avenue for understanding the complexity
-of the natural world(ref). While direct inference will often be preferable, many
-interactions are rare, infrequent, or impossible to detect by human observation.
-Model-based inference for ecological networks provides three important aspects,
-i) it establishes mechanistic relationships among species, ii) it estimates
-uncertainty given empirical observation, and iii) it provides an avenue to
-predict future interactions. We follow Poisot (2015) and Cazelles (2016) in
-formulating our general conceptual model of species interactions (Fig. 1). There
-is a pool of potential interactions, termed a metaweb, in which species could
-interact based on co-occurrence. Any given observation we make is an attempt to
-recover these relationships using empirical data. We use these data to fit a
-model based on either species taxonomic identity or phenotypic characteristics.
-This model can used to predict the interactions among observed species, given
-the uncertainty due to spatial and temporal stochasticity of interactions, or a
-new network, based on the presence of a novel species in the assemblage. From
-these predictions, we can estimate structural network properties, such as
-connectance and nestedness, while simultaneously propagating our uncertainty
-throughout the analysis. In this paper, we review the methods proposed to build
-models of species interactions, emphasizing each method's utility for predicting
-the position of a novel species in the network.
+of the natural world(ref). While direct inference is often preferable, many
+interactions are rare, infrequent, or impossible to detect through human
+observation. Model-based inference for ecological networks provides three
+important aspects to characterize species interactions, i) it establishes
+mechanistic relationships among species, ii) it estimates uncertainty given
+empirical observation, and iii) it provides an avenue to predict future
+interactions. We follow Poisot (2015) and Cazelles (2016) in formulating our
+general conceptual model of species interactions (Fig. 1). There is a pool of
+true interactions, a metaweb, in which individuals of different species co-occur
+resulting in interactions among species. Any given observation we make on this
+metaweb is an attempt to recover the relationships among species using empirical
+data. Based on these data, model(s) are built to characterize and elucidate the
+relationships among species. Some models rely exclusively co-occurrence of
+individuals of different species at particular locations and may also include
+information on phylogenetic history and species traits. These models can than be
+used to predict the interactions among observed species, given an uncertainty
+due to the spatial and/or temporal stochasticity of the interactions. With these
+models it is also possible to define new network, based on the presence of a
+novel species in the assemblage. From these predictions, we can estimate
+structural network properties, such as connectance and nestedness, while
+simultaneously propagating our uncertainty throughout the analysis. In this
+paper, we reviewed the methods proposed to build models of species interactions,
+emphasizing each method's utility for predicting the position of a novel species
+in the network.
 
 From this conceptual framework, we can decide on a set of optimal criteria to
-compare existing models. While there is unlikely to be any single method that
-meets all our expectations, by defining a set of standards, we can more
-transparently judge the relative merits of each method for our particular goal.
-Our foremost goal is to generate a prediction of the links among co-occurring
-species based on an estimated probability of interaction. This prediction should
-come with a statement of uncertainty regarding our confidence in parameter
-estimates based on empirical data. An ideal method will make reasonable
-assumptions about the interdependence of observations, and be relatively
-insensitive to low sampling effort. The mechanism determining the links among
-species should be clear and grounded within ecological theory, such that we can
-use our method to make a prediction about the placement of a new species in the
-network based on a fitted model.
+compare existing approaches. While it is unlikely that any single method meets all
+our expectations, by defining a set of standards, we can more transparently
+judge the relative merits of each method to reach particular goals. The most
+important aspect of a method is for it to generate accurate prediction of the
+links among co-occurring species based on an estimated probability of
+interaction. This prediction should come with a statement of uncertainty
+regarding our confidence in parameter estimates based on empirical data. An
+ideal method would also be able to make reasonable assumptions about the interdependence of
+observations, and be insensitive to low sampling effort. The
+mechanism determining the links among species should be clear and grounded
+in ecological theory such that we can use our method to make a prediction
+about the placement of a new species in the network based on a fitted model.
 
 \subsection{Models of species
 interactions}\label{models-of-species-interactions}
@@ -310,6 +319,72 @@ abundances via effects in fitness (Bartomeus et al. 2016).
 \section{Boxes}\label{potential-boxes}
 
 \subsection{Soil ecology}\label{soil-ecology}
+
+A handful of soil is the home of countless number of organisms. Soils host about
+the quarter of Earth biodiversity (Decaëns et al 2006) and is recognised as the
+third biotic frontier (André et al 1994). But three crucial points arise when
+dealing with soil biodiversity and soil biotic interactions, (i) it is hard to
+observe organisms without destroying their habitat, (ii) most of soil organisms
+are tiny and cannot be bred or manipulated and (iii) soil organisms are prone to
+a “Linnean deficit”. Biotic interactions in soils are shaped by soil
+specificities that lead to an intense entanglement of trophic and non-trophic
+interactions. For instance, soils are physically structured by the activity of
+ecosystem engineers (earthworms, termites, ants, roots) that modifies, by their
+own niche construction, the accessibility to resources for other soil organisms
+(Jones et al 1994).
+
+Body size of soil organisms ranges from nanometric scale (phage, bacteria) to
+decimetric one (earthworms, moles, etc), leading to nested home ranges. Soils
+are highly organized environments (in the three dimensions and in time). This
+permits high level of niche segregation (to diminish competition) and numerous
+way to escape from predators. On the most famous example of soil trophic network
+comes from short grass meadows in Colorado (Hunt et al. 1987), in which nodes
+were a mix of taxa, feeding guilds and pools of organic matter. The observation
+of soil species interactions is hard and interaction can be inferred by various
+ways. In the case of trophic interaction, this can be achieved through, for
+example, gut content analyses (observation-based or DNA-based), (bio)chemical
+analyses (eg PLFA, stable isotopes content), predator-prey body size
+relationship, co-occurrence analysis, machine learning or a combination of them
+(Digelet al 2014). Given the lack of knowledge on microbes’ biology and ecology,
+co-occurrence is often interpreted as interaction (Barberan et al 2012).
+Conversely to the green-world hypothesis (predator limitation of herbivores can
+cascade to facilitate plant growth), soil food webs are assumed to be bottom-up
+controlled detritus-based communities, but yet the ecosystem role of predators
+in detrital food webs is less explored. Models of energy fluxes through soil
+trophic networks remains rare (de Vries et al 2013), and nutrient cycling is
+generally ignored while connecting above and belowground trophic networks (Zou
+et al 2016). Hence, soil food webs studies are mainly descriptive and have poor
+predictive ability.
+
+Given the importance of plant for humankind, it is crucial to understand the how
+multiple interactions control plant production for food, fibre and wood. Soils
+are the place of numerous symbiotic relationships between plants and bacteria
+(eg Rhizobia) or fungi (mycorrhiza). The soil microbial loop an example of
+hypothesis that links multiple partners of the rhizospheric microbial food web
+to explain protozoa (predators) effects on plant growth. As carbon-rich root
+exudates (high C to N ratio) are continuously released into the plant
+rhizosphere, those soil bacteria that consume the exudates need other sources of
+nitrogen to support their growth. It is suggested that the bacteria therefore
+increase their assimilation of indigenous soil organic nitrogen. When protozoa
+subsequently consume the bacteria, part of this nitrogen will be released into
+the soil inorganic nitrogen pool, which will increase the nitrogen pool
+available for plant uptake. It has also been demonstrated that signal molecules
+emitted by invertebrates can mediate plant growth and plant disease immunity
+(resistance or recovery). Interactions between soil organisms and roots also
+shape the plant community assembly and the aboveground trophic interactions, up
+to fourth levels (plant-herbivore-parasite-parasitoïd).
+
+Recently, DNA-based approach has been democratised to study co-occurrence of
+cryptic interactions like Ericaceous plant-fungus symbioses (Toju et al 2016),
+earthworm-gut bacteria symbioses (Moller et al 2015) or predator-prey
+interactions (Bohan xxx). The tremendous development of next-generation DNA
+sequencing will surely provide the most comprehensive and accurate measure of
+trophic links in ecosystems, regardless of the size of organisms and without a
+priori on the species consumed by a given organism, by matching sequences
+amplified from the gut content to wide gene databases (Pompanon et al. 2012).
+Finally, the integration of biogeography and network theory will yield important
+results and further our understanding and forecasting ability of species
+interactions, in a context of global changes.
 
 \subsection{Climate changes and alien
 species}\label{climate-changes-and-alien-species}
