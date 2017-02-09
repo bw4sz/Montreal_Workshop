@@ -152,3 +152,65 @@ head(pooled_data)
     ## 4                   NA              NA
     ## 5                   NA              NA
     ## 6                   NA              NA
+
+Reshaping the dataset to the alienR format (`as.alienData()`)
+=============================================================
+
+Extract pieces of data and convert them as arguments of the as.alienData() function.
+
+    @param interactPair A data.frame with species name in the two first columns (two interacting species), the strength of the interaction in the third column (see details) and location (in space or time) where the species was found in the following columns where species were found (see details).
+    @param coOcc A square symmetric matrix of 0s and 1s that define co-occurence patterns among pairs of species.
+    @param coAbund A square symmetric matrix that includes any types of values, defining co-abundance patterns among pairs of species.
+    @param interact A square non-symmetric matrix that presents the interaction includes any types of values.
+    @param siteSp A matrix or a data.frame where each column is a species.
+    @param siteEnv A matrix or a data.frame where each column is a descriptor of the sites.
+    @param traitSp A matrix or a data.frame where each column is a trait characterizing all species.
+    @param traitInd A matrix or a data.frame where each column is a trait characterizing an individual.
+    @param phylo A square symmetric matrix describing the phylogenetic relationships between pairs of all species (see details).
+    @param resCon A matrix or data.frame where rows are resources and columns are consumers.
+    @param location A factor defining a sample location (in space or through time) or a data.frame characterizing multiple locations.
+    @param scaleSiteEnv Logical. Whether the columns of X should be centred and divided by the standard deviation. Default is TRUE.
+    @param scaleTrait Logical. Whether the rows of Tr should be centred and divided by the standard deviation. Default is TRUE.
+    @param interceptSiteEnv Logical. Whether a column of 1s should be added to X. Default is TRUE.
+    @param interceptTrait Logical. Whether a row of 1s should be added to Tr. Default is TRUE.
+
+Location
+--------
+
+``` r
+int <- read.csv("interactions.csv", h = T)
+location <- as.factor(sort(unique(paste(as.character(int$Site_ID),as.character(int$Round),sep="-"))))
+head(location)
+```
+
+    ## [1] Aznalcazar-1 Aznalcazar-2 Aznalcazar-3 Aznalcazar-4 Aznalcazar-5
+    ## [6] Aznalcazar-6
+    ## 109 Levels: Aznalcazar-1 Aznalcazar-2 Aznalcazar-3 ... Villamanriquesur-7
+
+Pairwise Interactions
+---------------------
+
+``` r
+interactPair <- int[,c("Plant_gen_sp","Pollinator_gen_sp","Frequency")]
+interactPair$location <- as.factor(paste(as.character(int$Site_ID),as.character(int$Round),sep="-"))
+names(interactPair) <- c("plant","pol","freq","location")
+head(interactPair)
+```
+
+    ##                    plant                 pol freq     location
+    ## 1     Teucrium fruticans   Anthophora dispar    2 Aznalcazar-1
+    ## 2       Cistus ladanifer       Empis morpho1    2    Bonares-1
+    ## 3   Convolvulus arvensis Systropha planidens    1    Elpinar-6
+    ## 4      Taraxacum vulgare         Halictus sp    3     Niebla-7
+    ## 5      Thymus mastichina  Halictus scabiosae    2    Bonares-7
+    ## 6 Rosmarinus officinalis        Sphecodes sp    7   LaRocina-4
+
+traitInd
+--------
+
+**Aims**: Sex for individual pollinator
+
+traitSp
+-------
+
+**Aims**: Combines pollinator and plants
