@@ -8,7 +8,8 @@
 % Double space
 \doublespacing
 
-\section{Title:}\label{title}
+\section{Title:}
+\label{title}
 
 \begin{itemize}
   \item Inferring species interactions from ecological data
@@ -44,7 +45,11 @@ manuscript.}
 \emph{Target Journals}: Methods in Ecology and Evolution, Ecological Monographs,
 Annual Review of Ecology, Evolution, and Systematics.
 
-\section{Introduction}\label{introduction}
+\section*{Abstract}
+\label{abstract}
+
+\section*{Introduction}
+\label{introduction}
 
 Biotic interactions form the backbone of biodiversity
 \cite{bascompte_plant-animal_2007}. Understanding the strength, direction, and
@@ -88,92 +93,139 @@ while trait-based models consider the mechanisms promoting interactions.
 
 In spite of increasing efforts, it is unlikely that ecologists will empirically
 document the enormous number of interactions existing in nature
-(Morales-Castilla et al. 2015). Therefore, complementing field work with models
+(Morales-Castilla et al. 2015). Therefore, complementing fieldwork with models
 of species interactions is a promising avenue for understanding the complexity
-of the natural world(ref). While direct inference is often preferable, many
+of the natural world (ref). While direct inference is often preferable, many
 interactions are rare, infrequent, or impossible to detect through human
 observation. Model-based inference for ecological networks provides three
-important aspects to characterize species interactions, i) it establishes
-mechanistic relationships among species, ii) it estimates uncertainty given
-empirical observation, and iii) it provides an avenue to predict future
+important aspects to characterize species interactions, 1) it establishes
+mechanistic relationships among species, 2) it estimates uncertainty given
+empirical observation, and 3) it provides an avenue to predict future
 interactions. We follow Poisot (2015) and Cazelles (2016) in formulating our
-general conceptual model of species interactions (Fig. 1). There is a pool of
-true interactions, a metaweb, in which individuals of different species co-occur
-resulting in interactions among species. Any given observation we make on this
-metaweb is an attempt to recover the relationships among species using empirical
-data. Based on these data, model(s) are built to characterize and elucidate the
-relationships among species. Some models rely exclusively co-occurrence of
-individuals of different species at particular locations and may also include
-information on phylogenetic history and species traits. These models can than be
-used to predict the interactions among observed species, given an uncertainty
-due to the spatial and/or temporal stochasticity of the interactions. With these
-models it is also possible to define new network, based on the presence of a
-novel species in the assemblage. From these predictions, we can estimate
-structural network properties, such as connectance and nestedness, while
-simultaneously propagating our uncertainty throughout the analysis. In this
-paper, we reviewed the methods proposed to build models of species interactions,
-emphasizing each method's utility for predicting the position of a novel species
-in the network.
+general conceptual model of species interactions (Figure \ref{fig:concept}).
+There is a pool of true interactions, a metaweb, in which individuals of
+different species co-occur resulting in interactions among species. Any given
+observation we make on this metaweb is an attempt to recover the relationships
+among species using empirical data. Based on these data, model(s) are built to
+characterize and elucidate the relationships among species. Some models rely
+exclusively co-occurrence of individuals of different species at particular
+locations and may also include information on phylogenetic history and species
+traits. These models can than be used to predict the interactions among observed
+species, given an uncertainty due to the spatial and/or temporal stochasticity
+of the interactions. With these models it is also possible to define new
+networks, based on the presence of new species in the assemblage. From these
+predictions, we can estimate structural network properties such as connectance
+and nestedness, while simultaneously propagating our uncertainty throughout the
+analysis. In this paper, we reviewed the methods proposed to build models of
+species interactions, emphasizing each method's utility for predicting the
+position of a novel species in the network.
 
 From this conceptual framework, we can decide on a set of optimal criteria to
-compare existing approaches. While it is unlikely that any single method meets all
-our expectations, by defining a set of standards, we can more transparently
+compare existing approaches. While it is unlikely that any single method meets
+all our expectations, by defining a set of standards, we can more transparently
 judge the relative merits of each method to reach particular goals. The most
 important aspect of a method is for it to generate accurate prediction of the
 links among co-occurring species based on an estimated probability of
 interaction. This prediction should come with a statement of uncertainty
 regarding our confidence in parameter estimates based on empirical data. An
-ideal method would also be able to make reasonable assumptions about the interdependence of
-observations, and be insensitive to low sampling effort. The
-mechanism determining the links among species should be clear and grounded
-in ecological theory such that we can use our method to make a prediction
-about the placement of a new species in the network based on a fitted model.
+ideal method would also be able to make reasonable assumptions about the
+interdependence of observations, and be insensitive to low sampling effort. The
+mechanism determining the links among species should be clear and grounded in
+ecological theory such that we can use our method to make a prediction about the
+placement of a new species in the network based on a fitted model.
 
-\subsection{Models of species
-interactions}\label{models-of-species-interactions}
+\section*{Methods}\label{methods}
 
-\subsubsection{Regression-based Models}\label{regression-based-models}
+One goal of this paper is to frame the different techniques used to model
+ecological networks within a conceptual framework that would allow ecologists to
+efficiently choose which technique to use with regard to various properties of
+the methods and the type of ecological questions they can answer. A way to
+assess the different properties of the modelling techniques is to compare them
+based on specific criteria. We defined three criteria, formulated as questions,
+that can be used to qualitatively compare the methods used to model ecological
+networks: 1) Can the method account for the uncertainty in species
+observations?; 2) Does the method provide ecological mechanisms to infer the
+probability of species interactions?; and 3) Can the method be used to predict
+an novel interaction?
 
-The simplest model of species interactions is
+In addition to qualitative comparison, we also provide a quantitative comparison
+of methods for inferring species interactions. From a quantitative perspective,
+we are interested in methods that: 1) accurately reflect the true underlying
+relationships among species, 2) are insensitive to sampling effort, and 3) make
+reasonable assumptions about the interdependence of species observations. To
+quantitatively compare the different methods, we used simulated and reference
+empirical data to establish benchmarks that will later be used to compare the
+accuracy and sensitivity of currently proposed methods.
 
-eq i.
+\subsection*{Modelling ecological networks - A diversity of methods}
+\label{models-of-species-interactions}
 
-\[Y_{i,j} = \rho_{i,j}\] Where the probability of interaction among species i
-and species j is a fixed value (\(\rho_{i,j}\)). Using empirical data, we might
-try to estimate this value by dividing the number of observations by the total
-number of observations for any pair of species. While this is straightforward,
-why might it be insufficient? Foremost, it contains no estimate of uncertainty.
-The estimate is given without any consideration for the variance due to
-sampling, spatial or temporal stochasticity. To add uncertainty, we draw our
-observations from a statistical distribution.
+When modelling ecological networks, there are different types of methods that
+have been proposed in the litterature. In this section, we presented the
+different techniques and group them based on their properties.
 
-eq ii.
+\subsubsection*{Co-occurrences models}
+\label{regression-based-models}
+%%% Regression-based models on co-occurrences subsubsection will probably have to be moved somewhere else to follow the structure of the Introduction where traits and phylogeny related methods are discussed firsts and co-occurrence methods are discussed later.
 
-\[ Y_{i,j} \sim Bernoulli(\rho_{i,j}) \]
+The simplest model of that can be designed to characterize the co-occurrence
+patterns between species $i$ and $j$ in matrix $Y$ can be defined as follow
 
-We can now estimate the probability of interaction, as well as the uncertainty
-based on sampling stochasticity. Yet this model is still unsatisfying. It is
-non-mechanistic, it depends wholly on species identity, and uses no ecological
-theory or inference. Therefore, it is difficult to ascribe meaning to a set of
-interactions, or understand how they might change in the future. We cannot use
-the inferences from data to make a prediction about a new species not in
-dataset.
+\begin{equation}
+  \label{eq:coOccSimple}
+  Y_{i,j} = \rho_{i,j}
+\end{equation}
 
-To make our model more useful, we might add a covariate, such that
+where the probability of interaction among species $i$ and $j$ is a fixed value
+($\rho_{i,j}$). Using empirical data, we might try to estimate this value by
+dividing the number of observations by the total number of observations for any
+pair of species. While this is straightforward, it is insufficient because it
+contains no estimate of uncertainty. The estimate is given without any
+consideration for the variance due to sampling, environmental, spatial or
+temporal stochasticity. This model is overly simple. By assuming that
+observations are randomly drawn from a statistical distribution with parameter
+$\rho_{i,j}$, we obtain a simple model that account for sampling stochasticity
+in the data.
 
-eq. iii
+\begin{equation}
+  \label{eq:coOccBern}
+  Y_{i,j} \sim \text{Bernoulli}(\rho_{i,j})
+\end{equation}
 
-\[ Y_{i,j} \sim Bernoulli(\rho_{i,j})\] \[ logit(\rho_{i,j}) = \alpha_{i,j} +
-\beta_{i,j} * x_{i,j} \]
+In equation \ref{eq:coOccBern}, we used a Bernoulli distribution, which assumes
+that $Y_{i,j}$ is either 0 or 1. If $Y_{i,j}$ includes other types of data (e.g.
+counts or weights) other distributions may be used instead. From equation
+\ref{eq:coOccBern}, we can now estimate the probability of interaction while
+accounting sampling stochasticity. Although this model is more informative than
+the one presented in equation \ref{eq:coOccSimple}, it is still unsatisfying
+because it depends wholly on species identity and uses no ecological theory or
+inference; in short it is not mechanistic. Therefore, it is difficult to ascribe
+meaning to the species association that could be highlighted by this model, or
+understand how they might change in the future. In addition, from this model, we
+cannot make a prediction about potential new species.
 
-In which a link between species i and j is a Bernoulli trial with a probability
-of success \(\rho_{i,j}\). The probability of success will vary based on some
-ecological principle (\(x_{i,j}\)), for example, the similarity in functional
-traits among species i and j:
+To make our model more ecologically relevant, we might add covariates $X_{i,j}$
+that influence the relationship among a pair of species
 
-eq. V
+\begin{equation}
+  \label{eq:coOccCov}
+  Y_{i,j} \sim \text{Bernoulli}(\rho_{i,j})
+  \text{logit}(\rho_{i,j}) = \alpha_{i,j}+\beta_{i,j}X_{i,j}
+\end{equation}
 
-\[x_{i,j}= f(Trait_i,Trait_j)\]
+where $\beta_{i,j}$ is a regression coefficient and $\alpha_{i,j}$ is the model
+intercept. In equation \ref{eq:coOccCov}, a link between species $i$ and $j$ is
+a Bernoulli trial with a probability of success $\rho_{i,j}$. The probability of
+success will vary based on some ecological principle ($x_{i,j}$) such as the
+similarity in functional traits among species $i$ and $j$:
+
+%%% GB: I am not sure if this equation is right... Need to check carefully.
+\begin{equation}
+  \label{eq:coOccTrait}
+  x_{i,j}= f(\text{Trait}_i,\text{Trait}_j)
+\end{equation}
+
+%%% ICI %%%
 
 A variety of trait-matching functions may be biologically plausible. For
 example, the absolute value of the difference between traits (e.g. \(|trait_i -
@@ -217,18 +269,18 @@ differentiates the probability of detection from the probability of occurrence.
 Importantly, because we have explicitly defined some temporal window (k),
 interactions with different levels of sampling effort can be directly compared.
 
-\subsubsection{Logic-based methods}\label{logic-based-methods}
+\subsubsection*{Logic-based methods}\label{logic-based-methods}
 
 {[}Ben Weinstein: For someone to fill in.{]}
 
-\subsubsection{Occurrence-based methods}\label{occurrence-based-methods}
+\subsubsection*{Occurrence-based methods}\label{occurrence-based-methods}
 
 {[}Ben Weinstein: For someone to fill in.{]}
 
-\subsubsection{Non-parametric methods}\label{non-parametric-methods}
+\subsubsection*{Non-parametric methods}\label{non-parametric-methods}
 
 The above methods are model based, that is, they largely use parametric
-distributions to estimate the liklihood of the data given estimated model
+distributions to estimate the likelihood of the data given estimated model
 parameters. An alternative approach is to use multivariate statistics to create
 association matrices. One such method is called fourth-corner analysis, which is
 a type of three table ordination (sometimes called `RLQ' analysis) (Doledec
@@ -247,36 +299,21 @@ the observed test statistic falls within the upper or lower 5th quantile of the
 null distribution, studies distinguish whether their results could have been
 generated at random given their sampling effort.
 
-\section{Methods}\label{methods}
-
-Our goal is provide a conceptual framework for the broad array of potential
-methods described above. Our three criteria for qualitative comparison are: 1)
-Can the method account for the uncertainty in species observations?, 2) Does it
-provide an ecological mechanism to infer the probability of species
-interactions, and 3) Can it be used to predict an novel interaction? In addition
-to qualitative comparison, we provide a quantitative analysis of methods for
-inferring species interactions. From a quantitative perspective, we are
-interested in methods which accurately reflect true relationships among data,
-are relatively insensitive to sampling effort, and make reasonable assumptions
-about the interdependence of species observations. We use a combination of
-simulated and empirical data to establish a benchmark dataset to compare the
-accuracy and sensitivity of currently proposed methods.
-
-\section{Quantitative comparisons}\label{quantitative-comparisons}
+\subsection*{Quantitative comparisons}\label{quantitative-comparisons}
 
 -\textgreater{} results: - cross comparison \textbar{} real and simulated data -
 -sensitivity \textbar{} - interpretation of probabilities - method description
 -for comparison
 
-\section{Results}\label{results}
+\section*{Results}\label{results}
 
-\section{Discussion}\label{discussion}
+\section*{Discussion}\label{discussion}
 
-\subsection{Perspectives}\label{perspectives}
+\subsection*{Perspectives}\label{perspectives}
 
 \begin{itemize} \item guidelines \item challenges \item next steps \end{itemize}
 
-\subsection{On the virtue of prediction of species
+\subsection*{On the virtue of prediction of species
 interactions.}\label{on-the-virtue-of-prediction-of-species-interactions.}
 
 In a context where novel ecosystems arise as a result of species invasions or
@@ -312,13 +349,13 @@ postulating that species abundances are the main drivers of interactions, are
 not incompatible with the underlying role of species traits shaping species
 abundances via effects in fitness (Bartomeus et al. 2016).
 
-\section{Literature cited}\label{literature-cited}
+\section*{Literature cited}\label{literature-cited}
 
 \bibliography{referencesNew}
 
-\section{Boxes}\label{potential-boxes}
+\section*{Boxes}\label{potential-boxes}
 
-\subsection{Soil ecology}\label{soil-ecology}
+\subsection*{Soil ecology}\label{soil-ecology}
 
 A handful of soil is the home of countless number of organisms. Soils host about
 the quarter of Earth biodiversity (Decaëns et al 2006) and is recognised as the
@@ -386,10 +423,11 @@ Finally, the integration of biogeography and network theory will yield important
 results and further our understanding and forecasting ability of species
 interactions, in a context of global changes.
 
-\subsection{Climate changes and alien
-species}\label{climate-changes-and-alien-species}
+\subsection*{Climate changes and alien species}
+\label{climate-changes-and-alien-species}
 
-\subsection{Community/evolution ecology}\label{communityevolution-ecology}
+\subsection*{Community/evolution ecology}
+\label{communityevolution-ecology}
 
 \input{ms_fig.tex}
 
