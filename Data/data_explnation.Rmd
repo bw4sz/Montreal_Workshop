@@ -17,7 +17,7 @@ Data collected in 2015 across 16 sites. Each site was visited 7 times. Each time
 
 there are three datasets so far:
 
-__Interactions:__ This include `transect`, `visitation` and `out` data. Data can be used pooled (2067 interactions (5732 visits) general question abouts trait matching) or splited by site (`Site_ID`) and `Round`.
+__Interactions:__ This include `transect`, `visitation` and `out` data. Data can be used pooled (1472 interactions ; 5706 visits) for general question abouts trait matching or splited by site (`Site_ID`) and `Round`.
 
 ```{r}
 int <- read.csv("interactions.csv", h = T)
@@ -36,11 +36,10 @@ __pollinator traits:__
 pol_tr <- read.csv("traits_pollinators.csv", h = T)
 head(pol_tr)
 ```
-__NOTE:__ Quite a lot of NA's still.
+__NOTE:__ Most IT (intertegular length) for bees are actually measured. For floral visitors without wings we measured torax width. When species is unknown (Genus sp.) we calculated the mean of the genus or family. Tongue length is measured only for a few individuals. Bees tongue length is estimated following Cariveau et al 2016. For families without an actual tongue the value is set to zero. For other species, tongue length is estimated to covary with allometry using same equation as for colletidaes (the shortest tongue bee family).
 
 Challenges:  
 - We are not sure which trait are driving interactions (quite generalized system)  
-- Need to inegrate traits across different orders (e.g. tongue lengths can be set to zero for coleoptera)
 
 __plant traits:__
 ```{r}
@@ -63,10 +62,14 @@ __Phylogenies__ Need to do.
 
 Question: should we use the pooled data for the package?
 ```{r}
+head(int)
+unique(int[,3:4]) #why NA NA
+unique(int$Plant_gen_sp[which(!int$Plant_gen_sp %in% plant_tr$Plant_gen_sp)]) #FUCK!
+unique(int$Pollinator_gen_sp[which(!int$Pollinator_gen_sp %in% pol_tr$Pollinator_gen_sp)])
 temp <- merge(int, pol_tr, by.x = "Pollinator_gen_sp", by.y = "Pollinator_gen_sp", all.x = TRUE)
 temp2 <- merge(temp, plant_tr, by.x = "Plant_gen_sp", by.y = "Plant_gen_sp", all.x = TRUE)
 pooled_data <- temp2
-head(pooled_data)
+head(pooled_data, 20)
 ```
 
 # Reshaping the dataset as input of the `as.alienData()` function
@@ -74,22 +77,51 @@ head(pooled_data)
 **Extract from the roxygen2 documentation:**
 
 ```
-#' @param idObs A data.frame which is mandatory and will help to check consistency and prevent errors among unique identifiers of each alienData arguments. The first column (idSite) contains unique identifier of where the observation was made. The second column (idTime) is not mandatory and contains temporal information: an unique identifier at the time the sample has been taken (needed for timeseries analysis). The third column (idSpcies) is an unique identifier of the species sampled at time (idTime) and location (idSite). The fourth column is an unique identifier of individu of species (idSp) observed at time (idTime) and location (idSite).
-#' @param interactPair A data.frame which contains interaction at the finest level (individus or species). The first two columns are idFrom and idTo and determine the sens of the interaction. idFrom and idTo are unique identifier of species or individu documented in the idObs data.frame. Finaly, the thrid column is the strength of the interaction (Please see details).
-#' @param coOcc A square symmetric matrix of 0s and 1s that define co-occurence patterns among pairs of species. If this matrix is not provided, the co-occurence matrix is derived from the coAbund matrix else the interactSp matrix (see return section).
-#' @param coAbund A square symmetric matrix that includes any types of values, defining co-abundance patterns among pairs of species. TODO: Not implemented yet.
-#' @param siteEnv A matrix or a data.frame where each column is a descriptor of the sites. TODO: siteEnv should cover the possibility that environmental variables could be taken at several times.
-#' @param traitSp A matrix or a data.frame where each column is a trait characterizing all species. The first column is a unique identifier of the species documented in idObs data.frame.
-#' @param traitInd A matrix or a data.frame where each column is a trait characterizing an individual. The first column is a unique identifier of the individu documented in idObs data.frame.
-#' @param phylo A square symmetric matrix describing the phylogenetic relationships between pairs of all species (see details). TODO: Not implemented yet.
-#' @param scaleSiteEnv Logical. Whether the columns of X should be centred and divided by the standard deviation. Default is TRUE.
-#' @param scaleTrait Logical. Whether the rows of Tr should be centred and divided by the standard deviation. Default is TRUE.
-#' @param interceptSiteEnv Logical. Whether a column of 1s should be added to X. Default is TRUE.
-#' @param interceptTrait Logical. Whether a row of 1s should be added to Tr. Default is TRUE.
-#'
-#' @details
-#'
-#' The strength of the interactions defined in the third column of \code{interactPair} can be a 0 if no direct interaction has been observed (defined as true absence of interaction) or any numerical value. Undocumented interactions among species or individus will be assumed as NA by default.
+#' @param idObs A data.frame which is mandatory and will help to check
+consistency and prevent errors among unique identifiers of each alienData
+arguments. The first column (idSite) contains unique identifier of where the
+observation was made. The second column (idTime) is not mandatory and contains
+temporal information: an unique identifier at the time the sample has been taken
+(needed for timeseries analysis). The third column (idSpcies) is an unique
+identifier of the species sampled at time (idTime) and location (idSite). The
+fourth column is an unique identifier of individu of species (idSp) observed at
+time (idTime) and location (idSite). 
+#' @param interactPair A data.frame which
+contains interaction at the finest level (individus or species). The first two
+columns are idFrom and idTo and determine the sens of the interaction. idFrom
+and idTo are unique identifier of species or individu documented in the idObs
+data.frame. Finaly, the thrid column is the strength of the interaction (Please
+see details). 
+#' @param coOcc A square symmetric matrix of 0s and 1s that define
+co-occurence patterns among pairs of species. If this matrix is not provided,
+the co-occurence matrix is derived from the coAbund matrix else the interactSp
+matrix (see return section). 
+#' @param coAbund A square symmetric matrix that
+includes any types of values, defining co-abundance patterns among pairs of
+species. TODO: Not implemented yet. 
+#' @param siteEnv A matrix or a data.frame
+where each column is a descriptor of the sites. TODO: siteEnv should cover the
+possibility that environmental variables could be taken at several times. 
+#' @param traitSp A matrix or a data.frame where each column is a trait
+characterizing all species. The first column is a unique identifier of the
+species documented in idObs data.frame. 
+#' @param traitInd A matrix or a data.frame where each column is a trait characterizing an individual. The first
+column is a unique identifier of the individu documented in idObs data.frame. 
+#' @param phylo A square symmetric matrix describing the phylogenetic relationships
+between pairs of all species (see details). TODO: Not implemented yet. 
+#' @param scaleSiteEnv Logical. Whether the columns of X should be centred and divided by
+the standard deviation. Default is TRUE. 
+#' @param scaleTrait Logical. Whether the rows of Tr should be centred and divided by the standard deviation. Default
+is TRUE. 
+#' @param interceptSiteEnv Logical. Whether a column of 1s should be
+added to X. Default is TRUE. 
+#' @param interceptTrait Logical. Whether a row of
+1s should be added to Tr. Default is TRUE. 
+#' @details 
+#'The strength of the interactions defined in the third column of \code{interactPair} can be a 0
+if no direct interaction has been observed (defined as true absence of
+interaction) or any numerical value. Undocumented interactions among species or
+individus will be assumed as NA by default.
 ```
 
 ```{r, echo=FALSE}
