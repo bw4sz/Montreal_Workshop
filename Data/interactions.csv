@@ -632,9 +632,6 @@
 "Aznalcazar",7,"Lavatera cretica","Dasypoda crassicornis","transect","BF119","female",1
 "Aznalcazar",7,"Lavatera cretica","Osmia leaiana","transect","BF640","female",2
 "Aznalcazar",7,"Cistus crispus","Eristalis arbustorum","transect","BF419","female",3
-"Aznalcazar",7,"NA NA","Tabanus morpho1","transect","BF459","female",NA
-"Aznalcazar",7,"NA NA","Tabanus morpho2","transect","BF460","female",NA
-"Aznalcazar",7,"NA NA","Tabanus morpho2","transect","BF461","female",NA
 "Aznalcazar",7,"Echium plantagineum","Lasioglossum morpho1","transect","BF632",NA,3
 "Niebla",7,"Cistus crispus","Panurgus dargius","transect","BF255","male",3
 "Niebla",7,"Andryala integrifolia","Panurgus banksianus","transect","BF256","female",3
@@ -664,7 +661,7 @@
 "Esparragal",7,"Armeria velutina","Tenthredo sp","transect","no_captured",NA,1
 "Esparragal",7,"Scabiosa atropurpurea","Halictus tridivisus","transect","BF79","male",1
 "Esparragal",7,"Armeria velutina","Usia morpho1","transect","BF374","female",1
-"Esparragal",7,"Armeria velutina","Apidae morpho1","transect","no_captured",NA,1
+"Esparragal",7,"Armeria velutina","Apidae NA","transect","no_captured",NA,1
 "Esparragal",7,"Armeria velutina","Halictus tridivisus","transect","BF84","male",4
 "Esparragal",7,"Chamaemelum fuscatum","Lasioglossum morpho1","transect","BF83",NA,3
 "Elpinar",6,"Convolvulus arvensis","Systropha planidens","out","BF91","male",1

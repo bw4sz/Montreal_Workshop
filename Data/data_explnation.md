@@ -153,64 +153,129 @@ head(pooled_data)
     ## 5                   NA              NA
     ## 6                   NA              NA
 
-Reshaping the dataset to the alienR format (`as.alienData()`)
-=============================================================
+Reshaping the dataset as input of the `as.alienData()` function
+===============================================================
 
-Extract pieces of data and convert them as arguments of the as.alienData() function.
+**Extract from the roxygen2 documentation:**
 
-    @param interactPair A data.frame with species name in the two first columns (two interacting species), the strength of the interaction in the third column (see details) and location (in space or time) where the species was found in the following columns where species were found (see details).
-    @param coOcc A square symmetric matrix of 0s and 1s that define co-occurence patterns among pairs of species.
-    @param coAbund A square symmetric matrix that includes any types of values, defining co-abundance patterns among pairs of species.
-    @param interact A square non-symmetric matrix that presents the interaction includes any types of values.
-    @param siteSp A matrix or a data.frame where each column is a species.
-    @param siteEnv A matrix or a data.frame where each column is a descriptor of the sites.
-    @param traitSp A matrix or a data.frame where each column is a trait characterizing all species.
-    @param traitInd A matrix or a data.frame where each column is a trait characterizing an individual.
-    @param phylo A square symmetric matrix describing the phylogenetic relationships between pairs of all species (see details).
-    @param resCon A matrix or data.frame where rows are resources and columns are consumers.
-    @param location A factor defining a sample location (in space or through time) or a data.frame characterizing multiple locations.
-    @param scaleSiteEnv Logical. Whether the columns of X should be centred and divided by the standard deviation. Default is TRUE.
-    @param scaleTrait Logical. Whether the rows of Tr should be centred and divided by the standard deviation. Default is TRUE.
-    @param interceptSiteEnv Logical. Whether a column of 1s should be added to X. Default is TRUE.
-    @param interceptTrait Logical. Whether a row of 1s should be added to Tr. Default is TRUE.
+    #' @param idObs A data.frame which is mandatory and will help to check
+    consistency and prevent errors among unique identifiers of each alienData
+    arguments. The first column (idSite) contains unique identifier of where the
+    observation was made. The second column (idTime) is not mandatory and contains
+    temporal information: an unique identifier at the time the sample has been taken
+    (needed for timeseries analysis). The third column (idSpcies) is an unique
+    identifier of the species sampled at time (idTime) and location (idSite). The
+    fourth column is an unique identifier of individu of species (idSp) observed at
+    time (idTime) and location (idSite). 
+    #' @param interactPair A data.frame which
+    contains interaction at the finest level (individus or species). The first two
+    columns are idFrom and idTo and determine the sens of the interaction. idFrom
+    and idTo are unique identifier of species or individu documented in the idObs
+    data.frame. Finaly, the thrid column is the strength of the interaction (Please
+    see details). 
+    #' @param coOcc A square symmetric matrix of 0s and 1s that define
+    co-occurence patterns among pairs of species. If this matrix is not provided,
+    the co-occurence matrix is derived from the coAbund matrix else the interactSp
+    matrix (see return section). 
+    #' @param coAbund A square symmetric matrix that
+    includes any types of values, defining co-abundance patterns among pairs of
+    species. TODO: Not implemented yet. 
+    #' @param siteEnv A matrix or a data.frame
+    where each column is a descriptor of the sites. TODO: siteEnv should cover the
+    possibility that environmental variables could be taken at several times. 
+    #' @param traitSp A matrix or a data.frame where each column is a trait
+    characterizing all species. The first column is a unique identifier of the
+    species documented in idObs data.frame. 
+    #' @param traitInd A matrix or a data.frame where each column is a trait characterizing an individual. The first
+    column is a unique identifier of the individu documented in idObs data.frame. 
+    #' @param phylo A square symmetric matrix describing the phylogenetic relationships
+    between pairs of all species (see details). TODO: Not implemented yet. 
+    #' @param scaleSiteEnv Logical. Whether the columns of X should be centred and divided by
+    the standard deviation. Default is TRUE. 
+    #' @param scaleTrait Logical. Whether the rows of Tr should be centred and divided by the standard deviation. Default
+    is TRUE. 
+    #' @param interceptSiteEnv Logical. Whether a column of 1s should be
+    added to X. Default is TRUE. 
+    #' @param interceptTrait Logical. Whether a row of
+    1s should be added to Tr. Default is TRUE. 
+    #' @details 
+    #'The strength of the interactions defined in the third column of \code{interactPair} can be a 0
+    if no direct interaction has been observed (defined as true absence of
+    interaction) or any numerical value. Undocumented interactions among species or
+    individus will be assumed as NA by default.
 
-Location
---------
+### Each section below transform your data into as.alienData args
+
+#### Get idObs
 
 ``` r
-int <- read.csv("interactions.csv", h = T)
-location <- as.factor(sort(unique(paste(as.character(int$Site_ID),as.character(int$Round),sep="-"))))
-head(location)
+# load data
+int <- read.csv("interactions.csv", h = T, stringsAsFactors=FALSE)
+flw <- read.csv("flowers.csv", h = T, stringsAsFactors=FALSE)
+plant_tr <- read.csv("traits_plants.csv", h = T, stringsAsFactors=FALSE)
+pol_tr <- read.csv("traits_pollinators.csv", h = T, stringsAsFactors=FALSE)
+
+# Create unique IDs for pollinator individus
+int$idPol <- seq(1,nrow(int),1)
+# Create unique IDs for plant individus
+int$idPlant <- seq(nrow(int)+1,nrow(int)+nrow(int),1)
+
+# subset pollinator and plant with their own ids
+pol <- unique(int[,c("Site_ID", "Round","Pollinator_gen_sp","idPol")])
+colnames(pol) <- c("idSite","idTime","idSp","idInd")
+plant <- unique(int[,c("Site_ID", "Round","Plant_gen_sp","idPlant")])
+colnames(plant) <- c("idSite","idTime","idSp","idInd")
+
+# Set idObs by merging both dfs
+idObs <- rbind(pol,plant)
+
+#Turn all columns as factor
+idObs <- as.data.frame(lapply(idObs,as.factor))
 ```
 
-    ## [1] Aznalcazar-1 Aznalcazar-2 Aznalcazar-3 Aznalcazar-4 Aznalcazar-5
-    ## [6] Aznalcazar-6
-    ## 109 Levels: Aznalcazar-1 Aznalcazar-2 Aznalcazar-3 ... Villamanriquesur-7
-
-Pairwise Interactions
----------------------
+#### Get InteracPair
 
 ``` r
-interactPair <- int[,c("Plant_gen_sp","Pollinator_gen_sp","Frequency")]
-interactPair$location <- as.factor(paste(as.character(int$Site_ID),as.character(int$Round),sep="-"))
-names(interactPair) <- c("plant","pol","freq","location")
-head(interactPair)
+interactPair <- int[,c("idPol","idPlant","Frequency")]
 ```
 
-    ##                    plant                 pol freq     location
-    ## 1     Teucrium fruticans   Anthophora dispar    2 Aznalcazar-1
-    ## 2       Cistus ladanifer       Empis morpho1    2    Bonares-1
-    ## 3   Convolvulus arvensis Systropha planidens    1    Elpinar-6
-    ## 4      Taraxacum vulgare         Halictus sp    3     Niebla-7
-    ## 5      Thymus mastichina  Halictus scabiosae    2    Bonares-7
-    ## 6 Rosmarinus officinalis        Sphecodes sp    7   LaRocina-4
+#### traitInd
 
-traitInd
---------
+Trait by individus
 
-**Aims**: Sex for individual pollinator
+``` r
+traitInd <- int[,c("idPol","Pollinator_sex")]
+traitInd$traitName <- "sex"
+traitInd <- traitInd[,c('idPol','traitName','Pollinator_sex')]
+names(traitInd)[3] <- 'value'
+```
 
-traitSp
--------
+#### traitSp
 
-**Aims**: Combines pollinator and plants
+Trait by species Note Removed family as a trait
+
+``` r
+library(reshape2)
+
+traitSpPlant <- melt(plant_tr[,-2],id=c("Plant_gen_sp"),value.name="value",variable.name="traitName")
+names(traitSpPlant)[1] <- "idSp"
+
+
+traitSpPol <- melt(pol_tr[,-4],id=c("Pollinator_gen_sp"),value.name="value",variable.name="traitName")
+names(traitSpPol)[1] <- "idSp"
+
+traitSp <- rbind(traitSpPlant,traitSpPol)
+traitSp$idSp <- as.factor(traitSp$idSp)
+
+#### errors
+# Some entries in traitSp (merge of pol_tr and plant_tr) are documenting species which are not present in `ìnt`, the interaction pairwise data.frame.
+removeSpecies <- levels(traitSp$idSp)[which(!levels(traitSp$idSp) %in% levels(idObs$idSp))]
+traitSp <- subset(traitSp, !idSp %in% removeSpecies )
+traitSp$idSp <- droplevels(traitSp$idSp)
+```
+
+#### Save all args of the as.alienData() into a RData file.
+
+``` r
+save(idObs,interactPair,traitSp,traitInd,file="./alienData/argsAlienData.RData")
+```

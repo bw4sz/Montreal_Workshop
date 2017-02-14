@@ -17,7 +17,7 @@ Data collected in 2015 across 16 sites. Each site was visited 7 times. Each time
 
 there are three datasets so far:
 
-__Interactions:__ This include `transect`, `visitation` and `out` data. Data can be used pooled (1472 interactions ; 5706 visits) for general question abouts trait matching or splited by site (`Site_ID`) and `Round`.
+__Interactions:__ This include `transect`, `visitation` and `out` data. Data can be used pooled (1469 interactions ; 5706 visits) for general question abouts trait matching or splited by site (`Site_ID`) and `Round`.
 
 ```{r}
 int <- read.csv("interactions.csv", h = T)
@@ -27,7 +27,11 @@ sum(int$Frequency, na.rm = TRUE)
 ```
 Challenges:  
 - long tail of singletones  
-- not all species are taxonomically resolved. What to do with specimens we ony know Genus?  
+- not all species are taxonomically resolved. What to do with specimens we ony know Genus?
+As for now:
+  . sp means we only know the genus
+  . morpho1,2,3 Unidentified species, but we know is a unique species diferent from anything else.
+  . Family NA- means we only know the family. 
 - Low sample size when you split per site and round  
 
 
@@ -36,10 +40,7 @@ __pollinator traits:__
 pol_tr <- read.csv("traits_pollinators.csv", h = T)
 head(pol_tr)
 ```
-__NOTE:__ Most IT (intertegular length) for bees are actually measured. For floral visitors without wings we measured torax width. When species is unknown (Genus sp.) we calculated the mean of the genus or family. Tongue length is measured only for a few individuals. Bees tongue length is estimated following Cariveau et al 2016. For families without an actual tongue the value is set to zero. For other species, tongue length is estimated to covary with allometry using same equation as for colletidaes (the shortest tongue bee family).
-
-Challenges:  
-- We are not sure which trait are driving interactions (quite generalized system)  
+__NOTE:__ Most IT (intertegular length) for bees are actual measures. For floral visitors without wings we measured torax width. When species is unknown (Genus sp.) we calculated the mean of the genus or family. Tongue length is measured only for a few individuals. Bees tongue length for most species is estimated following Cariveau et al 2016. For families without an actual tongue the value is set to zero. For other species, tongue length is estimated to covary with allometry using same equation as for colletidaes (the shortest tongue bee family).
 
 __plant traits:__
 ```{r}
@@ -48,6 +49,9 @@ head(plant_tr)
 ```
 Those are complete.
 
+Challenges:  
+- We are not sure which trait are driving interactions (quite generalized system)  
+
 __independent plant flower abundance__: Ca be combined by Site_ID and Round
 ```{r}
 flw <- read.csv("flowers.csv", h = T)
@@ -55,16 +59,25 @@ head(flw)
 ```
 
 __Phylogenies__ Need to do.
+
+```{r}
+#Nacho this is the final list of species
+pol_tr$Pollinator_gen_sp #277 entries. 
+#sp means we don't know the species. Ignore for phylogeny and use a random species in this genus
+#morpho1,2,3 Unidentified, but we know is a unique species. Idem. Ignore for phylogenies and use a species in genus as replacement?
+#Family NA- means we only know the family. It will be intersting to make sure those families are represented, e.g. by adding a ranom species?
+plant_tr$Plant_gen_sp
+```
+
 - Plants: Phylomatic?
 - Pollinators: Bees available at genus level only. For other orders I have no idea.
 
 # combining data
 
-Question: should we use the pooled data for the package?
 ```{r}
 head(int)
-unique(int[,3:4]) #why NA NA
-unique(int$Plant_gen_sp[which(!int$Plant_gen_sp %in% plant_tr$Plant_gen_sp)]) #FUCK!
+unique(int[,3:4])
+unique(int$Plant_gen_sp[which(!int$Plant_gen_sp %in% plant_tr$Plant_gen_sp)]) #ok
 unique(int$Pollinator_gen_sp[which(!int$Pollinator_gen_sp %in% pol_tr$Pollinator_gen_sp)])
 temp <- merge(int, pol_tr, by.x = "Pollinator_gen_sp", by.y = "Pollinator_gen_sp", all.x = TRUE)
 temp2 <- merge(temp, plant_tr, by.x = "Plant_gen_sp", by.y = "Plant_gen_sp", all.x = TRUE)
@@ -126,7 +139,7 @@ individus will be assumed as NA by default.
 
 ```{r, echo=FALSE}
 # Create dir for formatted data
-dir.create('./Data/alienData', showWarnings = FALSE)
+#dir.create('./Data/alienData', showWarnings = FALSE)
 ```
 
 ### Each section below transform your data into as.alienData args
@@ -141,18 +154,19 @@ plant_tr <- read.csv("traits_plants.csv", h = T, stringsAsFactors=FALSE)
 pol_tr <- read.csv("traits_pollinators.csv", h = T, stringsAsFactors=FALSE)
 
 # Create unique IDs for pollinator individus
-int$idPol <- seq(1,nrow(int),1)
+int$idPol <- seq(1,nrow(int),1) 
 # Create unique IDs for plant individus
-int$idPlant <- seq(nrow(int)+1,nrow(int)+nrow(int),1)
+int$idPlant <- seq(nrow(int)+1,nrow(int)+nrow(int),1) #technically, some individuus will be repeated, although there is not way to know. Good for now
 
 # subset pollinator and plant with their own ids
-pol <- unique(int[,c("Site_ID", "Round","Pollinator_gen_sp","idPol")])
+pol <- unique(int[,c("Site_ID", "Round","Pollinator_gen_sp","idPol")]) #The unique is unececsary here, right?
 colnames(pol) <- c("idSite","idTime","idSp","idInd")
-plant <- unique(int[,c("Site_ID", "Round","Plant_gen_sp","idPlant")])
+plant <- unique(int[,c("Site_ID", "Round","Plant_gen_sp","idPlant")]) #idem
 colnames(plant) <- c("idSite","idTime","idSp","idInd")
 
 # Set idObs by merging both dfs
 idObs <- rbind(pol,plant)
+#head(idObs)
 
 #Turn all columns as factor
 idObs <- as.data.frame(lapply(idObs,as.factor))
@@ -169,10 +183,11 @@ interactPair <- int[,c("idPol","idPlant","Frequency")]
 Trait by individus
 
 ```{r}
-traitInd <- int[,c("idPol","Pollinator_sex")]
+traitInd <- int[,c("idPol","Pollinator_sex")] 
 traitInd$traitName <- "sex"
 traitInd <- traitInd[,c('idPol','traitName','Pollinator_sex')]
 names(traitInd)[3] <- 'value'
+#head(traitInd)
 ```
 
 #### traitSp
@@ -182,12 +197,11 @@ Note Removed family as a trait
 
 ```{r}
 library(reshape2)
-
 traitSpPlant <- melt(plant_tr[,-2],id=c("Plant_gen_sp"),value.name="value",variable.name="traitName")
 names(traitSpPlant)[1] <- "idSp"
 
-
-traitSpPol <- melt(pol_tr[,-4],id=c("Pollinator_gen_sp"),value.name="value",variable.name="traitName")
+#head(pol_tr)
+traitSpPol <- melt(pol_tr[,c(1,2,5)],id=c("Pollinator_gen_sp"),value.name="value",variable.name="traitName") #I also remove order
 names(traitSpPol)[1] <- "idSp"
 
 traitSp <- rbind(traitSpPlant,traitSpPol)
@@ -195,6 +209,7 @@ traitSp$idSp <- as.factor(traitSp$idSp)
 
 #### errors
 # Some entries in traitSp (merge of pol_tr and plant_tr) are documenting species which are not present in `ìnt`, the interaction pairwise data.frame.
+#IB: This is ok! I collect traits for some species we do not have interactions.
 removeSpecies <- levels(traitSp$idSp)[which(!levels(traitSp$idSp) %in% levels(idObs$idSp))]
 traitSp <- subset(traitSp, !idSp %in% removeSpecies )
 traitSp$idSp <- droplevels(traitSp$idSp)
