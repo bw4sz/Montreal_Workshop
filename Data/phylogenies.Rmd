@@ -1,0 +1,112 @@
+---
+title: "Obtaining and assembling phylogenies"
+author: "Ignacio Morales-Castilla"
+date: "February 14, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Reading data
+```{r reading data in}
+## remove objects
+rm(list=ls())
+options(stringsAsFactors = FALSE)
+
+setwd("~/GitHub/Montreal_Workshop/Data")
+int <- read.csv("interactions.csv", h = T)
+#head(int)
+
+plants<-sub(" ","_",unique(int$Plant_gen_sp))
+insects<-sub(" ","_",unique(int$Pollinator_gen_sp))
+
+```
+
+## Loading plant phylogeny and matching taxonomy
+
+Out of the initial list of 56 plant species, 33 are in the phylogeny. For 21 of the remaining 23 species, we can assign the phylogenetic placement of a sister species (within the same genus). Two species can't be placed in this preliminary phylogeny (Mirtus_communis & Halimium_halimifolium). We could insert them as polytomies.
+
+```{r phylo plants, echo=FALSE}
+library(phytools)
+plant.phylo<-read.tree("Plants_phylo.tre")
+
+# plants not in phylogeny
+not.in.phylo<-plants[which(!plants%in%plant.phylo$tip.label)]
+
+# check if genus of these plants is in phylogeny
+genus.plants<-sapply(strsplit(plants, "_"), "[", 1)
+genus.phylo<-sapply(strsplit(plant.phylo$tip.label, "_"), "[", 1)
+genus.not.in.phylo<-genus.plants[which(!genus.plants%in%genus.phylo)]
+
+# retrieve sister species for those species not in phylo
+rep.each.genus<-table(genus.plants)
+new.names<-array(NA,length(not.in.phylo))
+for (i in 1:length(not.in.phylo)){
+  #print(i)
+  sps.i<-not.in.phylo[i]
+  genus.i<-strsplit(sps.i, "_")[[1]][1]
+  length(which(genus.phylo!=genus.i))
+  
+  if(!genus.i%in%genus.not.in.phylo){
+  if(length(which(genus.phylo==genus.i))>1){
+  phylo.genus.i<-drop.tip(plant.phylo,which(genus.phylo!=genus.i))
+  phylo.genus.i<-drop.tip(phylo.genus.i,which(phylo.genus.i$tip.label%in%plants))
+  
+  #if(rep.each.genus[genus.i]<length(phylo.genus.i$tip.label)){
+    new.names[i]<-sample(phylo.genus.i$tip.label,1)
+  } else {
+    new.names[i]<-plant.phylo$tip.label[which(genus.phylo==genus.i)]
+  }
+  } 
+}
+  
+# check that there are not repeated species
+#sum(which(new.names%in%plants))
+
+# replace names
+plants.new<-plants
+plants.new[which(!plants%in%plant.phylo$tip.label)]<-new.names
+plants.new[is.na(plants.new)]<-"Mirtus_communis"  
+
+```
+
+## The plant phylogeny
+Phylogenetic tree with 54 plant species 
+```{r phylo plants, echo=FALSE}
+# prune and obtain final plant phylogeny:
+plant.phylo.int<-drop.tip(plant.phylo,which(!plant.phylo$tip.label%in%plants.new))
+
+# compare and get vector with original names in same order as names in phylogeny
+final.sps.list<-unique(plants.new[which(plants.new%in%plant.phylo$tip.label)])
+names.compar<-data.frame(names.phylo=final.sps.list,order.phylo=as.numeric(match(final.sps.list,plant.phylo.int$tip.label)),names.original=plants[-c(34,53)])
+
+# reordering to match phylogeny
+names.compar<-names.compar[with(names.compar,order(order.phylo)),]
+
+# re-assign names to phylogeny
+plant.phylo.int$tip.label<-names.compar$names.original
+plot(plant.phylo.int,cex=0.6)
+
+```
+
+
+## Repeating for Pollinator phylogeny
+This one is going to be trickier. Only 16 sps of our list of arthropods are included in TTOL. The following genera are not in the phylogeny. Should we go to familial level?
+
+```{r phylo insects, echo=FALSE}
+all.phylo<-read.tree("TTOL_arthropods.nwk")
+
+# pollinators not in phylogeny
+not.in.phylo<-insects[which(!insects%in%all.phylo$tip.label)]
+
+# check if genus of these plants is in phylogeny
+genus.insects<-sapply(strsplit(insects, "_"), "[", 1)
+genus.phylo<-sapply(strsplit(all.phylo$tip.label, "_"), "[", 1)
+genus.not.in.phylo<-unique(genus.insects[which(!genus.insects%in%genus.phylo)])
+genus.not.in.phylo
+
+```
+
