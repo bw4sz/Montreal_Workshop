@@ -17,6 +17,7 @@ rm(list=ls())
 options(stringsAsFactors = FALSE)
 
 setwd("~/GitHub/Montreal_Workshop/Data")
+#setwd("~/Documents/github/local/Montreal_Workshop/Data")
 int <- read.csv("interactions.csv", h = T)
 #head(int)
 
@@ -28,6 +29,8 @@ insects<-sub(" ","_",unique(int$Pollinator_gen_sp))
 ## Loading plant phylogeny and matching taxonomy
 
 Out of the initial list of 56 plant species, 33 are in the phylogeny. For 21 of the remaining 23 species, we can assign the phylogenetic placement of a sister species (within the same genus). Two species can't be placed in this preliminary phylogeny (Mirtus_communis & Halimium_halimifolium). We could insert them as polytomies.
+
+IB: Halimium_conmutatum, is represented, can we use it as sister species?
 
 ```{r phylo plants, echo=FALSE}
 library(phytools)
@@ -87,7 +90,7 @@ names.compar<-data.frame(names.phylo=final.sps.list,order.phylo=as.numeric(match
 names.compar<-names.compar[with(names.compar,order(order.phylo)),]
 
 # re-assign names to phylogeny
-plant.phylo.int$tip.label<-names.compar$names.original
+plant.phylo.int$tip.label<-as.character(names.compar$names.original)
 plot(plant.phylo.int,cex=0.6)
 
 ```
@@ -104,9 +107,15 @@ not.in.phylo<-insects[which(!insects%in%all.phylo$tip.label)]
 
 # check if genus of these plants is in phylogeny
 genus.insects<-sapply(strsplit(insects, "_"), "[", 1)
+species.insects<-sapply(strsplit(insects, "_"), "[", 2)
+
 genus.phylo<-sapply(strsplit(all.phylo$tip.label, "_"), "[", 1)
 genus.not.in.phylo<-unique(genus.insects[which(!genus.insects%in%genus.phylo)])
 genus.not.in.phylo
+
+#check how many species per genus there are
+temp <- colSums(table(data.frame(sp = species.insects, gen = genus.insects)))
+summary(temp)
 
 ```
 
