@@ -161,113 +161,128 @@ accuracy and sensitivity of currently proposed methods.
 \label{models-of-species-interactions}
 
 When modelling ecological networks, there are different types of methods that
-have been proposed in the litterature. In this section, we presented the
+have been proposed in the literature. In this section, we presented the
 different techniques and group them based on their properties.
 
 \subsubsection*{Co-occurrences models}
-\label{regression-based-models}
-%%% Regression-based models on co-occurrences subsubsection will probably have to be moved somewhere else to follow the structure of the Introduction where traits and phylogeny related methods are discussed firsts and co-occurrence methods are discussed later.
+\label{Co-occurrences models}
 
-The simplest model of that can be designed to characterize the co-occurrence
-patterns between species $i$ and $j$ in matrix $Y$ can be defined as follow
+% Regression-based models on co-occurrences subsubsection will probably have
+% to be moved somewhere else to follow the structure of the Introduction where
+% traits and phylogeny related methods are discussed firsts and co-occurrence
+% methods are discussed later.
 
-\begin{equation}
-  \label{eq:coOccSimple}
-  Y_{i,j} = \rho_{i,j}
-\end{equation}
-
-where the probability of interaction among species $i$ and $j$ is a fixed value
-($\rho_{i,j}$). Using empirical data, we might try to estimate this value by
-dividing the number of observations by the total number of observations for any
-pair of species. While this is straightforward, it is insufficient because it
-contains no estimate of uncertainty. The estimate is given without any
-consideration for the variance due to sampling, environmental, spatial or
-temporal stochasticity. This model is overly simple. By assuming that
-observations are randomly drawn from a statistical distribution with parameter
-$\rho_{i,j}$, we obtain a simple model that account for sampling stochasticity
-in the data.
+Co-occurence models are designed to characterize species co-occurrence directly.
+In these models, the co-occurrences $Z_{ij}$ we try to characterize describes
+the presence (1) or absence (0) of a trophic link between species $i$ and $j$.
+In the context of co-occurrence models,  a way to formalize the relationship
+between co-occurrences and traits is as follow
 
 \begin{equation}
   \label{eq:coOccBern}
-  Y_{i,j} \sim \text{Bernoulli}(\rho_{i,j})
+  Z_{ij} \sim \text{Bernoulli}(\rho_{ij})
 \end{equation}
 
-In equation \ref{eq:coOccBern}, we used a Bernoulli distribution, which assumes
-that $Y_{i,j}$ is either 0 or 1. If $Y_{i,j}$ includes other types of data (e.g.
-counts or weights) other distributions may be used instead. From equation
-\ref{eq:coOccBern}, we can now estimate the probability of interaction while
-accounting sampling stochasticity. Although this model is more informative than
-the one presented in equation \ref{eq:coOccSimple}, it is still unsatisfying
-because it depends wholly on species identity and uses no ecological theory or
-inference; in short it is not mechanistic. Therefore, it is difficult to ascribe
-meaning to the species association that could be highlighted by this model, or
-understand how they might change in the future. In addition, from this model, we
-cannot make a prediction about potential new species.
+where $\rho_{ij}$ is the probability of interaction among species $i$ and $j$.
+In equation \ref{eq:coOccBern}, we used a Bernoulli distribution because we
+assumed that $Z_{ij}$ is binary. However, if $Z_{ij}$ is characterized by other
+types of data (e.g. counts or weights) other distributions may be used instead.
+From equation \ref{eq:coOccBern}, we can estimate the probability of interaction
+while accounting for sampling stochasticity. However, because this model depends
+solely on species identity it may lead to misinterpretation of the mechanisms
+that characterize the co-occurrences.
 
-To make our model more ecologically relevant, we might add covariates $X_{i,j}$
-that influence the relationship among a pair of species
+A way to solve this problem is to add a layer of complexity to the model in
+equation \ref{eq:coOccBern} by including traits. To do this, the probability of
+interaction between species $i$ and $j$ defined by $\rho_{ij}$ can depend on the
+similarity in functional traits for species $i$ and $j$
 
 \begin{equation}
-  \label{eq:coOccCov}
-  Y_{i,j} \sim \text{Bernoulli}(\rho_{i,j})
-  \text{logit}(\rho_{i,j}) = \alpha_{i,j}+\beta_{i,j}X_{i,j}
+  \label{eq:coOccTraits}
+  \text{logit}(\rho_{ij}) = \beta_{ij}X_{ij}
 \end{equation}
 
-where $\beta_{i,j}$ is a regression coefficient and $\alpha_{i,j}$ is the model
-intercept. In equation \ref{eq:coOccCov}, a link between species $i$ and $j$ is
-a Bernoulli trial with a probability of success $\rho_{i,j}$. The probability of
-success will vary based on some ecological principle ($x_{i,j}$) such as the
-similarity in functional traits among species $i$ and $j$:
-
-%%% GB: I am not sure if this equation is right... Need to check carefully.
-\begin{equation}
-  \label{eq:coOccTrait}
-  x_{i,j}= f(\text{Trait}_i,\text{Trait}_j)
-\end{equation}
-
-%%% ICI %%%
+where $\beta_{ij}$ is a regression coefficient and $X_{ij}$ is a covariates that
+influence the relationship among a pair of species. For example, $X_{ij}$ could
+be a trait-matching function between species $i$ and $j$. Note that a model
+intercept is accounted for in equation \ref{eq:coOccTraits} by assuming that $X$
+includes a column of 1s. In equation \ref{eq:coOccTraits}, we used a logit link
+function to ensure that $\rho$ ranges between 0 and 1, however, it is also
+possible to use other link functions such as a probit or a complementary log-log
+link function.
 
 A variety of trait-matching functions may be biologically plausible. For
-example, the absolute value of the difference between traits (e.g. \(|trait_i -
-trait_j|\)) or a binary difference (e.g. \(trait_i > trait_j\)), could be used
-to predict which species may interact. Alternatively, the covariate may
-represent the phylogenetic relatedness of species, or their relative response to
-a given environmental variable.In some cases, we cannot provide a simple
-trait-matching function (eg V), but must use a statistical tool to infer the
-best possible combination of traits among co-occurring species that predicts
-interactions. Machine learning tools provide an ideal compliment to traditional
-linear models when we cannot anticipate the combinations of traits that can
-influence species interaction rates. Unsupervised learning tools, such as random
-forests, can give us the associations among species given a set of complex
-traits. Regardless of the exact form of regression, this framework satisfies two
-important goals: it allows for estimates of uncertainty in species interactions,
-and it provides a mechanism shaping the probability of an interaction.
+example, the absolute value of the difference between traits or a binary
+difference, can be used to predict which species may interact. Alternatively,
+the covariate may also represent phylogenetic relatedness, or their relative
+response to a given environmental variable.
 
-So far, we have only captured the uncertainty in the process model, the inherent
-temporal or spatial stochasticity in our ecological process of interest (Hooten
-and Hobbs). We may need to also account for the uncertainty in the observation
-model, the ability to detect interactions given that they occur. The separation
-of the observation and process model translates our ecological mechanism into
-specific predictions about empirical data. For binary networks, one
-straightforward way to account for the observation of interactions is to model
-the detectability of network interactions.
+In the litterature, \#\#\#REF(Ben?)\#\#\# also proposed to account for
+observation uncertainty; to account for the ability to detect interactions given
+that they really occurred. In this formulation, the idea is to try to seperate
+the error resulting from the observation and the processes defining the
+co-occurrences. As such, we can define a model that account for observation uncertainty and ecological processes through the following equations
 
-eq iv.
+\begin{align}
+  Z_{ijk} \sim \text{Bernoulli}(\phi_{ij})\\
+  \phi_{ij} = \omega_{ij} \times \Omega_{ij}\\
+  \Omega_{ij} \sim \text{Bernoulli}(\rho_{i,j})\\
+  logit(\rho_{ij}) = \beta_{ij} X_{ij}
+\end{align}
 
-\[ Y_{i,j,k} \sim Bernoulli(\phi_{i,j})\] \[ \phi_{i,j} = \omega_{i,j} *
-z_{i,j}\] \[z_{i,j} \sim Bernoulii(\rho_{i,j})\] \[ logit(\rho_{i,j}) =
-\alpha_{i,j} + \beta_{i,j} * x \]
+where the observation at time $k$ of a co-occurrence between species $i$ and $j$
+is a Bernoulli trial with a probability $\phi_{ij}$, which is the outcome of the
+detectability of an interaction ($\omega_{ij}$) and the latent state
+($\Omega_{ij}$). The latent state $\Omega_{ij}$ is the true, but unobserved,
+existence of a co-occurrence, as predicted by the ecological mechanism of
+interest. The ability to assess this latent state depends on the detectability
+of an interaction ($\omega_{i,j}$).
 
-Where the observation of a link between species i and species j at time k is a
-Bernoulli trial with a probability \(\phi_{i,j}\), which is the outcome of the
-detectability of an interaction (\(\omega_{i,j}\)) and the latent state
-(\(z_{i,j}\)). This latent state is the true, but unobserved, existence of a
-link, as predicted by our ecological mechanism of interest (see eq IV). Our
-ability to detect this latent state depends on the detectability of an
-interaction (\(\omega_{i,j}\)). The benefit of this approach is that
-differentiates the probability of detection from the probability of occurrence.
-Importantly, because we have explicitly defined some temporal window (k),
-interactions with different levels of sampling effort can be directly compared.
+\subsubsection*{fourth-corner approaches}
+\label{fourth-corner approaches}
+
+A way to assess
+
+An alternative approach is to use multivariate statistics to create association
+matrices. One such method is called fourth-corner analysis, which is a type of
+three table ordination (sometimes called `RLQ' analysis) (Doledec 1996). In
+bipartite networks, fourth-corner analysis relates the matrix of species
+interactions to a matrix of traits from one level (e.g.~plants) to another level
+(e.g.~pollinators) via the matrix of species innteractions (Dray \& Legendre,
+2008). This produces a correlation matrix, which is then compared to a null
+expectation through matrix randomization. Randomization is a familiar tool in
+network ecology, in which permuatation rules are used to compare the observed
+test statistic (e.g the correlation among species occurrences) to a null
+distribution based on some matrix constraint. Common constraints include the
+mantainance of row sums, column sums, or other all marginal values, such that
+only the identity of partners are switched. After each permutation, the test
+statistic is recalulcating, yielding a null distribution. By comparing whether
+the observed test statistic falls within the upper or lower 5th quantile of the
+null distribution, studies distinguish whether their results could have been
+generated at random given their sampling effort.
+
+\end{document}
+
+%%% I think these bits of text would fit better in the discussion
+%% The text in 1) were all from the co-occurrence model section.
+% 1.1)
+In some cases, we cannot provide a simple trait-matching function but must use a
+statistical tool to infer the best possible combination of traits among
+co-occurring species that predicts interactions. Machine learning tools provide
+an ideal compliment to traditional linear models when we cannot anticipate the
+combinations of traits that can influence species interaction rates.
+Unsupervised learning tools, such as random forests, can give us the
+associations among species given a set of complex traits. Regardless of the
+exact form of regression, this framework satisfies two important goals: it
+allows for estimates of uncertainty in species interactions, and it provides a
+mechanism shaping the probability of an interaction.
+
+% 1.2)
+The benefit of this approach is that differentiates the probability of detection
+from the probability of occurrence. Importantly, because we have explicitly
+defined some temporal window (k), interactions with different levels of sampling
+effort can be directly compared.
+
 
 \subsubsection*{Logic-based methods}\label{logic-based-methods}
 
@@ -277,27 +292,6 @@ interactions with different levels of sampling effort can be directly compared.
 
 {[}Ben Weinstein: For someone to fill in.{]}
 
-\subsubsection*{Non-parametric methods}\label{non-parametric-methods}
-
-The above methods are model based, that is, they largely use parametric
-distributions to estimate the likelihood of the data given estimated model
-parameters. An alternative approach is to use multivariate statistics to create
-association matrices. One such method is called fourth-corner analysis, which is
-a type of three table ordination (sometimes called `RLQ' analysis) (Doledec
-1996). In bipartite networks, fourth-corner analysis relates the matrix of
-species interactions to a matrix of traits from one level (e.g.~plants) to
-another level (e.g.~pollinators) via the matrix of species innteractions (Dray \&
-Legendre, 2008). This produces a correlation matrix, which is then compared to a
-null expectation through matrix randomization. Randomization is a familiar tool
-in network ecology, in which permuatation rules are used to compare the observed
-test statistic (e.g the correlation among species occurrences) to a null
-distribution based on some matrix constraint. Common constraints include the
-mantainance of row sums, column sums, or other all marginal values, such that
-only the identity of partners are switched. After each permutation, the test
-statistic is recalulcating, yielding a null distribution. By comparing whether
-the observed test statistic falls within the upper or lower 5th quantile of the
-null distribution, studies distinguish whether their results could have been
-generated at random given their sampling effort.
 
 \subsection*{Quantitative comparisons}\label{quantitative-comparisons}
 
