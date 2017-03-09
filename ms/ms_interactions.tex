@@ -238,28 +238,43 @@ existence of a co-occurrence, as predicted by the ecological mechanism of
 interest. The ability to assess this latent state depends on the detectability
 of an interaction ($\omega_{i,j}$).
 
-\subsubsection*{fourth-corner approaches}
-\label{fourth-corner approaches}
+\subsubsection*{fourth-corner modelling}
+\label{fourth-corner modelling}
 
-A way to assess
+Fourth corner models originated from the work of \cite{doledec_matching_1996},
+who proposed a way to perform an ordination called the `RLQ analysis', and
+\cite{legendre_relating_1997}, who proposed a statistical  procedure to tests
+the relationships among three data tables called the `fourth corner problem'.
+Originally, the three data tables described a set of species found at different
+locations, a set of environmental variables found at the same locations and a
+set of species traits related associated to each species (\#\#\# Figure
+conceptual 4th corner \#\#\#). Following these two seminal papers, a series of
+developments have been proposed extending and generalizing and linking the `RLQ
+analysis' and the `fourth corner problem' \cite{dray_testing_2008,
+dray_combining_2014}.
 
-An alternative approach is to use multivariate statistics to create association
-matrices. One such method is called fourth-corner analysis, which is a type of
-three table ordination (sometimes called `RLQ' analysis) (Doledec 1996). In
-bipartite networks, fourth-corner analysis relates the matrix of species
-interactions to a matrix of traits from one level (e.g.~plants) to another level
-(e.g.~pollinators) via the matrix of species innteractions (Dray \& Legendre,
-2008). This produces a correlation matrix, which is then compared to a null
-expectation through matrix randomization. Randomization is a familiar tool in
-network ecology, in which permuatation rules are used to compare the observed
-test statistic (e.g the correlation among species occurrences) to a null
-distribution based on some matrix constraint. Common constraints include the
-mantainance of row sums, column sums, or other all marginal values, such that
-only the identity of partners are switched. After each permutation, the test
-statistic is recalulcating, yielding a null distribution. By comparing whether
-the observed test statistic falls within the upper or lower 5th quantile of the
-null distribution, studies distinguish whether their results could have been
-generated at random given their sampling effort.
+In the context of ecological interactions, a different set of three matrices are
+used. A matrix of species interactions is used as a basis which is related with
+a matrix of traits for both side of the interacting species (\#\#\# Figure
+conceptual 4th corner \#\#\#). These different developments are interesting to
+evaluate and test the relationship among species, however they are not designed
+to make predictions. To solve this issue, \cite{nygaard_new_2004},
+\cite{pollock_role_2012}, \cite{jamil_selecting_2013},
+\cite{brown_fourth-corner_2014} have independently proposed developments to make
+predictions when dealing with three related matrices. In essence, these new
+developments rely on hierarchical models \cite{gelman_data_2007}.
+
+%%% ICI %%%
+%%% ICI %%%
+%%% ICI %%%
+%%% ICI %%%
+\section*{Literature cited}\label{literature-cited}
+
+\bibliography{referencesNew}
+
+\input{ms_fig.tex}
+
+\input{ms_tables.tex}
 
 \end{document}
 
@@ -422,9 +437,5 @@ interactions, in a context of global changes.
 
 \subsection*{Community/evolution ecology}
 \label{communityevolution-ecology}
-
-\input{ms_fig.tex}
-
-\input{ms_tables.tex}
 
 \end{document}
