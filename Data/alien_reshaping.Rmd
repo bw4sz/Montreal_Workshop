@@ -1,0 +1,82 @@
+# Reshaping the dataset as input of the `as.alienData()` function
+
+### Each section below transform your data into as.alienData args
+
+#### Get idObs
+
+```{r}
+# load data
+int <- read.csv("interactions.csv", h = T, stringsAsFactors=FALSE)
+flw <- read.csv("flowers.csv", h = T, stringsAsFactors=FALSE)
+plant_tr <- read.csv("traits_plants.csv", h = T, stringsAsFactors=FALSE)
+pol_tr <- read.csv("traits_pollinators.csv", h = T, stringsAsFactors=FALSE)
+
+# Create unique IDs for pollinator individus
+int$idPol <- seq(1,nrow(int),1)
+# Create unique IDs for plant individus
+int$idPlant <- seq(nrow(int)+1,nrow(int)+nrow(int),1) #technically, some individuus will be repeated, although there is not way to know. Good for now
+
+# subset pollinator and plant with their own ids
+pol <- unique(int[,c("Site_ID", "Round","Pollinator_gen_sp","idPol")]) #The unique is unececsary here, right?
+colnames(pol) <- c("idSite","idTime","idSp","idInd")
+plant <- unique(int[,c("Site_ID", "Round","Plant_gen_sp","idPlant")]) #idem
+colnames(plant) <- c("idSite","idTime","idSp","idInd")
+
+# Set idObs by merging both dfs
+idObs <- rbind(pol,plant)
+#head(idObs)
+
+#Turn all columns as factor
+idObs <- as.data.frame(lapply(idObs,as.factor))
+```
+
+#### Get InteracPair
+
+```{r}
+interactPair <- int[,c("idPol","idPlant","Frequency")]
+```
+
+#### traitInd
+
+Trait by individus
+
+```{r}
+traitInd <- int[,c("idPol","Pollinator_sex")]
+traitInd$traitName <- "sex"
+traitInd <- traitInd[,c('idPol','traitName','Pollinator_sex')]
+names(traitInd)[3] <- 'value'
+#head(traitInd)
+```
+
+#### traitSp
+
+Trait by species
+Note Removed family as a trait
+
+```{r}
+library(reshape2)
+traitSpPlant <- melt(plant_tr[,-2],id=c("Plant_gen_sp"),value.name="value",variable.name="traitName")
+names(traitSpPlant)[1] <- "idSp"
+
+#head(pol_tr)
+traitSpPol <- melt(pol_tr[,c(1,2,5)],id=c("Pollinator_gen_sp"),value.name="value",variable.name="traitName") #I also remove order
+names(traitSpPol)[1] <- "idSp"
+
+traitSp <- rbind(traitSpPlant,traitSpPol)
+traitSp$idSp <- as.factor(traitSp$idSp)
+
+#### errors
+# Some entries in traitSp (merge of pol_tr and plant_tr) are documenting species which are not present in `ìnt`, the interaction pairwise data.frame.
+#IB: This is ok! I collect traits for some species we do not have interactions.
+removeSpecies <- levels(traitSp$idSp)[which(!levels(traitSp$idSp) %in% levels(idObs$idSp))]
+traitSp <- subset(traitSp, !idSp %in% removeSpecies )
+traitSp$idSp <- droplevels(traitSp$idSp)
+```
+
+#### Save all args of the as.alienData() into a RData file.
+
+```{r}
+save(idObs,interactPair,traitSp,traitInd,file="./alienData/argsAlienData.RData")
+```
+
+

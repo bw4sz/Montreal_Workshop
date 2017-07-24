@@ -1,0 +1,27 @@
+
+```{r}
+#IB plays with trait matching
+head(pooled_data, 20)
+
+#simple match
+scatter.smooth(pooled_data$nectar_tube_depth_mm ~ pooled_data$tongue_length)
+temp <- pooled_data$tongue_length - pooled_data$nectar_tube_depth_mm
+plot(temp) #A few outlyers, including negative values.
+
+pooled_data[which(temp < 0),c(1,2,12,17)]
+#Clearly there is something with Anchusa azurea: Robing? Exerted pollen?
+#Andryala integrifolia: idem
+#Armeria velutina: Very open tube? idem with convolvulus and equium, rosmarinus...
+#one interaction of Astragalus lusitanicus	Oxythyrea funesta, check?
+pooled_data[which(temp > 10),c(1,2,12,17)]
+#some buterflies
+#lots of long tongued bees visiting open flowers (cistus, asphodelus) This is real and suggests a barrier model.
+
+#complex match
+temp <- ifelse(pooled_data$IT > pooled_data$nectar_tube_diameter_mm,
+               pooled_data$tongue_length - pooled_data$nectar_tube_depth_mm,
+               0)
+plot(temp) #A few outlyers, including negative values.
+
+pooled_data[which(temp < 0),c(1,2,12,17)]
+```
