@@ -14,26 +14,30 @@ pol_tr <- read.csv("traits_pollinators.csv", h = T, stringsAsFactors=FALSE)
 # Create unique IDs for pollinator individus
 int$idPol <- seq(1,nrow(int),1)
 # Create unique IDs for plant individus
-int$idPlant <- seq(nrow(int)+1,nrow(int)+nrow(int),1) #technically, some individuus will be repeated, although there is not way to know. Good for now
+int$idPlant <- seq(nrow(int)+1,nrow(int)+nrow(int),1) # IB: technically, some individus will be repeated, although there is not way to know. Good for now
 
 # subset pollinator and plant with their own ids
-pol <- unique(int[,c("Site_ID", "Round","Pollinator_gen_sp","idPol")]) #The unique is unececsary here, right?
+# if no_captured set his own ids
+# int$idPol <- int$Pollinator_id
+# id <- 1
+# for(i in 1:nrow(int)){
+#   if(int[i,'idPol'] == 'no_captured'){
+#     int[i,'idPol'] <- id
+#     id <- id+1
+#   }
+# }
+
+pol <- int[,c("Site_ID", "Round","Pollinator_gen_sp","idPol")] #The unique is unececsary here, right? SV: yes
 colnames(pol) <- c("idSite","idTime","idSp","idInd")
 plant <- unique(int[,c("Site_ID", "Round","Plant_gen_sp","idPlant")]) #idem
 colnames(plant) <- c("idSite","idTime","idSp","idInd")
 
 # Set idObs by merging both dfs
 idObs <- rbind(pol,plant)
-#head(idObs)
+head(idObs)
 
-#Turn all columns as factor
-idObs <- as.data.frame(lapply(idObs,as.factor))
-```
 
-#### Get InteracPair
 
-```{r}
-interactPair <- int[,c("idPol","idPlant","Frequency")]
 ```
 
 #### traitInd
@@ -46,6 +50,12 @@ traitInd$traitName <- "sex"
 traitInd <- traitInd[,c('idPol','traitName','Pollinator_sex')]
 names(traitInd)[3] <- 'value'
 #head(traitInd)
+```
+
+#### Get InteracPair
+
+```{r}
+interactPair <- int[,c("idPol","idPlant","Frequency")]
 ```
 
 #### traitSp
@@ -68,15 +78,124 @@ traitSp$idSp <- as.factor(traitSp$idSp)
 #### errors
 # Some entries in traitSp (merge of pol_tr and plant_tr) are documenting species which are not present in `ìnt`, the interaction pairwise data.frame.
 #IB: This is ok! I collect traits for some species we do not have interactions.
-removeSpecies <- levels(traitSp$idSp)[which(!levels(traitSp$idSp) %in% levels(idObs$idSp))]
-traitSp <- subset(traitSp, !idSp %in% removeSpecies )
-traitSp$idSp <- droplevels(traitSp$idSp)
+# removeSpecies <- levels(traitSp$idSp)[which(!levels(traitSp$idSp) %in% levels(idObs$idSp))]
+# traitSp <- subset(traitSp, !idSp %in% removeSpecies )
+# traitSp$idSp <- droplevels(traitSp$idSp)
 ```
 
-#### Save all args of the as.alienData() into a RData file.
+#### Prepare each aguments for alienData v2
 
 ```{r}
-save(idObs,interactPair,traitSp,traitInd,file="./alienData/argsAlienData.RData")
+
+#### STEP A: dfNodes
+
+dfNodes <- idObs[,c("idInd","idSp")]
+
+## 1. ADD TRAITS FOR SP
+
+dfNodes <- merge(dfNodes,traitSp,by="idSp",all=TRUE)
+dfNodes <- dcast(idSp + idInd ~ traitName, data=dfNodes)
+
+## 2. ADD TRAITS FOR IND
+
+traitInd <- traitInd[,c('idPol','value')]
+names(traitInd)[2] <- "sex"
+dfNodes <- merge(dfNodes,traitInd,by.x="idInd",by.y="idPol",all=TRUE)
+
+## 3. ADD TAXO
+library(stringr)
+dfNodes$species <- word(str_trim(dfNodes$idSp),-1)
+dfNodes$genus <-  word(str_trim(dfNodes$idSp),-2)
+
+## retrieve higher taxonomy based on ITIS
+library(taxize)
+
+cleanup_taxo <- function(x){
+  if(all(!is.na(x))){
+    if(!is.null(x) & dim(x)[1] != 1){
+      r <- data.frame(t(x$name))
+      colnames(r) <- x$rank
+      return(r)
+    } else {
+      return(NA)
+    }
+  } else {
+    return(NA)
+  }
+  }
+
+# resolved_itis <- classification(unique(str_trim(dfNodes$idSp)),db="itis")
+# saveRDS(resolved_itis,file='./resolved_itis.rds')
+resolved_itis <- readRDS('resolved_itis.rds')
+
+res_itis <- lapply(resolved_itis,cleanup_taxo)
+
+res_itis <- res_itis[!is.na(res_itis)]
+res_itis <- plyr::rbind.fill(res_itis)
+res_itis <- res_itis[,names(res_itis)[which(colSums(apply(res_itis,2,is.na))==0)]]
+
+# removing genus
+res_itis <- res_itis[,-which(names(res_itis)=='genus')]
+dfNodes <- merge(dfNodes,res_itis,by.x="idSp",by.y="species",all.x=TRUE)
+
+## retrieve higher MISSING taxonomy based on GENUS with NCBI
+
+taxo_missing <- unique(subset(dfNodes,is.na(family))[,'genus'])
+resolved_ncbi <- readRDS('./resolved_ncbi.rds')
+# resolved_ncbi <- classification(str_trim(taxo_missing),db="ncbi")
+# saveRDS(resolved_ncbi,file='./resolved_ncbi.rds')
+
+resolved_ncbi <- resolved_ncbi[!is.na(resolved_ncbi)]
+res_ncbi <- lapply(resolved_ncbi,cleanup_taxo)
+res_ncbi <- plyr::rbind.fill(res_ncbi)
+res_ncbi <- res_ncbi[,c('genus',names(res_ncbi)[which(colSums(apply(res_ncbi,2,is.na))==0)])]
+
+# remove taxo for species with no genus
+res_ncbi <- subset(res_ncbi,!is.na(genus))
+res_ncbi <- res_ncbi[,-2]
+
+# cast classification items as factors
+cols <- names(dfNodes)[11:19]
+for(c in cols) dfNodes[,c] <- as.character(dfNodes[,c])
+
+# fill missing columns on match
+for(i in 1:nrow(res_ncbi)){
+  dfNodes[which(res_ncbi[i,'genus'] == dfNodes$genus),'kingdom'] <- as.character(res_ncbi[i,'kingdom'])
+  dfNodes[which(res_ncbi[i,'genus'] == dfNodes$genus),'order'] <- as.character(res_ncbi[i,'order'])
+  dfNodes[which(res_ncbi[i,'genus'] == dfNodes$genus),'family'] <- as.character(res_ncbi[i,'family'])
+}
+
+## TODO: STILL TAXO LEVELS MISSINGS
+
+
+## Final reshaping
+dfNodes <- dfNodes[,c(2:ncol(dfNodes))]
+names(dfNodes)[1] <- "idNodes"
+
+#### STEP B: dfEdges
+
+dfEdges <- int[,c('Site_ID','idPol','idPlant','Frequency')]
+names(dfEdges) <- c('idSite','idFrom','idTo','value')
+
+#### STEP C: dfSites
+
+dfSites <- unique(dfEdges[,'idSite'])
+
+#### Step D: dfOcc
+
+dfOcc <- unique(dfEdges[,c('idSite','idTo')])
+names(dfOcc)[2] <- "idSp"
+dfOccFrom <- unique(dfEdges[,c('idSite','idFrom')])
+names(dfOccFrom)[2] <- "idSp"
+dfOcc <- rbind(dfOcc,dfOccFrom)
+
 ```
 
+### Transform to alienData object
 
+```{r}
+plantsPol <-  alienData(dfNodes=dfNodes,dfEdges=dfEdges,verbose=TRUE,taxo=c('kingdom','class','order','family','genus','species'),trait=c('flower_morphology','flower_form','nectar_tube_diameter_mm','nectar_tube_depth_mm','IT','tongue_length','sex'))
+
+save(plantsPol,file='../../alien/data/plantsPol.rda')
+
+```
